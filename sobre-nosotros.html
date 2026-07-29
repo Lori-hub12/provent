@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros — ProVend</title>
+    <meta name="description" content="Conoce al equipo detrás de ProVend, la plataforma B2B que conecta empresas en Nicaragua.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="page-header-inner text-center">
+            <h1 class="page-title"><span class="gradient-text">Sobre Nosotros</span></h1>
+            <p class="page-subtitle">Conoce a las mentes brillantes detrás de ProVend.</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" style="padding: var(--sp-12) var(--container-padding); min-height: 50vh;">
+        <div class="section-header text-center reveal">
+            <h2 class="gradient-text">Equipo de Trabajo</h2>
+            <p>Juntos construimos el futuro B2B de Nicaragua.</p>
+        </div>
+        
+        <div class="team-grid">
+            <!-- ==============================================
+                 MIEMBRO 1: SUNYEL
+                 ============================================== -->
+            <div class="team-card">
+                <div class="team-card-img">
+                    <!-- 👇👇👇 PON LA URL DE LA IMAGEN DE LA OVEJA AQUÍ ABAJO 👇👇👇 -->
+                    <img src="URL_IMAGEN_SUNYEL_AQUI.png" alt="Sunyel Sánchez L.">
+                </div>
+                <div class="team-card-info">
+                    <h3>Sunyel Sánchez L.</h3>
+                    <p>Desarrollador | Ing. Industrial</p>
+                </div>
+            </div>
+
+            <!-- ==============================================
+                 MIEMBRO 2: HARINGTONG
+                 ============================================== -->
+            <div class="team-card">
+                <div class="team-card-img">
+                    <!-- 👇👇👇 PON LA URL DE LA IMAGEN DEL MONO AQUÍ ABAJO 👇👇👇 -->
+                    <img src="URL_IMAGEN_HARINGTONG_AQUI.png" alt="Haringtong Umaña G.">
+                </div>
+                <div class="team-card-info">
+                    <h3>Haringtong Umaña G.</h3>
+                    <p>Comunicador | Ing. Industrial</p>
+                </div>
+            </div>
+
+            <!-- ==============================================
+                 MIEMBRO 3: RODRIGO
+                 ============================================== -->
+            <div class="team-card">
+                <div class="team-card-img">
+                    <!-- 👇👇👇 PON LA URL DE LA IMAGEN DEL MAPACHE AQUÍ ABAJO 👇👇👇 -->
+                    <img src="URL_IMAGEN_RODRIGO_AQUI.png" alt="Rodrigo Merlo C.">
+                </div>
+                <div class="team-card-info">
+                    <h3>Rodrigo Merlo C.</h3>
+                    <p>Desarrollador | Ing. Computación</p>
+                </div>
+            </div>
+
+            <!-- ==============================================
+                 MIEMBRO 4: DANIELA
+                 ============================================== -->
+            <div class="team-card">
+                <div class="team-card-img">
+                    <!-- 👇👇👇 PON LA URL DE LA IMAGEN DEL HÁMSTER AQUÍ ABAJO 👇👇👇 -->
+                    <img src="URL_IMAGEN_DANIELA_AQUI.png" alt="Daniela Álvarez R.">
+                </div>
+                <div class="team-card-info">
+                    <h3>Daniela Álvarez R.</h3>
+                    <p>Diseñadora | Marketing</p>
+                </div>
+            </div>
+
+            <!-- ==============================================
+                 MIEMBRO 5: YESLIE
+                 ============================================== -->
+            <div class="team-card">
+                <div class="team-card-img">
+                    <!-- 👇👇👇 PON LA URL DE LA IMAGEN DEL CONEJO AQUÍ ABAJO 👇👇👇 -->
+                    <img src="URL_IMAGEN_YESLIE_AQUI.png" alt="Yeslie Miranda D.">
+                </div>
+                <div class="team-card-info">
+                    <h3>Yeslie Miranda D.</h3>
+                    <p>Mercadóloga | Contabilidad</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/components.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.getElementById('navbar-container');
+            const footer = document.getElementById('footer-container');
+            
+            if (navbar) navbar.innerHTML = buildNavbar();
+            if (footer) footer.innerHTML = buildFooter();
+        });
+    </script>
+</body>
+</html>

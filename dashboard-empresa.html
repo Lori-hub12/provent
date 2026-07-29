@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Empresa — ProVend</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-user">
+                    <div class="avatar">ML</div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name">María López</div>
+                        <div class="sidebar-user-role">Empresa</div>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">General</span>
+                <a class="sidebar-link active" data-section="perfil">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Mi Perfil</span>
+                </a>
+                <a class="sidebar-link" data-section="favoritos">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                    <span>Favoritos</span>
+                </a>
+                <a class="sidebar-link" data-section="historial">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Historial</span>
+                </a>
+                <span class="sidebar-section-title">Cuenta</span>
+                <a class="sidebar-link" data-section="configuracion">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <span>Configuración</span>
+                </a>
+                <a class="sidebar-link" href="index.html" onclick="if(window.ProVendAuth)ProVendAuth.logout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </nav>
+        </aside>
+        <main class="dashboard-main">
+            <div class="dashboard-header">
+                <div>
+                    <h1 class="dashboard-title">Mi Perfil</h1>
+                    <p class="dashboard-subtitle">Bienvenida de vuelta, María</p>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <div class="stats-card-icon blue">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="stats-card-value">12</div>
+                    <div class="stats-card-label">Favoritos</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <div class="stats-card-icon green">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                        </div>
+                    </div>
+                    <div class="stats-card-value">48</div>
+                    <div class="stats-card-label">Búsquedas</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <div class="stats-card-icon yellow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        </div>
+                    </div>
+                    <div class="stats-card-value">8</div>
+                    <div class="stats-card-label">Contactos</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <div class="stats-card-icon red">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </div>
+                    </div>
+                    <div class="stats-card-value">156</div>
+                    <div class="stats-card-label">Proveedores Vistos</div>
+                </div>
+            </div>
+            <div class="dashboard-section active" id="perfil" style="display:block">
+                <div class="card"><div class="card-body"><h3 style="margin-bottom:1.5rem">Información Personal</h3>
+                    <div class="grid-2">
+                        <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" value="María López" readonly></div>
+                        <div class="form-group"><label class="form-label">Email</label><input class="form-input" value="empresa@demo.com" readonly></div>
+                        <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" value="Distribuidora El Sol"></div>
+                        <div class="form-group"><label class="form-label">Teléfono</label><input class="form-input" value="+505 8800-0000"></div>
+                    </div>
+                    <button class="btn btn-primary" style="margin-top:1rem">Guardar Cambios</button>
+                </div></div>
+            </div>
+            <div class="dashboard-section" id="favoritos" style="display:none">
+                <div id="fav-providers" class="grid-providers"></div>
+            </div>
+            <div class="dashboard-section" id="historial" style="display:none">
+                <div class="card"><div class="card-body"><h3 style="margin-bottom:1rem">Búsquedas Recientes</h3><div style="display:flex;flex-direction:column;gap:0.75rem"><div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;justify-content:space-between"><span>"Proveedores de tecnología"</span><span style="color:var(--neutral-400);font-size:0.875rem">Hace 2 horas</span></div><div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;justify-content:space-between"><span>"Café orgánico Matagalpa"</span><span style="color:var(--neutral-400);font-size:0.875rem">Hace 1 día</span></div><div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;justify-content:space-between"><span>"Materiales de construcción"</span><span style="color:var(--neutral-400);font-size:0.875rem">Hace 3 días</span></div></div></div></div>
+            </div>
+            <div class="dashboard-section" id="configuracion" style="display:none">
+                <div class="card"><div class="card-body"><h3 style="margin-bottom:1.5rem">Configuración de Cuenta</h3><div class="form-group"><label class="form-label">Notificaciones por email</label><label class="form-checkbox"><input type="checkbox" checked> Recibir alertas de nuevos proveedores</label></div><div class="form-group"><label class="form-label">Idioma</label><select class="form-select"><option>Español</option><option>English</option></select></div><button class="btn btn-primary">Guardar</button></div></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/components.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/animations.js"></script>
+    <script>
+        document.getElementById('navbar-container').innerHTML = createNavbar();
+
+        // Render favorite provider cards
+        if (typeof providers !== 'undefined' && typeof createProviderCard === 'function') {
+            var favContainer = document.getElementById('fav-providers');
+            var favIndices = [0, 1, 4];
+            favIndices.forEach(function(i) {
+                if (providers[i]) {
+                    favContainer.innerHTML += createProviderCard(providers[i]);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

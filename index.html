@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ProVend es la plataforma B2B líder en Nicaragua que conecta proveedores, emprendedores y MIPYMES. Encuentra socios comerciales confiables y haz crecer tu negocio.">
+  <title>ProVend — Conectando empresas, creando oportunidades</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+  <!-- ========== TOP BAR ========== -->
+  <div class="top-bar">
+    🚀 Nueva plataforma B2B para Nicaragua — ¡Regístrate gratis!
+    <span class="top-bar-close">✕</span>
+  </div>
+
+  <!-- ========== NAVBAR ========== -->
+  <div id="navbar-container"></div>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" style="position:relative;overflow:hidden">
+    <!-- Animated floating shapes for visual depth -->
+    <div class="hero-floating-shapes" aria-hidden="true">
+      <div class="hero-shape hero-shape-1"></div>
+      <div class="hero-shape hero-shape-2"></div>
+      <div class="hero-shape hero-shape-3"></div>
+      <div class="hero-shape hero-shape-4"></div>
+      <div class="hero-shape hero-shape-5"></div>
+    </div>
+    <div class="container" style="position:relative;z-index:2">
+      <span class="hero-badge" style="animation:heroBadgePulse 2s ease-in-out infinite">🚀 Nueva plataforma B2B para Nicaragua</span>
+      <h1 class="hero-title-animated">Conecta tu negocio con los <span>mejores proveedores</span></h1>
+      <p class="hero-subtitle">La plataforma B2B que conecta proveedores, emprendedores y MIPYMES en Nicaragua. Encuentra socios comerciales confiables y haz crecer tu negocio.</p>
+      <div class="search-bar" style="animation:heroSlideUp 0.8s ease-out 0.3s both">
+        <span class="search-bar-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </span>
+        <input id="hero-search-input" type="text" placeholder="Buscar proveedores, productos o servicios...">
+        <button id="hero-search-btn" class="btn btn-primary">Buscar</button>
+      </div>
+      <div class="hero-tags" style="animation:heroSlideUp 0.8s ease-out 0.5s both">
+        <span>Popular:</span>
+        <a href="explorar.html?category=Tecnología">Tecnología</a>
+        <a href="explorar.html?category=Manufactura">Manufactura</a>
+        <a href="explorar.html?category=Alimentos">Alimentos</a>
+        <a href="explorar.html?category=Servicios">Servicios</a>
+        <a href="explorar.html?category=Textil">Textil</a>
+      </div>
+      <div class="hero-stats" style="animation:heroSlideUp 0.8s ease-out 0.7s both">
+        <div class="hero-stat">
+          <span class="hero-stat-value" data-count="5000" data-suffix="+">5000+</span>
+          <span class="hero-stat-label">Proveedores Verificados</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value" data-count="15000" data-suffix="+">15000+</span>
+          <span class="hero-stat-label">Empresas Conectadas</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-value" data-count="14" data-suffix="">14</span>
+          <span class="hero-stat-label">Departamentos</span>
+        </div>
+      </div>
+    </div>
+    <style>
+      /* Hero enhanced animations */
+      .hero-floating-shapes { position:absolute; inset:0; z-index:1; pointer-events:none; }
+      .hero-shape {
+        position:absolute;
+        border-radius:50%;
+        opacity:0.08;
+        filter:blur(1px);
+      }
+      .hero-shape-1 {
+        width:300px; height:300px;
+        background:radial-gradient(circle, var(--primary-300), transparent);
+        top:-60px; right:-80px;
+        animation:heroFloat 8s ease-in-out infinite;
+      }
+      .hero-shape-2 {
+        width:200px; height:200px;
+        background:radial-gradient(circle, var(--primary-400), transparent);
+        bottom:20px; left:-40px;
+        animation:heroFloat 10s ease-in-out infinite reverse;
+      }
+      .hero-shape-3 {
+        width:150px; height:150px;
+        background:radial-gradient(circle, #6366f1, transparent);
+        top:40%; left:20%;
+        animation:heroFloat 12s ease-in-out infinite 2s;
+      }
+      .hero-shape-4 {
+        width:100px; height:100px;
+        background:radial-gradient(circle, #06b6d4, transparent);
+        top:20%; right:15%;
+        animation:heroFloat 9s ease-in-out infinite 1s;
+      }
+      .hero-shape-5 {
+        width:80px; height:80px;
+        background:radial-gradient(circle, #8b5cf6, transparent);
+        bottom:30%; right:30%;
+        animation:heroFloat 11s ease-in-out infinite 3s;
+      }
+      @keyframes heroFloat {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-30px) scale(1.1); }
+      }
+      @keyframes heroBadgePulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.3); }
+        50% { box-shadow: 0 0 0 8px rgba(99,102,241,0); }
+      }
+      @keyframes heroSlideUp {
+        from { opacity:0; transform:translateY(24px); }
+        to { opacity:1; transform:translateY(0); }
+      }
+      .hero-title-animated {
+        animation: heroSlideUp 0.8s ease-out 0.1s both;
+      }
+      .hero-subtitle {
+        animation: heroSlideUp 0.8s ease-out 0.2s both;
+      }
+    </style>
+  </section>
+
+  <!-- ========== CATEGORIES ========== -->
+  <section class="categories-section section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">CATEGORÍAS</span>
+        <h2>Explora por categoría</h2>
+        <p>Encuentra proveedores en las principales industrias de Nicaragua</p>
+      </div>
+      <div id="categories-grid" class="grid-categories"></div>
+    </div>
+  </section>
+
+  <!-- ========== FEATURED PROVIDERS ========== -->
+  <section class="featured-section section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">PROVEEDORES DESTACADOS</span>
+        <h2>Los mejores proveedores de Nicaragua</h2>
+        <p>Descubre proveedores verificados y confiables en todo el país</p>
+      </div>
+      <div id="featured-providers" class="grid-providers"></div>
+      <div class="section-action">
+        <a href="explorar.html" class="btn btn-outline">Ver todos los proveedores →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== HOW IT WORKS ========== -->
+  <section id="como-funciona" class="how-it-works section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">CÓMO FUNCIONA</span>
+        <h2>3 pasos para conectar con proveedores</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card fade-in">
+          <div class="step-number">1</div>
+          <h3 class="step-title">Busca</h3>
+          <p class="step-desc">Encuentra proveedores por categoría, ubicación o nombre en nuestro directorio verificado.</p>
+        </div>
+        <div class="step-card fade-in">
+          <div class="step-number">2</div>
+          <h3 class="step-title">Compara</h3>
+          <p class="step-desc">Revisa perfiles completos, calificaciones, reseñas y productos de cada proveedor.</p>
+        </div>
+        <div class="step-card fade-in">
+          <div class="step-number">3</div>
+          <h3 class="step-title">Conecta</h3>
+          <p class="step-desc">Contacta directamente por WhatsApp, correo electrónico o visita su sitio web.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BENEFITS ========== -->
+  <section class="benefits-section section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">BENEFICIOS</span>
+        <h2>¿Por qué ProVend?</h2>
+      </div>
+      <div class="grid-4">
+        <div class="benefit-card fade-in">
+          <div class="benefit-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <div class="benefit-title">Proveedores Verificados</div>
+          <div class="benefit-desc">Cada proveedor pasa por un proceso de verificación para garantizar su legitimidad y calidad.</div>
+        </div>
+        <div class="benefit-card fade-in">
+          <div class="benefit-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          </div>
+          <div class="benefit-title">Contacto Directo</div>
+          <div class="benefit-desc">Comunícate directamente por WhatsApp, email o sitio web. Sin intermediarios.</div>
+        </div>
+        <div class="benefit-card fade-in">
+          <div class="benefit-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+          </div>
+          <div class="benefit-title">Comparación Fácil</div>
+          <div class="benefit-desc">Compara proveedores, lee reseñas y toma decisiones informadas para tu negocio.</div>
+        </div>
+        <div class="benefit-card fade-in">
+          <div class="benefit-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+          <div class="benefit-title">100% Gratuito</div>
+          <div class="benefit-desc">Buscar y contactar proveedores es completamente gratis. Sin costos ocultos.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== TESTIMONIALS ========== -->
+  <section class="testimonials-section section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">TESTIMONIOS</span>
+        <h2>Lo que dicen nuestros usuarios</h2>
+      </div>
+      <div class="testimonials-carousel">
+        <div class="testimonials-track"></div>
+      </div>
+      <div class="testimonials-nav">
+        <button class="testimonials-dot active"></button>
+        <button class="testimonials-dot"></button>
+        <button class="testimonials-dot"></button>
+        <button class="testimonials-dot"></button>
+        <button class="testimonials-dot"></button>
+        <button class="testimonials-dot"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CTA ========== -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2>¿Listo para hacer crecer tu negocio?</h2>
+        <p>Únete a miles de empresas nicaragüenses que ya están conectando con los mejores proveedores del país.</p>
+      </div>
+      <div class="cta-buttons">
+        <a href="registro.html" class="btn btn-white btn-lg">Registrarse gratis</a>
+        <a href="explorar.html" class="btn btn-outline btn-lg" style="color:white;border-color:rgba(255,255,255,0.3)">Explorar proveedores</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <div id="footer-container"></div>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/animations.js"></script>
+  <script>
+    document.getElementById('navbar-container').innerHTML = buildNavbar('home');
+    document.getElementById('footer-container').innerHTML = buildFooter();
+    renderCategoryCards('categories-grid');
+    renderProviderCards('featured-providers', providers, 6);
+    // Testimonials
+    const track = document.querySelector('.testimonials-track');
+    if (track) {
+      track.innerHTML = ProVend.testimonials.map(t =>
+        `<div class="testimonial-card"><div class="testimonial-inner"><div class="testimonial-stars">${generateStars(t.rating)}</div><p class="testimonial-text">"${t.text}"</p><div class="testimonial-author"><div class="avatar avatar-sm">${t.name.charAt(0)}</div><div><div class="testimonial-author-name">${t.name}</div><div class="testimonial-author-role">${t.role}</div></div></div></div></div>`
+      ).join('');
+    }
+  </script>
+
+</body>
+</html>

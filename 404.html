@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página no encontrada — ProVend</title>
+    <meta name="description" content="Ups, página no encontrada en ProVend.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <style>
+        .error-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: var(--sp-12) var(--sp-4);
+        }
+        .error-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-2xl);
+            padding: var(--sp-12) var(--sp-8);
+            max-width: 600px;
+            width: 100%;
+            box-shadow: var(--shadow-2xl);
+            position: relative;
+            z-index: 10;
+        }
+        body.dark .error-card {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: var(--fw-extrabold);
+            line-height: 1;
+            margin-bottom: var(--sp-2);
+        }
+        .error-img-container {
+            max-width: 300px;
+            margin: 0 auto var(--sp-6);
+        }
+        .error-img-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            /* Pequeña animación para que Alex flote un poquito y tenga sombra */
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.15));
+            animation: float-blob 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content -->
+    <main class="error-container">
+        <div class="error-card">
+            <!-- 👇👇👇 IMAGEN DE ALEX EL LEÓN 👇👇👇 -->
+            <div class="error-img-container">
+                <img src="https://www.meme-arsenal.com/memes/b54b6ed49df98492793d9b75fca72fae.jpg" alt="Alex el León">
+            </div>
+            
+            <h1 class="error-code gradient-text">404</h1>
+            <h2 style="margin-bottom: var(--sp-4); font-size: var(--fs-2xl);">¡Ups!</h2>
+            
+            <a href="index.html" class="btn btn-primary btn-lg" style="display: inline-flex; align-items: center; gap: 8px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                Volver al Inicio
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-container"></div>
+
+
+    <audio id="bg-music" loop autoplay>
+        <source src="assets/cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Scripts -->
+    <script src="js/components.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.getElementById('navbar-container');
+            const footer = document.getElementById('footer-container');
+            
+            if (navbar) navbar.innerHTML = buildNavbar();
+            if (footer) footer.innerHTML = buildFooter();
+
+            // Lógica para forzar la música
+            const audio = document.getElementById('bg-music');
+            
+            // Intentar reproducir automáticamente
+            let playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Si el navegador de Windows lo bloquea por seguridad, 
+                    // la canción sonará automáticamente al primer clic que haga el usuario en la pantalla.
+                    document.body.addEventListener('click', function playAudioOnClick() {
+                        audio.play();
+                        document.body.removeEventListener('click', playAudioOnClick);
+                    }, { once: true });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

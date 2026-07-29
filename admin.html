@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración — ProVend</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-user">
+                    <div class="avatar">AP</div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name">Admin ProVend</div>
+                        <div class="sidebar-user-role">Administrador</div>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">General</span>
+                <a class="sidebar-link active" data-section="dashboard-overview">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a class="sidebar-link" data-section="usuarios">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Usuarios</span>
+                </a>
+                <a class="sidebar-link" data-section="proveedores-admin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="22" height="16" rx="2"></rect><path d="M6 6V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"></path></svg>
+                    <span>Proveedores</span>
+                </a>
+                <a class="sidebar-link" data-section="categorias-admin">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                    <span>Categorías</span>
+                </a>
+                <a class="sidebar-link" data-section="verificaciones">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                    <span>Verificaciones</span>
+                    <span class="sidebar-badge">3</span>
+                </a>
+                <span class="sidebar-section-title">Cuenta</span>
+                <a class="sidebar-link" data-section="configuracion">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <span>Configuración</span>
+                </a>
+                <a class="sidebar-link" href="index.html" onclick="if(window.ProVendAuth)ProVendAuth.logout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </nav>
+        </aside>
+        <main class="dashboard-main">
+            <div class="dashboard-header">
+                <div>
+                    <h1 class="dashboard-title">Panel de Administración</h1>
+                    <p class="dashboard-subtitle">Gestiona la plataforma ProVend</p>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <div class="stats-card-icon blue">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        </div>
+                    </div>
+                    <div class="stats-card-value">1,250</div>
+                    <div class="stats-card-label">Usuarios</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <div class="stats-card-icon green">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="22" height="16" rx="2"></rect><path d="M6 6V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"></path></svg>
+                        </div>
+                    </div>
+                    <div class="stats-card-value">432</div>
+                    <div class="stats-card-label">Proveedores</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <div class="stats-card-icon yellow">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+                        </div>
+                    </div>
+                    <div class="stats-card-value">3</div>
+                    <div class="stats-card-label">Verificaciones Pendientes</div>
+                </div>
+                <div class="stats-card">
+                    <div class="stats-card-header">
+                        <div class="stats-card-icon red">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </div>
+                    </div>
+                    <div class="stats-card-value">28,500</div>
+                    <div class="stats-card-label">Visitas</div>
+                </div>
+            </div>
+
+            <!-- Dashboard Overview Section -->
+            <div class="dashboard-section active" id="dashboard-overview" style="display:block">
+                <div class="card"><div class="card-body"><h3 style="margin-bottom:1rem">Actividad Reciente</h3>
+                    <div style="display:flex;flex-direction:column;gap:0.75rem">
+                        <div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;align-items:center;gap:0.75rem">
+                            <div style="width:8px;height:8px;border-radius:50%;background:var(--success-500);flex-shrink:0"></div>
+                            <span>Nuevo proveedor registrado: <strong>Café Selecto S.A.</strong></span>
+                            <span style="margin-left:auto;color:var(--neutral-400);font-size:0.813rem;white-space:nowrap">Hace 15 min</span>
+                        </div>
+                        <div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;align-items:center;gap:0.75rem">
+                            <div style="width:8px;height:8px;border-radius:50%;background:var(--warning-500);flex-shrink:0"></div>
+                            <span>Solicitud de verificación: <strong>Importadora del Pacífico</strong></span>
+                            <span style="margin-left:auto;color:var(--neutral-400);font-size:0.813rem;white-space:nowrap">Hace 1 hora</span>
+                        </div>
+                        <div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;align-items:center;gap:0.75rem">
+                            <div style="width:8px;height:8px;border-radius:50%;background:var(--primary-500);flex-shrink:0"></div>
+                            <span>Nueva empresa registrada: <strong>María López - Distribuidora El Sol</strong></span>
+                            <span style="margin-left:auto;color:var(--neutral-400);font-size:0.813rem;white-space:nowrap">Hace 2 horas</span>
+                        </div>
+                        <div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;align-items:center;gap:0.75rem">
+                            <div style="width:8px;height:8px;border-radius:50%;background:var(--success-500);flex-shrink:0"></div>
+                            <span>Verificación aprobada: <strong>TechNica Solutions</strong></span>
+                            <span style="margin-left:auto;color:var(--neutral-400);font-size:0.813rem;white-space:nowrap">Hace 3 horas</span>
+                        </div>
+                        <div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;align-items:center;gap:0.75rem">
+                            <div style="width:8px;height:8px;border-radius:50%;background:var(--error-500);flex-shrink:0"></div>
+                            <span>Reporte de usuario: <strong>Contenido inapropiado en reseña</strong></span>
+                            <span style="margin-left:auto;color:var(--neutral-400);font-size:0.813rem;white-space:nowrap">Hace 5 horas</span>
+                        </div>
+                    </div>
+                </div></div>
+            </div>
+
+            <!-- Usuarios Section -->
+            <div class="dashboard-section" id="usuarios" style="display:none">
+                <div class="card"><div class="card-body"><h3 style="margin-bottom:1rem">Gestión de Usuarios</h3>
+                    <div style="overflow-x:auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Email</th>
+                                    <th>Tipo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div style="display:flex;align-items:center;gap:0.5rem"><div class="avatar avatar-sm">ML</div>María López</div></td>
+                                    <td>empresa@demo.com</td>
+                                    <td><span class="badge badge-primary">Empresa</span></td>
+                                    <td><span class="table-status table-status-active">Activo</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><div style="display:flex;align-items:center;gap:0.5rem"><div class="avatar avatar-sm">CM</div>Carlos Mendoza</div></td>
+                                    <td>proveedor@demo.com</td>
+                                    <td><span class="badge" style="background:var(--success-50);color:var(--success-600)">Proveedor</span></td>
+                                    <td><span class="table-status table-status-active">Activo</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><div style="display:flex;align-items:center;gap:0.5rem"><div class="avatar avatar-sm">AG</div>Ana Gutiérrez</div></td>
+                                    <td>ana@email.com</td>
+                                    <td><span class="badge badge-primary">Empresa</span></td>
+                                    <td><span class="table-status table-status-active">Activo</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><div style="display:flex;align-items:center;gap:0.5rem"><div class="avatar avatar-sm">RV</div>Roberto Vega</div></td>
+                                    <td>roberto@email.com</td>
+                                    <td><span class="badge" style="background:var(--success-50);color:var(--success-600)">Proveedor</span></td>
+                                    <td><span class="table-status table-status-pending">Pendiente</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><div style="display:flex;align-items:center;gap:0.5rem"><div class="avatar avatar-sm">SC</div>Sofía Calderón</div></td>
+                                    <td>sofia@email.com</td>
+                                    <td><span class="badge badge-primary">Empresa</span></td>
+                                    <td><span class="table-status table-status-active">Activo</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div></div>
+            </div>
+
+            <!-- Proveedores Admin Section -->
+            <div class="dashboard-section" id="proveedores-admin" style="display:none">
+                <div class="card"><div class="card-body"><h3 style="margin-bottom:1rem">Gestión de Proveedores</h3>
+                    <div style="overflow-x:auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Categoría</th>
+                                    <th>Ubicación</th>
+                                    <th>Rating</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>TechNica Solutions</strong></td>
+                                    <td>Tecnología</td>
+                                    <td>Managua</td>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:0.25rem">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="var(--warning-400)" stroke="var(--warning-400)" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                            4.8
+                                        </div>
+                                    </td>
+                                    <td><span class="table-status table-status-active">Verificado</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>AgroNica S.A.</strong></td>
+                                    <td>Agricultura</td>
+                                    <td>Matagalpa</td>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:0.25rem">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="var(--warning-400)" stroke="var(--warning-400)" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                            4.6
+                                        </div>
+                                    </td>
+                                    <td><span class="table-status table-status-active">Verificado</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Distribuidora Nacional</strong></td>
+                                    <td>Alimentos</td>
+                                    <td>León</td>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:0.25rem">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="var(--warning-400)" stroke="var(--warning-400)" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                            4.5
+                                        </div>
+                                    </td>
+                                    <td><span class="table-status table-status-pending">Pendiente</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Construcciones del Norte</strong></td>
+                                    <td>Construcción</td>
+                                    <td>Estelí</td>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:0.25rem">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="var(--warning-400)" stroke="var(--warning-400)" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                            4.3
+                                        </div>
+                                    </td>
+                                    <td><span class="table-status table-status-active">Verificado</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Importadora del Pacífico</strong></td>
+                                    <td>Tecnología</td>
+                                    <td>Managua</td>
+                                    <td>
+                                        <div style="display:flex;align-items:center;gap:0.25rem">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="var(--warning-400)" stroke="var(--warning-400)" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                            4.7
+                                        </div>
+                                    </td>
+                                    <td><span class="table-status table-status-pending">Pendiente</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Ver</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div></div>
+            </div>
+
+            <!-- Categorías Admin Section -->
+            <div class="dashboard-section" id="categorias-admin" style="display:none">
+                <div class="card"><div class="card-body"><h3 style="margin-bottom:1rem">Gestión de Categorías</h3>
+                    <div style="overflow-x:auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Proveedores</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tecnología</strong></td>
+                                    <td>85</td>
+                                    <td><span class="table-status table-status-active">Activa</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button> <button class="btn btn-sm btn-outline" style="color:var(--error-500);border-color:var(--error-500)">Eliminar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Alimentos y Bebidas</strong></td>
+                                    <td>120</td>
+                                    <td><span class="table-status table-status-active">Activa</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button> <button class="btn btn-sm btn-outline" style="color:var(--error-500);border-color:var(--error-500)">Eliminar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Construcción</strong></td>
+                                    <td>64</td>
+                                    <td><span class="table-status table-status-active">Activa</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button> <button class="btn btn-sm btn-outline" style="color:var(--error-500);border-color:var(--error-500)">Eliminar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Salud y Farmacia</strong></td>
+                                    <td>45</td>
+                                    <td><span class="table-status table-status-active">Activa</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button> <button class="btn btn-sm btn-outline" style="color:var(--error-500);border-color:var(--error-500)">Eliminar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Transporte y Logística</strong></td>
+                                    <td>38</td>
+                                    <td><span class="table-status table-status-active">Activa</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button> <button class="btn btn-sm btn-outline" style="color:var(--error-500);border-color:var(--error-500)">Eliminar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Agricultura</strong></td>
+                                    <td>92</td>
+                                    <td><span class="table-status table-status-active">Activa</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button> <button class="btn btn-sm btn-outline" style="color:var(--error-500);border-color:var(--error-500)">Eliminar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Textil y Confección</strong></td>
+                                    <td>31</td>
+                                    <td><span class="table-status table-status-active">Activa</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button> <button class="btn btn-sm btn-outline" style="color:var(--error-500);border-color:var(--error-500)">Eliminar</button></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Energía</strong></td>
+                                    <td>27</td>
+                                    <td><span class="table-status table-status-active">Activa</span></td>
+                                    <td><button class="btn btn-sm btn-outline">Editar</button> <button class="btn btn-sm btn-outline" style="color:var(--error-500);border-color:var(--error-500)">Eliminar</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div></div>
+            </div>
+
+            <!-- Verificaciones Section -->
+            <div class="dashboard-section" id="verificaciones" style="display:none">
+                <div class="card"><div class="card-body"><h3 style="margin-bottom:1rem">Verificaciones Pendientes</h3>
+                    <div style="overflow-x:auto">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th>Categoría</th>
+                                    <th>Fecha de Solicitud</th>
+                                    <th>Documentos</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><div style="display:flex;align-items:center;gap:0.5rem"><div class="avatar avatar-sm">IP</div><strong>Importadora del Pacífico</strong></div></td>
+                                    <td>Tecnología</td>
+                                    <td>24 Jun 2026</td>
+                                    <td><span class="badge badge-outline">3 archivos</span></td>
+                                    <td>
+                                        <button class="btn btn-sm approve-btn" style="background:var(--success-500);color:white;border:none">Aprobar</button>
+                                        <button class="btn btn-sm reject-btn" style="background:var(--error-500);color:white;border:none">Rechazar</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div style="display:flex;align-items:center;gap:0.5rem"><div class="avatar avatar-sm">CS</div><strong>Café Selecto S.A.</strong></div></td>
+                                    <td>Alimentos</td>
+                                    <td>23 Jun 2026</td>
+                                    <td><span class="badge badge-outline">2 archivos</span></td>
+                                    <td>
+                                        <button class="btn btn-sm approve-btn" style="background:var(--success-500);color:white;border:none">Aprobar</button>
+                                        <button class="btn btn-sm reject-btn" style="background:var(--error-500);color:white;border:none">Rechazar</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><div style="display:flex;align-items:center;gap:0.5rem"><div class="avatar avatar-sm">DN</div><strong>Distribuidora Nacional</strong></div></td>
+                                    <td>Alimentos</td>
+                                    <td>22 Jun 2026</td>
+                                    <td><span class="badge badge-outline">4 archivos</span></td>
+                                    <td>
+                                        <button class="btn btn-sm approve-btn" style="background:var(--success-500);color:white;border:none">Aprobar</button>
+                                        <button class="btn btn-sm reject-btn" style="background:var(--error-500);color:white;border:none">Rechazar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div></div>
+            </div>
+
+            <!-- Configuración Section -->
+            <div class="dashboard-section" id="configuracion" style="display:none">
+                <div class="card"><div class="card-body"><h3 style="margin-bottom:1.5rem">Configuración General</h3>
+                    <div class="grid-2">
+                        <div class="form-group"><label class="form-label">Nombre de la Plataforma</label><input class="form-input" value="ProVend"></div>
+                        <div class="form-group"><label class="form-label">Email de Contacto</label><input class="form-input" value="admin@ProVend.com.ni"></div>
+                        <div class="form-group"><label class="form-label">Modo de Mantenimiento</label><select class="form-select"><option>Desactivado</option><option>Activado</option></select></div>
+                        <div class="form-group"><label class="form-label">Idioma por Defecto</label><select class="form-select"><option>Español</option><option>English</option></select></div>
+                    </div>
+                    <div class="form-group" style="margin-top:1rem"><label class="form-label">Notificaciones</label><label class="form-checkbox"><input type="checkbox" checked> Notificar nuevos registros</label><label class="form-checkbox"><input type="checkbox" checked> Notificar solicitudes de verificación</label><label class="form-checkbox"><input type="checkbox"> Notificar reportes de usuarios</label></div>
+                    <button class="btn btn-primary" style="margin-top:1rem">Guardar Configuración</button>
+                </div></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/components.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/animations.js"></script>
+    <script>
+        document.getElementById('navbar-container').innerHTML = createNavbar();
+    </script>
+</body>
+</html>

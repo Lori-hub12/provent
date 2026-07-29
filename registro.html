@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta — ProVend</title>
+    <meta name="description" content="Crea tu cuenta en ProVend y únete a la red de negocios más grande de Nicaragua.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+    <div class="auth-layout">
+        <div class="auth-card" style="max-width:520px">
+            <div class="auth-logo"><a href="index.html" id="auth-logo-link"></a></div>
+            <h1 class="auth-title">Crear Cuenta</h1>
+            <p class="auth-subtitle">Únete a la red de negocios más grande de Nicaragua</p>
+            <div class="auth-type-selector">
+                <div class="auth-type-option" data-type="empresa">
+                    <div class="auth-type-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg></div>
+                    <div class="auth-type-name">Empresa</div>
+                    <div class="auth-type-desc">Busco proveedores</div>
+                </div>
+                <div class="auth-type-option selected" data-type="proveedor">
+                    <div class="auth-type-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg></div>
+                    <div class="auth-type-name">Proveedor</div>
+                    <div class="auth-type-desc">Ofrezco productos</div>
+                </div>
+            </div>
+            <form id="register-form">
+                <div class="form-group">
+                    <label class="form-label">Nombre de Contacto</label>
+                    <input class="form-input" type="text" id="register-name" placeholder="Juan Pérez" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Correo Electrónico</label>
+                    <input class="form-input" type="email" id="register-email" placeholder="correo@ejemplo.com" required>
+                </div>
+                
+                <!-- Campos de Empresa -->
+                <div id="fields-empresa" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Nombre de tu Empresa (Compradora)</label>
+                        <input class="form-input" type="text" id="register-company-empresa" placeholder="Mi Empresa S.A.">
+                    </div>
+                </div>
+
+                <!-- Campos de Proveedor -->
+                <div id="fields-proveedor" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">Nombre Comercial del Proveedor</label>
+                        <input class="form-input" type="text" id="register-company-proveedor" placeholder="Ferretería El Sol">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Número RUC</label>
+                        <input class="form-input" type="text" id="register-ruc" placeholder="J0000000000000">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Categoría Principal</label>
+                        <select class="form-input" id="register-category">
+                            <option value="">Selecciona una categoría...</option>
+                            <option value="Tecnología">Tecnología</option>
+                            <option value="Construcción">Construcción</option>
+                            <option value="Alimentos y Bebidas">Alimentos y Bebidas</option>
+                            <option value="Servicios Profesionales">Servicios Profesionales</option>
+                            <option value="Manufactura">Manufactura</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input class="form-input" type="password" id="register-password" placeholder="Mínimo 6 caracteres" required>
+                    <span class="form-hint">Mínimo 6 caracteres</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-checkbox">
+                        <input type="checkbox" id="register-terms">
+                        Acepto los <a href="#">Términos de Servicio</a> y <a href="#">Política de Privacidad</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Crear Cuenta Gratis</button>
+            </form>
+            <p class="auth-footer">¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
+        </div>
+    </div>
+
+    <script src="js/components.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/animations.js"></script>
+    <script>
+        document.getElementById('auth-logo-link').innerHTML = getLogoSVG(40) + '<span class="navbar-logo-text" style="margin-left:8px">Pro<span>Vend</span></span>';
+    </script>
+</body>
+</html>
