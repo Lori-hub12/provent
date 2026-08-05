@@ -37,7 +37,9 @@
             bottom: -200px; right: -100px;
         }
 
+        /* Fix: Explicitly override h1 color so base.css doesn't make it black in light mode */
         .search-hero h1 {
+            color: white;
             font-size: 3rem;
             margin-bottom: 1.5rem;
             font-weight: 800;
@@ -93,7 +95,7 @@
             border-radius: 99px;
             border: 2px solid transparent;
             font-size: 1.125rem;
-            background: white;
+            background: var(--white);
             color: var(--neutral-900);
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             transition: all 0.3s;
@@ -124,7 +126,7 @@
         }
 
         .filters-sidebar {
-            background: white;
+            background: var(--white);
             border: 1px solid var(--neutral-200);
             padding: 2rem;
             border-radius: 16px;
@@ -178,6 +180,7 @@
             border: 2px solid var(--neutral-300);
             accent-color: var(--primary-600);
             cursor: pointer;
+            background: var(--white);
         }
 
         .results-header {
@@ -204,7 +207,7 @@
             grid-column: 1 / -1;
             text-align: center;
             padding: 5rem 2rem;
-            background: white;
+            background: var(--white);
             border-radius: 16px;
             border: 1px dashed var(--neutral-300);
         }
