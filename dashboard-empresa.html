@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -128,7 +128,7 @@
   <!-- HERO -->
   <section class="dashboard-hero">
     <div class="container">
-      <div class="hero-greeting" id="greeting-badge">?? Cargando tu perfil...</div>
+      <div class="hero-greeting" id="greeting-badge">Cargando tu perfil...</div>
       <h1>¿Qué estás <span>buscando hoy</span>?</h1>
       <p class="sub">Tu plataforma B2B para conectar con los mejores proveedores de Nicaragua.</p>
       <div class="dashboard-search">
@@ -316,13 +316,13 @@
     const name = user.company || user.nombre || '';
     const hour = new Date().getHours();
     const greet = hour < 12 ? 'Buenos días' : hour < 18 ? 'Buenas tardes' : 'Buenas noches';
-    document.getElementById('greeting-badge').textContent = `?? ${greet}, ${name}`;
+    document.getElementById('greeting-badge').textContent = `${greet}, ${name}`;
 
     // Cargar datos reales de la API
     async function loadDashboard() {
       try {
         // 1. Estadísticas de mi actividad
-        const actRes = await fetch(`http://localhost:3000/api/dashboard/empresa/${user.id}`);
+        const actRes = await fetch(`/api/dashboard/empresa/${user.id}`);
         const act = await actRes.json();
         document.getElementById('stat-visitados').textContent = act.proveedores_visitados || 0;
         document.getElementById('stat-favoritos').textContent = act.favoritos || 0;
@@ -349,7 +349,7 @@
         }
 
         // 2. Estadísticas globales del mercado
-        const statsRes = await fetch('http://localhost:3000/api/stats');
+        const statsRes = await fetch('/api/stats');
         const stats = await statsRes.json();
         document.getElementById('mkt-proveedores').textContent = stats.proveedores || 0;
         document.getElementById('mkt-empresas').textContent = stats.empresas || 0;
@@ -359,7 +359,7 @@
 
 
         // 3. Favoritos reales
-        const favRes = await fetch(`http://localhost:3000/api/dashboard/empresa/${user.id}/favoritos`);
+        const favRes = await fetch(`/api/dashboard/empresa/${user.id}/favoritos`);
         const favs = await favRes.json();
         const favContainer = document.getElementById('favoritos-container');
 
@@ -398,7 +398,7 @@
         }
 
         // 4. Notificaciones
-        const notifRes = await fetch(`http://localhost:3000/api/notificaciones/${user.id}`);
+        const notifRes = await fetch(`/api/notificaciones`);
         const notifs = await notifRes.json();
         const unread = notifs.filter(n => !n.leida);
         if (unread.length > 0) {

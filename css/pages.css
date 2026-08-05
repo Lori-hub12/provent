@@ -214,6 +214,18 @@
   transform: scale(1.05);
 }
 
+.team-avatar-fallback {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--primary-100);
+  color: var(--primary-700);
+  font-size: 2.5rem;
+  font-weight: var(--fw-bold);
+}
+
 .team-card-info {
   padding: var(--sp-4);
   background: var(--primary-600);

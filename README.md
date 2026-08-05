@@ -1,40 +1,47 @@
-# ProVend - Plataforma B2B (Frontend Prototype) 🚀
+# ProVend — Plataforma B2B
 
-ProVend es un prototipo interactivo y moderno (Front-end) de una plataforma B2B diseñada para conectar empresas y proveedores en Nicaragua de manera eficiente, rápida y transparente.
+ProVend conecta empresas y proveedores en Nicaragua. El proyecto usa HTML/CSS/JavaScript vanilla en el frontend y una API Express con SQLite para autenticación, perfiles, inventario, favoritos, notificaciones y cotizaciones.
 
-Este proyecto fue construido priorizando un alto rendimiento y control total del código, prescindiendo de frameworks pesados y utilizando tecnologías nativas.
+## Requisitos
 
-## 🛠️ Tecnologías Utilizadas
+- Node.js 18 o superior
+- npm
 
-* **HTML5:** Semántica moderna y accesibilidad.
-* **CSS3 Vanilla:** Arquitectura modular basada en variables globales (Design Tokens) y diseño **Glassmorphism** (efecto de cristal y desenfoque).
-* **JavaScript (ES6):** Interacciones del DOM, manipulación asíncrona de estilos e inyección dinámica de componentes.
+## Ejecutar
 
-## ✨ Funcionalidades Principales
+```bash
+npm install
+npm run dev
+```
 
-1. **Diseño Premium (Glassmorphism):** Toda la interfaz gráfica utiliza un sistema de tarjetas de cristal (`backdrop-filter`) combinadas con un sistema de esferas de luces flotantes en el fondo (Background Mesh).
-2. **Modo Oscuro Inteligente (Dark Mode):** Alternador de temas integrado que guarda la preferencia del usuario utilizando la API de `localStorage` del navegador.
-3. **Motor de Animaciones (Scroll Reveal):** Las tarjetas y elementos entran flotando de forma progresiva a medida que el usuario hace scroll, gracias a la implementación nativa del `IntersectionObserver` de JS (sin librerías externas que ralenticen el sitio).
-4. **Formularios Dinámicos:** La página de autenticación se adapta en tiempo real (ocultando y mostrando campos y validaciones) dependiendo de si el usuario intenta registrarse como "Empresa" o como "Proveedor".
-5. **Micro-Interacciones Avanzadas (Cursor Mágico):** Implementación de una "linterna" o cursor luminoso de luz turquesa que sigue las coordenadas del ratón e interactúa con el cristal de las tarjetas a través de `mix-blend-mode`.
-6. **Sistema de Componentes Globales:** El Navbar y el Footer se construyen de forma dinámica e inteligente a través del script central `components.js` para evitar repetición de código y asegurar la escalabilidad.
+Abre `http://localhost:3000`. Para una ejecución normal usa `npm start`.
 
-## 📁 Estructura del Proyecto
+## Comandos
 
-El código está estructurado modularmente dentro de la carpeta `proconnect`:
-* `/css/`: CSS separado por lógica (variables, base, layout, components, pages).
-* `/js/`: Scripts modulares (`app.js` y `components.js`).
-* `/assets/`: Imágenes, iconos (SVG) y audio.
-* Archivos `.html` en la raíz (Index, Explorar, Registro, Nosotros, 404 interactivo).
+- `npm run dev`: servidor con reinicio automático.
+- `npm start`: servidor de producción local.
+- `npm run check`: valida la sintaxis de todos los archivos JavaScript.
+- `npm test`: ejecuta la validación disponible.
 
-## 🚀 Cómo ejecutar el proyecto
+## Configuración
 
-Al ser un proyecto Front-end puro y nativo, no requiere la instalación de dependencias, compiladores o servidores complejos como Node.js en esta fase.
+Variables opcionales:
 
-1. Clona este repositorio o descarga el ZIP.
-2. Extrae los archivos en tu computadora.
-3. Abre el archivo `proconnect/index.html` en tu navegador moderno favorito (Google Chrome, Firefox, Edge o Safari).
-4. ¡Disfruta de la experiencia!
+- `PORT`: puerto HTTP, por defecto `3000`.
+- `HOST`: interfaz de escucha, por defecto `0.0.0.0`.
+- `FRONTEND_ORIGIN`: origen permitido para CORS cuando el frontend está separado.
+- `SESSION_SECRET`: secreto estable para firmar sesiones; debe configurarse en producción.
 
----
-*Desarrollado con pasión como prototipo de arquitectura frontend y diseño de experiencia de usuario B2B.*
+La base `database.sqlite` se crea automáticamente y está excluida del repositorio. No abras los HTML directamente con `file://`: las funciones de autenticación y dashboards requieren el servidor Express.
+
+## Seguridad implementada
+
+Las contraseñas se almacenan con bcrypt, la sesión usa una cookie HttpOnly firmada, las rutas privadas validan rol y propietario, las consultas usan parámetros y el cuerpo JSON tiene un límite de tamaño. Los datos mostrados en el explorador se escapan antes de insertarse en HTML.
+
+## Estructura
+
+- `server.js`: API, SQLite, autenticación y autorización.
+- `*.html`: páginas públicas y dashboards.
+- `js/`: autenticación, búsqueda, componentes y comportamiento de páginas.
+- `css/`: tokens, layout y estilos por página.
+- `assets/`: recursos visuales.

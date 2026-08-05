@@ -246,8 +246,8 @@
     <header class="search-hero">
         <h1 style="font-size:2.5rem; margin-bottom:1rem;">Encuentra lo que necesitas</h1>
         <div class="search-tabs">
-            <button class="search-tab active" onclick="setTab('materiales')">Buscar Materiales</button>
-            <button class="search-tab" onclick="setTab('empresas')">Buscar Empresas</button>
+            <button class="search-tab active" onclick="setTab('materiales', this)">Buscar Materiales</button>
+            <button class="search-tab" onclick="setTab('empresas', this)">Buscar Empresas</button>
         </div>
         <div class="search-input-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -293,7 +293,7 @@
         // Cargar proveedores reales desde la API
         async function loadProviders() {
             try {
-                const res = await fetch('http://localhost:3000/api/proveedores');
+                const res = await fetch('/api/proveedores', { credentials: 'include' });
                 allProviders = await res.json();
             } catch(e) {
                 allProviders = [];
@@ -301,13 +301,17 @@
             filterResults();
         }
 
-        function setTab(tab) {
+        function setTab(tab, button) {
             currentTab = tab;
             document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            if (button) button.classList.add('active');
             const input = document.getElementById('searchInput');
             input.placeholder = tab === 'materiales' ? 'Ej. Cartón, PET, Aluminio...' : 'Ej. Recicladora, EcoPlast...';
             filterResults();
+        }
+
+        function escapeHTML(value) {
+            return String(value ?? '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
         }
 
         function filterResults() {
@@ -363,9 +367,12 @@
             }
 
             providers.forEach(p => {
-                const name = p.company || p.nombre;
-                const initials = name.substring(0,2).toUpperCase();
-                const color = COLORS[p.id % COLORS.length];
+                const name = String(p.company || p.nombre || 'Proveedor');
+                const initials = escapeHTML(name.substring(0,2).toUpperCase());
+                const color = COLORS[Number(p.id) % COLORS.length];
+                const safeName = escapeHTML(name);
+                const safeCategory = escapeHTML(p.categoria || 'Proveedor');
+                const safeCity = escapeHTML(p.ciudad || '');
                 const rating = Number(p.rating) || 0;
                 const reviews = Number(p.reviews) || 0;
                 container.innerHTML += `
@@ -373,8 +380,8 @@
                         <div class="provider-card-header">
                             <div class="provider-card-logo" style="background:${color};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.25rem;border-radius:12px;width:48px;height:48px;flex-shrink:0">${initials}</div>
                             <div class="provider-card-info">
-                                <div class="provider-card-name">${name} ${p.verificado ? '✅' : ''}</div>
-                                <div class="provider-card-category">${p.categoria || 'Proveedor'} ${p.ciudad ? '· ' + p.ciudad : ''}</div>
+                                <div class="provider-card-name">${safeName} ${p.verificado ? 'Verificado' : ''}</div>
+                                <div class="provider-card-category">${safeCategory} ${safeCity ? '· ' + safeCity : ''}</div>
                             </div>
                         </div>
                         <div class="provider-card-footer" style="margin-top:0.75rem">
