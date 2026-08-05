@@ -391,20 +391,20 @@
     <section class="categories-hero">
       <div class="container">
         <h1 class="fade-in">Explora por <span>Categoría</span></h1>
-        <p class="fade-in">Encuentra proveedores en las principales industrias y sectores empresariales de Nicaragua. Más de 400 proveedores verificados te esperan.</p>
+        <p class="fade-in">Encuentra proveedores en las principales industrias y sectores empresariales de Nicaragua.</p>
         
-        <div class="categories-stats fade-in">
+        <div class="categories-stats fade-in" id="real-stats" style="display:none">
           <div class="categories-stat">
-            <div class="categories-stat-value" data-count="10">10</div>
+            <div class="categories-stat-value" id="stat-categorias">—</div>
             <div class="categories-stat-label">Categorías</div>
           </div>
           <div class="categories-stat">
-            <div class="categories-stat-value" data-count="432" data-suffix="+">432+</div>
+            <div class="categories-stat-value" id="stat-proveedores">—</div>
             <div class="categories-stat-label">Proveedores Activos</div>
           </div>
           <div class="categories-stat">
-            <div class="categories-stat-value" data-count="14">14</div>
-            <div class="categories-stat-label">Departamentos</div>
+            <div class="categories-stat-value" id="stat-empresas">—</div>
+            <div class="categories-stat-label">Empresas Conectadas</div>
           </div>
         </div>
       </div>
@@ -552,7 +552,6 @@
           <div class="cat-icon">${cat.icon}</div>
           <div class="cat-info">
             <div class="cat-name">${cat.name}</div>
-            <div class="cat-count">${cat.count} proveedores verificados</div>
             <div class="cat-tags">
               ${cat.tags.map(t => `<span class="cat-tag">${t}</span>`).join('')}
             </div>
@@ -571,6 +570,19 @@
           <span>${cat.name}</span>
         </a>
       `).join('');
+
+      // Fetch real stats
+      fetch('/api/stats')
+        .then(res => res.json())
+        .then(stats => {
+          if(stats.proveedores > 0 || stats.empresas > 0) {
+            document.getElementById('real-stats').style.display = 'flex';
+            document.getElementById('stat-categorias').textContent = '10'; // We currently have 10 hardcoded categories
+            document.getElementById('stat-proveedores').textContent = stats.proveedores || 0;
+            document.getElementById('stat-empresas').textContent = stats.empresas || 0;
+          }
+        })
+        .catch(err => console.error('Error cargando stats:', err));
     </script>
 </body>
 </html>

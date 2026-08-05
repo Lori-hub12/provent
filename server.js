@@ -9,6 +9,7 @@ const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 // ===================== BASE DE DATOS =====================
 const db = new sqlite3.Database('./database.sqlite', (err) => {

@@ -290,7 +290,6 @@ function generateCategoryCard(category) {
   <a href="explorar.html?category=${category.slug}" class="category-card fade-in" id="category-${category.slug}">
     <div class="category-card-icon">${iconSVG}</div>
     <span class="category-card-name">${category.name}</span>
-    <span class="category-card-count">${category.count} proveedores</span>
   </a>`;
 }
 
