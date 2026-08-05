@@ -12,54 +12,48 @@
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages.css">
     <style>
-        .trust-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-            padding: 1.5rem;
-            background: #f8fafc;
-            border-radius: 12px;
-            border: 1px solid var(--neutral-200);
+        .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 1px solid var(--neutral-200); }
+        @media(max-width:600px) { .trust-grid { grid-template-columns: repeat(2,1fr); } }
+        .trust-item { display: flex; flex-direction: column; gap: 0.25rem; }
+        .trust-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--neutral-500); font-weight: 600; }
+        .trust-value { font-size: 1rem; font-weight: 600; color: var(--neutral-900); display: flex; align-items: center; gap: 0.5rem; }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success-500); }
+        .commercial-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
+        .commercial-info-item strong { display: block; font-size: 0.875rem; color: var(--neutral-500); margin-bottom: 0.25rem; }
+        .commercial-info-item p { color: var(--neutral-800); font-weight: 500; margin: 0; }
+
+        /* Avatar fallback */
+        .profile-avatar-fallback {
+            width: 80px; height: 80px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; font-weight: 800; color: white;
+            flex-shrink: 0;
         }
-        .trust-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-        .trust-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--neutral-500);
-            font-weight: 600;
-        }
-        .trust-value {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--neutral-900);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .status-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--success-500);
-        }
-        .commercial-info {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        .commercial-info-item strong {
-            display: block;
-            font-size: 0.875rem;
-            color: var(--neutral-500);
-            margin-bottom: 0.25rem;
-        }
+
+        /* Materiales en perfil */
+        .mat-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .mat-tag { background: var(--primary-50); color: var(--primary-700); font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1px solid var(--primary-100); }
+
+        /* Rating */
+        .rating-display-large { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; margin-bottom: 1.25rem; }
+        .rating-number-lg { font-size: 2.5rem; font-weight: 800; color: var(--neutral-900); line-height: 1; }
+        .rating-stars-lg { font-size: 1.25rem; letter-spacing: 0.1em; }
+        .rating-count-sm { font-size: 0.8rem; color: var(--neutral-500); }
+
+        /* Sección de reseñas */
+        .reviews-section { margin-top: 2rem; }
+        .review-card { background: var(--neutral-50); border: 1px solid var(--neutral-200); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+        .review-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+        .review-avatar { width: 36px; height: 36px; background: var(--primary-100); color: var(--primary-700); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0; }
+        .review-empresa { font-weight: 600; color: var(--neutral-800); }
+        .review-date { font-size: 0.75rem; color: var(--neutral-400); }
+        .review-stars { color: var(--warning-500); font-size: 1rem; }
+
+        /* Empty state */
+        .empty-inline { text-align: center; padding: 2.5rem; color: var(--neutral-500); }
+        .empty-inline-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+        .empty-inline h4 { color: var(--neutral-700); font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+        .empty-inline p { font-size: 0.875rem; }
     </style>
 </head>
 <body>
@@ -73,7 +67,9 @@
                 </a>
                 <div class="profile-header-inner">
                     <div class="profile-main-info">
-                        <img class="profile-logo" id="profile-logo" src="" alt="Logo">
+                        <!-- Logo / Avatar dinámico -->
+                        <div id="profile-logo-wrapper"></div>
+
                         <div class="profile-name">
                             <h1 id="profile-name">Cargando...</h1>
                             <span class="badge-verified" id="profile-verified" style="display:none;">
@@ -81,11 +77,10 @@
                                 Verificado
                             </span>
                         </div>
-                        <div class="profile-tags" id="profile-tags">
-                            <!-- JS Fills tags -->
-                        </div>
-                        
-                        <!-- Panel de Confianza (Métricas MVP) -->
+
+                        <div class="profile-tags" id="profile-tags"></div>
+
+                        <!-- Trust Grid -->
                         <div class="trust-grid">
                             <div class="trust-item">
                                 <span class="trust-label">Estado</span>
@@ -96,124 +91,293 @@
                                 <span class="trust-value" id="trust-time">24 horas</span>
                             </div>
                             <div class="trust-item">
-                                <span class="trust-label">Última actividad</span>
-                                <span class="trust-value" id="trust-activity">Hace 1 día</span>
+                                <span class="trust-label">Visitas totales</span>
+                                <span class="trust-value" id="trust-visits">0</span>
                             </div>
                             <div class="trust-item">
                                 <span class="trust-label">Verificado</span>
-                                <span class="trust-value" id="trust-verified-text">Sí</span>
+                                <span class="trust-value" id="trust-verified-text">No</span>
                             </div>
                         </div>
 
-                        <p class="profile-description" id="profile-desc" style="margin-top: 1.5rem;"></p>
+                        <p class="profile-description" id="profile-desc" style="margin-top:1.5rem"></p>
                     </div>
-                    
+
                     <div class="profile-contact-panel">
                         <div class="contact-panel">
-                            <div style="text-align:center; margin-bottom:1rem; font-size:0.875rem; color:var(--neutral-500);">
-                                <span class="stars" style="color:var(--warning-500)">★★★★★</span>
-                                <strong style="color:var(--neutral-900)" id="contact-rating">4.8</strong> 
-                                (<span id="contact-reviews">0</span> reseñas)
+                            <!-- Rating dinámico -->
+                            <div class="rating-display-large" id="rating-display">
+                                <!-- JS fills -->
                             </div>
-                            <a href="#" class="btn btn-whatsapp btn-block btn-lg" id="whatsapp-btn">
+                            <a href="#" class="btn btn-whatsapp btn-block btn-lg" id="whatsapp-btn" style="display:none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-83:                                 Contactar por WhatsApp
-84:                             </a>
-85:                             <div class="contact-actions" style="margin-top:1rem;">
-86:                                 <a href="#" class="contact-action-btn" id="email-btn">
-87:                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-88:                                     Email
-89:                                 </a>
-90:                                 <button class="contact-social-btn" id="fav-btn" data-tooltip="Guardar favorito">
-91:                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-92:                                 </button>
-93:                             </div>
-94:                         </div>
-95:                     </div>
-96:                 </div>
-97:             </div>
-98:         </div>
-99:         
-100:         <!-- Info Comercial -->
-101:         <div class="profile-content">
-102:             <div class="tab-wrapper" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200);">
-103:                 <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Información Comercial</h3>
-104:                 <div class="commercial-info">
-105:                     <div class="commercial-info-item">
-106:                         <strong>Ubicación Base</strong>
-107:                         <p id="info-city">Managua</p>
-108:                     </div>
-109:                     <div class="commercial-info-item">
-110:                         <strong>Cobertura</strong>
-111:                         <p id="info-coverage">Nacional</p>
-112:                     </div>
-113:                     <div class="commercial-info-item">
-114:                         <strong>Horario de Atención</strong>
-115:                         <p id="info-schedule">Lunes a Viernes</p>
-116:                     </div>
-117:                     <div class="commercial-info-item">
-118:                         <strong>Años de Experiencia</strong>
-119:                         <p id="info-experience">10 años</p>
-120:                     </div>
-121:                 </div>
-122:             </div>
-123:         </div>
-124:     </div>
-125:     <div id="footer-container"></div>
-126: 
-127:     <script src="js/mockData.js"></script>
-128:     <script src="js/components.js"></script>
-129:     <script src="js/auth.js"></script>
-130:     <script>
-131:         document.getElementById('navbar-container').innerHTML = createNavbar();
-132:         document.getElementById('footer-container').innerHTML = createFooter();
-133: 
-134:         document.addEventListener('DOMContentLoaded', () => {
-135:             const urlParams = new URLSearchParams(window.location.search);
-136:             const providerId = urlParams.get('id') || 1; // Default a 1 si no hay ID
-137:             const provider = window.ProVendData.getProveedorById(providerId);
-138: 
-139:             if (provider) {
-140:                 document.getElementById('profile-logo').src = provider.logo;
-141:                 document.getElementById('profile-name').textContent = provider.nombre;
-142:                 if (provider.verificado) {
-143:                     document.getElementById('profile-verified').style.display = 'inline-flex';
-144:                     document.getElementById('trust-verified-text').textContent = "Sí";
-145:                 } else {
-146:                     document.getElementById('trust-verified-text').textContent = "No";
-147:                 }
-148: 
-149:                 // Tags
-150:                 const tagsHtml = `
-151:                     <span class="badge badge-primary">${provider.categoria}</span>
-152:                     ${provider.materiales.map(m => `<span class="tag">${m}</span>`).join('')}
-153:                 `;
-154:                 document.getElementById('profile-tags').innerHTML = tagsHtml;
-155:                 
-156:                 document.getElementById('profile-desc').textContent = provider.descripcion;
-157:                 
-158:                 // Trust Metrics
-159:                 document.getElementById('trust-status').textContent = provider.estado;
-160:                 document.getElementById('trust-time').textContent = provider.tiempoRespuesta;
-161:                 document.getElementById('trust-activity').textContent = provider.ultimaActividad;
-162:                 
-163:                 // Contact Panel
-164:                 document.getElementById('contact-rating').textContent = provider.rating;
-165:                 document.getElementById('contact-reviews').textContent = provider.reviews;
-166:                 
-167:                 // Links
-168:                 document.getElementById('whatsapp-btn').href = `https://wa.me/50588888888?text=Hola,%20les%20encontramos%20en%20ProVend.%20Nos%20gustaría%20saber%20más%20sobre%20sus%20productos.`;
-169:                 document.getElementById('email-btn').href = `mailto:contacto@${provider.nombre.toLowerCase().replace(/ /g,'')}.com`;
-170:                 
-171:                 // Commercial Info
-172:                 document.getElementById('info-city').textContent = provider.ciudad;
-173:                 document.getElementById('info-coverage').textContent = provider.cobertura;
-174:                 document.getElementById('info-schedule').textContent = provider.horario;
-175:                 document.getElementById('info-experience').textContent = provider.experiencia;
-176:             } else {
-177:                 document.getElementById('profile-name').textContent = "Proveedor no encontrado";
-178:             }
-179:         });
-180:     </script>
-181: </body>
-182: </html>
+                                Contactar por WhatsApp
+                            </a>
+                            <div class="contact-actions" style="margin-top:1rem;">
+                                <a href="#" class="contact-action-btn" id="email-btn" style="display:none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                                    Email
+                                </a>
+                                <button class="contact-social-btn" id="fav-btn" title="Guardar en favoritos" onclick="toggleFavorito()">
+                                    <svg id="fav-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Materiales publicados -->
+        <div class="profile-content">
+            <div class="tab-wrapper" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200); margin-bottom:1.5rem;">
+                <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Materiales disponibles</h3>
+                <div id="materiales-perfil">
+                    <div class="empty-inline">
+                        <div class="empty-inline-icon">📦</div>
+                        <h4>No hay materiales publicados</h4>
+                        <p>Este proveedor aún no ha publicado materiales.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Comercial -->
+            <div class="tab-wrapper" id="info-comercial-section" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200); margin-bottom:1.5rem;">
+                <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Información Comercial</h3>
+                <div class="commercial-info">
+                    <div class="commercial-info-item">
+                        <strong>Ubicación Base</strong>
+                        <p id="info-city">—</p>
+                    </div>
+                    <div class="commercial-info-item">
+                        <strong>Categoría</strong>
+                        <p id="info-cat">—</p>
+                    </div>
+                    <div class="commercial-info-item">
+                        <strong>Correo de contacto</strong>
+                        <p id="info-email">—</p>
+                    </div>
+                    <div class="commercial-info-item">
+                        <strong>Estado de verificación</strong>
+                        <p id="info-verif">No verificado</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reseñas -->
+            <div class="tab-wrapper" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200);">
+                <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Reseñas</h3>
+                <div id="resenas-container">
+                    <div class="empty-inline">
+                        <div class="empty-inline-icon">⭐</div>
+                        <h4>Aún no tiene reseñas</h4>
+                        <p>Las empresas podrán calificar a este proveedor después de realizar un contacto.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="footer-container"></div>
+
+    <script src="js/components.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('navbar-container').innerHTML = buildNavbar('');
+        document.getElementById('footer-container').innerHTML = buildFooter();
+
+        const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
+        const urlParams = new URLSearchParams(window.location.search);
+        const providerId = urlParams.get('id');
+        const COLORS = ['#2B7DE9','#27ae60','#e67e22','#9b59b6','#e74c3c','#1abc9c'];
+
+        if (!providerId) {
+            document.getElementById('profile-name').textContent = 'Proveedor no encontrado';
+        }
+
+        async function loadProfile() {
+            try {
+                const res = await fetch(`/api/proveedores/${providerId}`);
+                if (!res.ok) throw new Error('No encontrado');
+                const p = await res.json();
+
+                // Registrar visita
+                if (user && user.id !== p.id) {
+                    fetch('/api/visitas', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ proveedor_id: p.id, visitante_id: user.id })
+                    });
+                }
+
+                // Title
+                document.title = `${p.company || p.nombre} — ProVend`;
+
+                // Avatar / Logo
+                const logoWrapper = document.getElementById('profile-logo-wrapper');
+                const initials = (p.company || p.nombre || 'PR').substring(0, 2).toUpperCase();
+                const color = COLORS[p.id % COLORS.length];
+                if (p.logo_url) {
+                    logoWrapper.innerHTML = `<img class="profile-logo" src="${p.logo_url}" alt="${p.company}" onerror="this.outerHTML='<div class=\\'profile-avatar-fallback\\' style=\\'background:${color}\\'>${initials}</div>'">`;
+                } else {
+                    logoWrapper.innerHTML = `<div class="profile-avatar-fallback" style="background:${color}">${initials}</div>`;
+                }
+
+                // Name + verified
+                document.getElementById('profile-name').textContent = p.company || p.nombre;
+                if (p.verificado) {
+                    document.getElementById('profile-verified').style.display = 'inline-flex';
+                    document.getElementById('trust-verified-text').textContent = 'Sí ✅';
+                    document.getElementById('info-verif').textContent = 'Verificado ✅';
+                } else {
+                    document.getElementById('trust-verified-text').textContent = 'No';
+                    document.getElementById('info-verif').textContent = 'No verificado';
+                }
+
+                // Tags
+                const tags = [];
+                if (p.categoria) tags.push(`<span class="badge badge-primary">${p.categoria}</span>`);
+                document.getElementById('profile-tags').innerHTML = tags.join('');
+
+                // Descripción
+                document.getElementById('profile-desc').textContent = p.descripcion || 'Este proveedor aún no ha agregado una descripción.';
+
+                // Trust grid
+                document.getElementById('trust-status').textContent = p.estado || 'Disponible';
+                document.getElementById('trust-time').textContent = p.tiempo_respuesta || '24 horas';
+                document.getElementById('trust-visits').textContent = p.visitas_total || 0;
+
+                // Rating dinámico
+                const ratingDiv = document.getElementById('rating-display');
+                const rating = Number(p.rating) || 0;
+                const reviews = Number(p.reviews) || 0;
+                if (reviews === 0) {
+                    ratingDiv.innerHTML = `
+                        <div style="text-align:center; color:var(--neutral-400); font-size:0.875rem; padding:0.5rem 0">
+                            <div style="font-size:1.5rem; margin-bottom:0.25rem">⭐</div>
+                            Sin reseñas todavía
+                        </div>`;
+                } else {
+                    const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+                    ratingDiv.innerHTML = `
+                        <div class="rating-number-lg">${rating.toFixed(1)}</div>
+                        <div class="rating-stars-lg" style="color:var(--warning-500)">${stars}</div>
+                        <div class="rating-count-sm">${reviews} reseña${reviews !== 1 ? 's' : ''}</div>`;
+                }
+
+                // Contacto
+                if (p.whatsapp) {
+                    document.getElementById('whatsapp-btn').style.display = 'flex';
+                    document.getElementById('whatsapp-btn').href = `https://wa.me/${p.whatsapp.replace(/\D/g,'')}?text=Hola,%20les%20encontramos%20en%20ProVend.`;
+                } else {
+                    document.getElementById('whatsapp-btn').style.display = 'flex';
+                    document.getElementById('whatsapp-btn').style.opacity = '0.5';
+                    document.getElementById('whatsapp-btn').style.cursor = 'default';
+                    document.getElementById('whatsapp-btn').textContent = 'WhatsApp no disponible';
+                    document.getElementById('whatsapp-btn').onclick = (e) => { e.preventDefault(); };
+                }
+                if (p.email) {
+                    document.getElementById('email-btn').style.display = 'inline-flex';
+                    document.getElementById('email-btn').href = `mailto:${p.email}`;
+                } else {
+                    document.getElementById('email-btn').style.display = 'inline-flex';
+                    document.getElementById('email-btn').style.opacity = '0.5';
+                    document.getElementById('email-btn').style.cursor = 'default';
+                    document.getElementById('email-btn').innerHTML += ' (no disponible)';
+                    document.getElementById('email-btn').onclick = (e) => e.preventDefault();
+                }
+
+                // Info Comercial
+                document.getElementById('info-city').textContent = p.ciudad || 'No disponible';
+                document.getElementById('info-cat').textContent = p.categoria || 'No disponible';
+                document.getElementById('info-email').textContent = p.email || 'No disponible';
+                document.getElementById('info-verif').textContent = p.verificado ? 'Verificado ✅' : 'Pendiente de verificación';
+
+                // Materiales del proveedor
+                const matRes = await fetch(`/api/dashboard/proveedor/${p.id}/materiales`);
+                const mats = await matRes.json();
+                const matDiv = document.getElementById('materiales-perfil');
+                if (mats.length === 0) {
+                    matDiv.innerHTML = `
+                        <div class="empty-inline">
+                            <div class="empty-inline-icon">📦</div>
+                            <h4>No hay materiales publicados</h4>
+                            <p>Este proveedor aún no ha publicado materiales disponibles.</p>
+                        </div>`;
+                } else {
+                    matDiv.innerHTML = `<div class="mat-tags">${
+                        mats.map(m => `<span class="mat-tag">📦 ${m.nombre} · ${m.cantidad} ${m.unidad}</span>`).join('')
+                    }</div>`;
+                }
+
+                // Reseñas
+                const revRes = await fetch(`/api/dashboard/proveedor/${p.id}/resenas`);
+                const revs = await revRes.json();
+                const revDiv = document.getElementById('resenas-container');
+                if (revs.length === 0) {
+                    revDiv.innerHTML = `
+                        <div class="empty-inline">
+                            <div class="empty-inline-icon">⭐</div>
+                            <h4>Aún no tiene reseñas</h4>
+                            <p>Las empresas podrán calificar a este proveedor después de realizar un contacto.</p>
+                        </div>`;
+                } else {
+                    const stars = n => '★'.repeat(n) + '☆'.repeat(5-n);
+                    revDiv.innerHTML = revs.map(r => `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-avatar">${(r.empresa_nombre || 'E').substring(0,2).toUpperCase()}</div>
+                                <div>
+                                    <div class="review-empresa">${r.empresa_nombre || 'Empresa verificada'}</div>
+                                    <div class="review-date">${new Date(r.created_at).toLocaleDateString('es-NI', {year:'numeric',month:'long',day:'numeric'})}</div>
+                                </div>
+                                <div class="review-stars" style="margin-left:auto">${stars(r.rating)}</div>
+                            </div>
+                            ${r.comentario ? `<p style="color:var(--neutral-700);font-size:0.9rem;margin:0">"${r.comentario}"</p>` : ''}
+                        </div>
+                    `).join('');
+                }
+
+            } catch(e) {
+                document.getElementById('profile-name').textContent = 'Proveedor no encontrado';
+                document.getElementById('profile-desc').textContent = 'No pudimos encontrar este perfil.';
+            }
+        }
+
+        async function toggleFavorito() {
+            if (!user || user.rol !== 'empresa') {
+                alert('Debes iniciar sesión como Empresa para guardar favoritos.');
+                return;
+            }
+            const res = await fetch('/api/favoritos', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ empresa_id: user.id, proveedor_id: parseInt(providerId) })
+            });
+            const data = await res.json();
+            const icon = document.getElementById('fav-icon');
+            if (data.added) {
+                icon.setAttribute('fill', 'var(--danger-500)');
+                icon.setAttribute('stroke', 'var(--danger-500)');
+                document.getElementById('fav-btn').title = 'Quitar de favoritos';
+                if (data.total === 1) {
+                    showToast('⭐ Guardaste tu primer proveedor. Podrás encontrarlo fácilmente desde Favoritos.', 'success', 5000);
+                } else {
+                    showToast('Guardado en favoritos ❤️', 'success');
+                }
+            } else {
+                showToast('Ya estaba en tus favoritos', 'info');
+            }
+        }
+
+        function showToast(msg, type, duration = 3000) {
+            const t = document.createElement('div');
+            t.style.cssText = `position:fixed;bottom:2rem;right:2rem;background:${type==='success'?'var(--success-600)':'var(--neutral-700)'};color:white;padding:1rem 1.5rem;border-radius:12px;font-weight:500;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2)`;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), duration);
+        }
+
+        loadProfile();
+    </script>
+</body>
+</html>

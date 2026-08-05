@@ -133,98 +133,131 @@
     <script src="js/mockData.js"></script>
     <script src="js/components.js"></script>
     <script>
-        document.getElementById('navbar-container').innerHTML = createNavbar();
+        document.getElementById('navbar-container').innerHTML = buildNavbar('explorar');
 
         let currentTab = 'materiales';
+        let allProviders = [];
+        const COLORS = ['#2B7DE9','#27ae60','#e67e22','#9b59b6','#e74c3c','#1abc9c'];
+
+        // Cargar proveedores reales desde la API
+        async function loadProviders() {
+            try {
+                const res = await fetch('/api/proveedores');
+                allProviders = await res.json();
+            } catch(e) {
+                allProviders = [];
+            }
+            filterResults();
+        }
 
         function setTab(tab) {
             currentTab = tab;
             document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
             event.target.classList.add('active');
-            
             const input = document.getElementById('searchInput');
-            if (tab === 'materiales') {
-                input.placeholder = "Ej. Cartón, PET, Aluminio...";
-            } else {
-                input.placeholder = "Ej. Recicladora Managua, EcoPlast...";
-            }
+            input.placeholder = tab === 'materiales' ? 'Ej. Cartón, PET, Aluminio...' : 'Ej. Recicladora, EcoPlast...';
             filterResults();
         }
 
         function filterResults() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
             const isVerified = document.getElementById('verifiedOnly').checked;
-            
-            // Get checked locations
             const locationCheckboxes = document.querySelectorAll('input[type="checkbox"][value]:checked');
             const selectedLocations = Array.from(locationCheckboxes).map(cb => cb.value);
 
-            const allProviders = window.ProVendData.getProveedores();
-            
-            const filtered = allProviders.filter(p => {
+            let filtered = allProviders.filter(p => {
                 let matchesQuery = false;
                 if (currentTab === 'materiales') {
-                    matchesQuery = p.materiales.some(m => m.toLowerCase().includes(query)) || p.categoria.toLowerCase().includes(query);
+                    // Buscar en el nombre del proveedor y su categoría
+                    matchesQuery = p.nombre?.toLowerCase().includes(query)
+                        || p.company?.toLowerCase().includes(query)
+                        || p.categoria?.toLowerCase().includes(query);
                 } else {
-                    matchesQuery = p.nombre.toLowerCase().includes(query);
+                    matchesQuery = p.nombre?.toLowerCase().includes(query)
+                        || p.company?.toLowerCase().includes(query);
                 }
-                if (query === '') matchesQuery = true; // Show all if empty
-
+                if (!query) matchesQuery = true;
                 const matchesVerified = isVerified ? p.verificado : true;
                 const matchesLocation = selectedLocations.length > 0 ? selectedLocations.includes(p.ciudad) : true;
-
                 return matchesQuery && matchesVerified && matchesLocation;
             });
 
-            renderResults(filtered);
+            renderResults(filtered, query);
         }
 
-        function renderResults(providers) {
+        function renderResults(providers, query = '') {
             document.getElementById('resultsCount').textContent = providers.length;
             const container = document.getElementById('resultsGrid');
             container.innerHTML = '';
-            
+
+            if (providers.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column:1/-1; text-align:center; padding:4rem 2rem; color:var(--neutral-500)">
+                        <div style="font-size:3.5rem; margin-bottom:1rem">🔍</div>
+                        <h3 style="color:var(--neutral-700); font-size:1.25rem; margin-bottom:0.5rem">
+                            ${query ? 'No encontramos resultados para "' + query + '"' : 'No hay proveedores registrados todavía'}
+                        </h3>
+                        <p style="max-width:400px; margin:0 auto 1.5rem">
+                            ${query
+                                ? 'Intenta con otro término o explora todas las categorías.'
+                                : 'La comunidad está comenzando. Sé el primero en registrar tu empresa en ProVend.'}
+                        </p>
+                        ${query
+                            ? '<button onclick="document.getElementById(\'searchInput\').value=\'\'; filterResults()" class="btn btn-outline">Ver todos los proveedores</button>'
+                            : '<a href="registro.html?rol=proveedor" class="btn btn-primary">Registrar mi empresa</a>'}
+                    </div>`;
+                return;
+            }
+
             providers.forEach(p => {
+                const name = p.company || p.nombre;
+                const initials = name.substring(0,2).toUpperCase();
+                const color = COLORS[p.id % COLORS.length];
+                const rating = Number(p.rating) || 0;
+                const reviews = Number(p.reviews) || 0;
                 container.innerHTML += `
-                    <div class="provider-card" style="background:white; border:1px solid var(--neutral-200); box-shadow:none;">
-                        <img src="${p.logo}" class="provider-logo" alt="${p.nombre}">
-                        <div class="provider-info">
-                            <h3 class="provider-name">${p.nombre} ${p.verificado ? '✅' : ''}</h3>
-                            <p class="provider-category">${p.categoria} • ${p.ciudad}</p>
-                            <div class="provider-rating">
-                                <span class="stars">★★★★★</span>
-                                <span class="rating-number">${p.rating}</span>
-                                <span class="reviews-count">(${p.reviews})</span>
-                            </div>
-                            <div class="provider-tags">
-                                ${p.materiales.map(m => `<span class="tag">${m}</span>`).join('')}
-                            </div>
-                            <div class="provider-actions" style="margin-top:1rem;">
-                                <a href="perfil-proveedor.html?id=${p.id}" class="btn btn-outline" style="flex:1; text-align:center;">Ver Perfil</a>
-                                <button class="btn btn-primary" onclick="alert('Funcionalidad de contacto requerirá iniciar sesión.')">Contactar</button>
+                    <div class="provider-card" style="background:white;border:1px solid var(--neutral-200);box-shadow:none">
+                        <div class="provider-card-header">
+                            <div class="provider-card-logo" style="background:${color};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.25rem;border-radius:12px;width:48px;height:48px;flex-shrink:0">${initials}</div>
+                            <div class="provider-card-info">
+                                <div class="provider-card-name">${name} ${p.verificado ? '✅' : ''}</div>
+                                <div class="provider-card-category">${p.categoria || 'Proveedor'} ${p.ciudad ? '· ' + p.ciudad : ''}</div>
                             </div>
                         </div>
-                    </div>
-                `;
+                        <div class="provider-card-footer" style="margin-top:0.75rem">
+                            <div class="rating-display">
+                                ${reviews > 0
+                                    ? `<span style="color:var(--warning-500)">★★★★★</span> <span class="rating-number">${rating.toFixed(1)}</span> <span class="rating-count">(${reviews})</span>`
+                                    : '<span style="color:var(--neutral-400);font-size:0.8rem">Sin reseñas todavía</span>'}
+                            </div>
+                        </div>
+                        <div class="provider-actions" style="margin-top:1rem">
+                            <a href="perfil-proveedor.html?id=${p.id}" class="btn btn-outline" style="flex:1;text-align:center">Ver Perfil</a>
+                            <a href="perfil-proveedor.html?id=${p.id}" class="btn btn-primary">Contactar</a>
+                        </div>
+                    </div>`;
             });
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            // Check if URL has tab param
             const urlParams = new URLSearchParams(window.location.search);
             const tabParam = urlParams.get('tab');
+            const qParam = urlParams.get('q');
+
+            if (qParam) document.getElementById('searchInput').value = qParam;
+
             if (tabParam && (tabParam === 'materiales' || tabParam === 'empresas')) {
-                // simulated click on tab
                 document.querySelectorAll('.search-tab').forEach(t => {
-                    if(t.textContent.toLowerCase().includes(tabParam)) {
-                        t.click();
-                    }
+                    if (t.textContent.toLowerCase().includes(tabParam)) t.click();
                 });
-            } else {
-                filterResults();
             }
+
+            loadProviders();
         });
+        document.getElementById('searchInput').addEventListener('input', filterResults);
+        document.getElementById('verifiedOnly').addEventListener('change', filterResults);
+        document.querySelectorAll('input[type=checkbox][value]').forEach(cb => cb.addEventListener('change', filterResults));
     </script>
 </body>
 </html>

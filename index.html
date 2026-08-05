@@ -55,16 +55,16 @@
       </div>
       <div class="hero-stats" style="animation:heroSlideUp 0.8s ease-out 0.7s both">
         <div class="hero-stat">
-          <span class="hero-stat-value" data-count="5000" data-suffix="+">5000+</span>
-          <span class="hero-stat-label">Proveedores Verificados</span>
+          <span class="hero-stat-value" id="stat-proveedores">—</span>
+          <span class="hero-stat-label">Proveedores Registrados</span>
         </div>
         <div class="hero-stat">
-          <span class="hero-stat-value" data-count="15000" data-suffix="+">15000+</span>
+          <span class="hero-stat-value" id="stat-empresas">—</span>
           <span class="hero-stat-label">Empresas Conectadas</span>
         </div>
         <div class="hero-stat">
-          <span class="hero-stat-value" data-count="14" data-suffix="">14</span>
-          <span class="hero-stat-label">Departamentos</span>
+          <span class="hero-stat-value" id="stat-materiales">—</span>
+          <span class="hero-stat-label">Materiales Publicados</span>
         </div>
       </div>
     </div>
@@ -144,9 +144,9 @@
   <section class="featured-section section">
     <div class="container">
       <div class="section-header">
-        <span class="section-header-label">PROVEEDORES DESTACADOS</span>
-        <h2>Los mejores proveedores de Nicaragua</h2>
-        <p>Descubre proveedores verificados y confiables en todo el país</p>
+        <span class="section-header-label">PROVEEDORES REGISTRADOS</span>
+        <h2>Empresas en ProVend</h2>
+        <p>Proveedores reales verificados listos para conectar con tu negocio</p>
       </div>
       <div id="featured-providers" class="grid-providers"></div>
       <div class="section-action">
@@ -265,11 +265,87 @@
   <script src="js/app.js"></script>
   <script src="js/search.js"></script>
   <script src="js/animations.js"></script>
+  <script src="js/auth.js"></script>
   <script>
-    document.getElementById('navbar-container').innerHTML = buildNavbar('home');
+    // Si ya está logueado, actualizar navbar
+    const _u = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
+    if (_u) {
+      document.getElementById('navbar-container').innerHTML = buildNavbar('home').replace(
+        '<a href="login.html" class="btn btn-ghost btn-sm">Iniciar Sesión</a>',
+        `<a href="${_u.rol === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html'}" class="btn btn-ghost btn-sm">Mi Panel</a>`
+      ).replace(
+        '<a href="registro.html" class="btn btn-primary btn-sm">Registrarse</a>',
+        `<button class="btn btn-ghost btn-sm" onclick="ProVendAuth.logout()" style="color:var(--danger-600)">Salir</button>`
+      );
+    } else {
+      document.getElementById('navbar-container').innerHTML = buildNavbar('home');
+    }
+
+    // Cargar estadísticas reales y gestionar estado vacío
+    fetch('/api/stats').then(r => r.json()).then(s => {
+      const total = (s.proveedores || 0) + (s.empresas || 0) + (s.materiales || 0);
+      if (total === 0) {
+        // Plataforma nueva — mensaje motivacional
+        const statsEl = document.querySelector('.hero-stats');
+        if (statsEl) {
+          statsEl.innerHTML = `
+            <div style="text-align:center;color:var(--neutral-600);font-size:1rem;max-width:500px;margin:0 auto">
+              <span style="font-size:1.5rem">🚀</span>
+              <strong style="display:block;color:var(--neutral-800);font-size:1.125rem;margin:0.5rem 0">Estás ayudando a construir algo nuevo.</strong>
+              Sé uno de los primeros en unirte a la comunidad empresarial de Nicaragua en PROVEND.
+            </div>`;
+        }
+      } else {
+        document.getElementById('stat-proveedores').textContent = s.proveedores || 0;
+        document.getElementById('stat-empresas').textContent = s.empresas || 0;
+        document.getElementById('stat-materiales').textContent = s.materiales || 0;
+      }
+
+      // Featured Providers — desde la API
+      fetch('/api/proveedores').then(r => r.json()).then(provs => {
+        const container = document.getElementById('featured-providers');
+        const COLORS = ['#2B7DE9','#27ae60','#e67e22','#9b59b6','#e74c3c','#1abc9c'];
+        if (!provs || provs.length === 0) {
+          container.innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--neutral-500)">
+              <div style="font-size:3rem;margin-bottom:1rem">🏭</div>
+              <h3 style="color:var(--neutral-700);margin-bottom:0.5rem">Todavía no hay proveedores registrados</h3>
+              <p style="margin-bottom:1.5rem">La comunidad está comenzando. Sé el primero en registrar tu empresa.</p>
+              <a href="registro.html?rol=proveedor" class="btn btn-primary">Registrar mi empresa</a>
+            </div>`;
+        } else {
+          provs.slice(0, 6).forEach(p => {
+            const name = p.company || p.nombre;
+            const initials = name.substring(0, 2).toUpperCase();
+            const color = COLORS[p.id % COLORS.length];
+            const rating = Number(p.rating) || 0;
+            const reviews = Number(p.reviews) || 0;
+            container.innerHTML += `
+              <a href="perfil-proveedor.html?id=${p.id}" class="provider-card">
+                <div class="provider-card-header">
+                  <div class="provider-card-logo" style="background:${color};color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.25rem">${initials}</div>
+                  <div class="provider-card-info">
+                    <div class="provider-card-name">${name} ${p.verificado ? '<span class="badge-verified" style="font-size:0.7rem">✅ Verificado</span>' : ''}</div>
+                    <div class="provider-card-category">${p.categoria || 'Proveedor'}</div>
+                    <div class="provider-card-location">${p.ciudad ? '📍 ' + p.ciudad : ''}</div>
+                  </div>
+                </div>
+                <div class="provider-card-footer">
+                  <div class="rating-display">
+                    ${reviews > 0 ? `<span style="color:var(--warning-500)">★</span> <span class="rating-value">${rating.toFixed(1)}</span><span class="rating-count">(${reviews})</span>` : '<span style="color:var(--neutral-400);font-size:0.8rem">Sin reseñas todavía</span>'}
+                  </div>
+                </div>
+              </a>`;
+          });
+        }
+      });
+    }).catch(() => {
+      document.getElementById('stat-proveedores').textContent = '—';
+      document.getElementById('stat-empresas').textContent = '—';
+      document.getElementById('stat-materiales').textContent = '—';
+    });
     document.getElementById('footer-container').innerHTML = buildFooter();
     renderCategoryCards('categories-grid');
-    renderProviderCards('featured-providers', providers, 6);
     // Testimonials
     const track = document.querySelector('.testimonials-track');
     if (track) {

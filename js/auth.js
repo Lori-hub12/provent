@@ -100,17 +100,31 @@ function initLoginForm() {
     const result = await login(email, password);
     
     if (result.success) {
-      showToast('¡Bienvenido de vuelta!', 'success');
+      const role = result.user.rol || result.user.role;
+      const userName = result.user.nombre || result.user.name || result.user.company || 'Usuario';
+      
+      // Inject full screen loader
+      const loaderHtml = `
+        <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:white; z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; transition:opacity 0.5s ease" id="login-loader">
+            <div style="width:50px; height:50px; border:4px solid var(--neutral-200); border-top-color:var(--primary-600); border-radius:50%; animation:spin 1s linear infinite; margin-bottom:1.5rem"></div>
+            <h2 style="font-size:1.5rem; font-weight:700; color:var(--neutral-900); margin-bottom:0.5rem" id="loader-title">Cargando perfil...</h2>
+            <p style="color:var(--neutral-500); font-weight:500" id="loader-subtitle">Preparando tu entorno B2B</p>
+            <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+        </div>
+      `;
+      document.body.insertAdjacentHTML('beforeend', loaderHtml);
+      
       setTimeout(() => {
-        const role = result.user.rol || result.user.role;
-        if (role === 'admin') {
-          window.location.href = 'admin.html';
-        } else if (role === 'proveedor') {
-          window.location.href = 'dashboard-proveedor.html';
-        } else {
-          window.location.href = 'dashboard-empresa.html';
-        }
-      }, 1000);
+          document.getElementById('loader-title').textContent = `Bienvenido, ${userName}`;
+          document.getElementById('loader-subtitle').textContent = role === 'proveedor' ? 'Entrando al Centro de Gestión...' : 'Entrando al Centro de Compras...';
+          
+          setTimeout(() => {
+            if (role === 'admin') window.location.href = 'admin.html';
+            else if (role === 'proveedor') window.location.href = 'dashboard-proveedor.html';
+            else window.location.href = 'dashboard-empresa.html';
+          }, 1200);
+      }, 1500);
+      
     } else {
       showFieldError('login-email', result.error);
       showToast(result.error, 'error');

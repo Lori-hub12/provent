@@ -1,373 +1,684 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Proveedor — ProVend</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <style>
-        body { background-color: #f8fafc; margin: 0; padding: 0; display: flex; height: 100vh; overflow: hidden; }
-        
-        /* Sidebar Fijo y Limpio */
-        .sidebar {
-            width: 250px;
-            background: white;
-            border-right: 1px solid var(--neutral-200);
-            display: flex;
-            flex-direction: column;
-            padding: 1.5rem;
-            flex-shrink: 0;
-            z-index: 10;
-        }
-        .sidebar-logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-700); margin-bottom: 2.5rem; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
-        .nav-item {
-            display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
-            color: var(--neutral-600); font-weight: 500; text-decoration: none; border-radius: 8px;
-            margin-bottom: 0.5rem; transition: all 0.2s; cursor: pointer;
-        }
-        .nav-item:hover { background: var(--neutral-100); color: var(--neutral-900); }
-        .nav-item.active { background: var(--primary-50); color: var(--primary-700); font-weight: 600; }
-        .nav-item svg { width: 20px; height: 20px; }
-        
-        .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--neutral-200); }
-        
-        /* Main Content */
-        .main-content { flex: 1; overflow-y: auto; padding: 2rem 3rem; }
-        
-        /* Header */
-        .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
-        .page-title { font-size: 1.75rem; font-weight: 700; color: var(--neutral-900); margin: 0 0 0.25rem 0; }
-        .page-subtitle { color: var(--neutral-500); margin: 0; font-size: 1rem; }
-        
-        /* SaaS Card */
-        .saas-card { background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid var(--neutral-200); box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 2rem; }
-        .saas-card-title { font-size: 1.125rem; font-weight: 600; color: var(--neutral-900); margin-top: 0; margin-bottom: 1.25rem; }
-        
-        /* KPIs (6 metricas) */
-        .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; margin-bottom: 2rem; }
-        @media (max-width: 1400px) { .kpi-grid { grid-template-columns: repeat(3, 1fr); } }
-        .kpi-card { background: white; border-radius: 12px; padding: 1.25rem; border: 1px solid var(--neutral-200); box-shadow: 0 1px 2px rgba(0,0,0,0.02); display: flex; flex-direction: column; }
-        .kpi-value { font-size: 1.75rem; font-weight: 700; color: var(--primary-700); margin-bottom: 0.25rem; }
-        .kpi-label { font-size: 0.813rem; font-weight: 500; color: var(--neutral-500); text-transform: uppercase; letter-spacing: 0.05em; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProVend — Mi Negocio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    /* ── HERO ── */
+    .prov-hero {
+      background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-800) 60%, var(--primary-700) 100%);
+      padding: 4rem 2rem 3rem; position: relative; overflow: hidden; color: white;
+    }
+    .prov-hero::before {
+      content: ''; position: absolute; width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(43,125,233,0.3), transparent 70%);
+      top: -150px; right: -80px; border-radius: 50%;
+    }
+    .prov-hero .container { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
+    @media(max-width:768px) { .prov-hero .container { grid-template-columns: 1fr; } }
 
-        /* Acciones Rápidas */
-        .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; }
-        .btn-action { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; padding: 1.25rem 1rem; background: white; border: 1px solid var(--neutral-200); border-radius: 12px; color: var(--neutral-700); font-weight: 500; text-decoration: none; font-size: 0.875rem; transition: 0.2s; cursor: pointer;}
-        .btn-action:hover { border-color: var(--primary-400); background: var(--primary-50); color: var(--primary-700); transform: translateY(-2px); }
-        .btn-action span { font-size: 1.5rem; }
+    .prov-hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 99px; padding: 0.4rem 1rem; font-size: 0.8rem; font-weight: 600;
+      color: var(--primary-200); margin-bottom: 1.25rem; animation: slideUp 0.6s ease-out both;
+    }
+    .prov-hero h1 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 0.5rem; animation: slideUp 0.7s ease-out 0.1s both; }
+    .prov-hero p.sub { color: var(--primary-200); font-size: 0.95rem; margin-bottom: 2rem; animation: slideUp 0.7s ease-out 0.2s both; }
 
-        /* 2-Column Layout */
-        .grid-2col { display: grid; grid-template-columns: 3fr 2fr; gap: 2rem; }
-        @media (max-width: 1100px) { .grid-2col { grid-template-columns: 1fr; } }
+    /* Health pill — sin número durante onboarding, con número después */
+    .health-pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 1.5rem 2rem; min-width: 220px; animation: slideUp 0.7s ease-out 0.3s both; }
+    .health-label { font-size: 0.75rem; color: var(--primary-300); margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .health-step-label { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.35rem; }
+    .health-step-sub { font-size: 0.8rem; color: var(--primary-300); }
+    .health-pct { font-size: 2.5rem; font-weight: 800; color: white; line-height: 1; transition: all 0.6s ease; }
+    .health-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 99px; overflow: hidden; margin: 0.5rem 0; }
+    .health-fill { height: 100%; background: #4ade80; border-radius: 99px; width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
+    .health-hint { font-size: 0.75rem; color: var(--primary-200); margin-top: 0.25rem; }
 
-        /* Feed de Actividad */
-        .feed-item { display: flex; align-items: flex-start; gap: 1rem; padding: 0.875rem 0; border-bottom: 1px solid var(--neutral-100); }
-        .feed-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .feed-icon { font-size: 1.25rem; background: var(--neutral-100); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .feed-text { font-size: 0.875rem; color: var(--neutral-800); font-weight: 500; line-height: 1.4; }
-        .feed-time { font-size: 0.75rem; color: var(--neutral-400); margin-top: 0.25rem; }
+    /* ── KPIs ── */
+    .kpi-row { background: white; border-bottom: 1px solid var(--neutral-200); padding: 1.5rem 2rem; display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap; }
+    .kpi-item { text-align: center; min-width: 80px; }
+    .kpi-value { font-size: 1.75rem; font-weight: 700; color: var(--neutral-900); line-height: 1; transition: all 0.4s ease; }
+    .kpi-label { font-size: 0.65rem; color: var(--neutral-500); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; margin-top: 0.2rem; }
+    .kpi-sublabel { font-size: 0.7rem; color: var(--neutral-400); margin-top: 0.15rem; font-style: italic; }
 
-        /* Estado de Verificación (GitHub Style) */
-        .verify-card { background: white; border: 1px solid var(--neutral-200); border-radius: 8px; overflow: hidden; }
-        .verify-header { background: var(--success-50); padding: 1rem 1.5rem; border-bottom: 1px solid var(--success-100); display: flex; align-items: center; gap: 0.5rem; color: var(--success-700); font-weight: 600; }
-        .verify-body { padding: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-        .verify-item strong { display: block; font-size: 0.75rem; color: var(--neutral-500); text-transform: uppercase; margin-bottom: 0.25rem; }
-        .verify-item span { font-weight: 600; color: var(--neutral-900); }
+    /* ── SECTIONS ── */
+    .prov-section { padding: 4rem 2rem; }
+    .prov-section:nth-child(even) { background: var(--neutral-50); }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 3rem; }
+    .section-header-label { display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--primary-600); background: var(--primary-50); padding: 0.3rem 1rem; border-radius: 99px; margin-bottom: 1rem; }
+    .section-header h2 { font-size: 1.75rem; font-weight: 700; color: var(--neutral-900); margin-bottom: 0.5rem; }
+    .section-header p { color: var(--neutral-500); font-size: 0.95rem; max-width: 500px; margin: 0 auto; }
 
-        /* Gráfico Simulado */
-        .chart-placeholder { height: 200px; display: flex; align-items: flex-end; gap: 0.5rem; padding-top: 1rem; border-bottom: 1px solid var(--neutral-200); border-left: 1px solid var(--neutral-200); position: relative; }
-        .chart-bar { flex: 1; background: var(--primary-100); border-radius: 4px 4px 0 0; transition: 0.3s; position: relative; }
-        .chart-bar:hover { background: var(--primary-300); }
-        .chart-line { position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+    /* ── ONBOARDING STEPS ── */
+    .onboarding-card {
+      background: linear-gradient(135deg, var(--primary-900), var(--primary-800));
+      border-radius: 16px; padding: 2rem; color: white; margin-bottom: 2rem;
+      animation: slideUp 0.5s ease-out both;
+    }
+    .onboarding-label { font-size: 0.7rem; font-weight: 700; color: var(--primary-300); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.75rem; }
+    .onboarding-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .onboarding-sub { color: var(--primary-300); font-size: 0.875rem; margin-bottom: 1.5rem; }
+    .onboarding-steps { display: flex; flex-direction: column; gap: 0.6rem; }
+    .ob-step {
+      display: flex; align-items: center; gap: 1rem;
+      background: rgba(255,255,255,0.07); border-radius: 10px; padding: 0.875rem 1.25rem;
+      transition: background 0.3s, opacity 0.3s;
+    }
+    .ob-step.done { opacity: 0.8; }
+    .ob-step.current { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25); }
+    .ob-step.pending { opacity: 0.5; }
+    .ob-step-num {
+      width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem;
+    }
+    .ob-step-num.done { background: #4ade80; color: white; }
+    .ob-step-num.current { background: rgba(255,255,255,0.2); color: white; border: 2px solid rgba(255,255,255,0.4); }
+    .ob-step-num.pending { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); border: 2px solid rgba(255,255,255,0.15); }
+    .ob-step-info { flex: 1; }
+    .ob-step-title { font-weight: 600; font-size: 0.9rem; }
+    .ob-step-desc { font-size: 0.75rem; color: var(--primary-300); margin-top: 0.1rem; }
+    .ob-step-action { margin-left: auto; background: var(--primary-500); color: white; border: none; padding: 0.35rem 0.9rem; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 0.78rem; white-space: nowrap; transition: background 0.2s; }
+    .ob-step-action:hover { background: var(--primary-400); }
 
-        /* Tablas de Inventario */
-        .inventory-table { width: 100%; border-collapse: collapse; text-align: left; }
-        .inventory-table th { padding: 1rem; font-size: 0.75rem; text-transform: uppercase; color: var(--neutral-500); border-bottom: 1px solid var(--neutral-200); font-weight: 600; }
-        .inventory-table td { padding: 1rem; border-bottom: 1px solid var(--neutral-100); vertical-align: middle; font-size: 0.875rem; color: var(--neutral-800); }
-        .inv-img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; }
-        .inv-status { background: var(--success-50); color: var(--success-700); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+    /* ── EMPTY STATE ── */
+    .empty-state { text-align: center; padding: 3.5rem 2rem; background: var(--neutral-50); border-radius: 16px; border: 2px dashed var(--neutral-200); }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-state h3 { font-size: 1.2rem; font-weight: 600; color: var(--neutral-700); margin-bottom: 0.5rem; }
+    .empty-state p { color: var(--neutral-500); max-width: 320px; margin: 0 auto 1.5rem; font-size: 0.9rem; }
 
-        /* Sections Toggle */
-        .view-section { display: none; }
-        .view-section.active { display: block; }
-    </style>
+    /* ── NOTIF empty ── */
+    .notif-empty { text-align: center; padding: 3rem 1rem; color: var(--neutral-400); }
+    .notif-empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .notif-empty h4 { font-size: 1rem; font-weight: 600; color: var(--neutral-600); margin-bottom: 0.35rem; }
+    .notif-empty p { font-size: 0.85rem; }
+
+    /* ── MATERIALES ── */
+    .inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .inv-card { background: white; border: 1px solid var(--neutral-200); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); transition: all 0.25s ease; animation: cardIn 0.4s ease-out both; }
+    .inv-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    @keyframes cardIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    .inv-card-body { padding: 1.25rem; }
+    .inv-card-name { font-weight: 600; color: var(--neutral-900); margin-bottom: 0.35rem; }
+    .inv-card-meta { font-size: 0.85rem; color: var(--neutral-500); margin-bottom: 0.75rem; }
+    .inv-card-status { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 99px; background: #d1fae5; color: #059669; }
+    .inv-card-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+    .inv-card-actions button { flex: 1; text-align: center; padding: 0.5rem; border-radius: 8px; font-size: 0.8rem; font-weight: 500; cursor: pointer; border: 1px solid var(--neutral-200); background: none; color: var(--neutral-700); transition: all 0.15s; }
+    .inv-card-actions button:hover { background: var(--primary-50); color: var(--primary-700); border-color: var(--primary-200); }
+    .inv-card-actions button.danger:hover { background: #fee2e2; color: #dc2626; border-color: #fee2e2; }
+
+    /* ── CHECKLIST ── */
+    .checklist { display: flex; flex-direction: column; gap: 0.75rem; max-width: 520px; margin: 0 auto; }
+    .check-item { display: flex; align-items: center; gap: 1rem; background: white; border: 1px solid var(--neutral-200); border-radius: 12px; padding: 1rem 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.25s; }
+    .check-item.ok { border-left: 3px solid #10b981; }
+    .check-item.warn { border-left: 3px solid #f59e0b; }
+    .check-icon-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; flex-shrink: 0; font-weight: 800; }
+    .check-icon-dot.ok { background: #d1fae5; color: #059669; }
+    .check-icon-dot.warn { background: #fef3c7; color: #d97706; }
+    .check-text { flex: 1; }
+    .check-main { font-weight: 500; color: var(--neutral-800); font-size: 0.9rem; }
+    .check-sub { font-size: 0.75rem; color: var(--neutral-400); margin-top: 0.1rem; }
+
+    /* ── MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    .modal-box { background: white; border-radius: 20px; padding: 2rem; width: 90%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); animation: slideUp 0.3s ease; }
+    .modal-box h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-weight: 500; margin-bottom: 0.35rem; font-size: 0.85rem; color: var(--neutral-700); }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--neutral-300); border-radius: 10px; font-family: inherit; font-size: 0.875rem; outline: none; transition: all 0.2s; box-sizing: border-box; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary-500); box-shadow: 0 0 0 3px var(--primary-100); }
+
+    /* ── CELEBRACIÓN ── */
+    .celebration-overlay { display: none; position: fixed; inset: 0; z-index: 2000; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); }
+    .celebration-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+    .celebration-box { background: white; border-radius: 24px; padding: 3rem 2.5rem; text-align: center; max-width: 380px; box-shadow: 0 30px 80px rgba(0,0,0,0.2); animation: bounceIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes bounceIn { from { transform:scale(0.7); opacity:0; } to { transform:scale(1); opacity:1; } }
+    .celebration-emoji { font-size: 4rem; margin-bottom: 1rem; display: block; animation: bounce 0.8s ease infinite alternate; }
+    @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-8px); } }
+    .celebration-title { font-size: 1.5rem; font-weight: 800; color: var(--neutral-900); margin-bottom: 0.5rem; }
+    .celebration-sub { color: var(--neutral-500); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 1999; overflow: hidden; }
+    .confetti-piece { position: absolute; width: 10px; height: 10px; top: -20px; animation: confettiFall linear forwards; border-radius: 2px; }
+    @keyframes confettiFall { to { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+
+    @keyframes slideUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes countUp { from { opacity:0.3; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
+    .kpi-updated { animation: countUp 0.4s ease; }
+  </style>
 </head>
 <body>
+  <div id="navbar-container"></div>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-        <a href="index.html" class="sidebar-logo">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            ProVend
-        </a>
-        
-        <nav style="display:flex; flex-direction:column; gap:0.25rem;">
-            <a class="nav-item active" onclick="switchView('dashboard', this)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
-                Dashboard
-            </a>
-            <a class="nav-item" onclick="switchView('inventario', this)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
-                Inventario
-            </a>
-            <a class="nav-item" onclick="alert('Funcionalidad en desarrollo')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                Mi Perfil
-            </a>
-            <a class="nav-item" onclick="alert('Funcionalidad en desarrollo')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                Reseñas
-            </a>
-            <a class="nav-item" onclick="alert('Funcionalidad en desarrollo')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                Estadísticas
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <a class="nav-item" onclick="alert('Funcionalidad en desarrollo')">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                Configuración
-            </a>
-            <a class="nav-item" href="index.html" style="color:var(--error-600)">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                Cerrar Sesión
-            </a>
+  <!-- HERO -->
+  <section class="prov-hero">
+    <div class="container">
+      <div>
+        <div class="prov-hero-badge">🏭 Centro de Gestión · ProVend</div>
+        <h1 id="prov-title">Bienvenido de vuelta</h1>
+        <p class="sub" id="prov-subtitle">Cargando tu actividad...</p>
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap; animation: slideUp 0.7s ease-out 0.4s both;">
+          <a href="perfil-proveedor.html" id="btn-perfil-publico" class="btn btn-primary">👁️ Ver mi perfil público</a>
+          <button class="btn" style="background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.3)" onclick="openModal('modal-material')">➕ Publicar material</button>
         </div>
-    </aside>
+      </div>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-        
-        <!-- VISTA: DASHBOARD -->
-        <div id="view-dashboard" class="view-section active">
-            <header class="page-header">
-                <div>
-                    <h1 class="page-title">Panel de Control</h1>
-                    <p class="page-subtitle">Hola de nuevo, <strong id="prov-name">Recicladora Managua S.A.</strong></p>
-                </div>
-            </header>
+      <!-- Health pill — cambia entre modo onboarding y modo porcentaje -->
+      <div class="health-pill" id="health-pill">
+        <div class="health-label" id="health-label">Tu progreso</div>
+        <div id="health-pill-content">
+          <!-- JS fills: onboarding mode or % mode -->
+        </div>
+        <div class="health-bar" id="health-bar-wrap" style="display:none">
+          <div class="health-fill" id="health-fill"></div>
+        </div>
+        <div class="health-hint" id="health-hint"></div>
+      </div>
+    </div>
+  </section>
 
-            <!-- 6 KPIs -->
-            <div class="kpi-grid">
-                <div class="kpi-card"><div class="kpi-value" id="kpi-prod">0</div><div class="kpi-label">Productos</div></div>
-                <div class="kpi-card"><div class="kpi-value" id="kpi-mat">0</div><div class="kpi-label">Materiales</div></div>
-                <div class="kpi-card"><div class="kpi-value" id="kpi-vis">0</div><div class="kpi-label">Visitas</div></div>
-                <div class="kpi-card"><div class="kpi-value" id="kpi-con">0</div><div class="kpi-label">Contactos</div></div>
-                <div class="kpi-card"><div class="kpi-value" id="kpi-rat">0</div><div class="kpi-label">Rating</div></div>
-                <div class="kpi-card"><div class="kpi-value" id="kpi-ver">...</div><div class="kpi-label">Nivel</div></div>
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi-item">
+      <div class="kpi-value" id="kpi-materiales">0</div>
+      <div class="kpi-label">Materiales</div>
+      <div class="kpi-sublabel" id="kpi-materiales-sub">Todavía sin publicar</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value" id="kpi-productos">0</div>
+      <div class="kpi-label">Productos</div>
+      <div class="kpi-sublabel" id="kpi-productos-sub">Todavía sin publicar</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value" id="kpi-visitas">0</div>
+      <div class="kpi-label">Visitas</div>
+      <div class="kpi-sublabel" id="kpi-visitas-sub">Todavía sin visitas</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value" id="kpi-resenas">0</div>
+      <div class="kpi-label">Reseñas</div>
+      <div class="kpi-sublabel" id="kpi-resenas-sub">Todavía sin reseñas</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value" id="kpi-rating" style="color:var(--neutral-400)">—</div>
+      <div class="kpi-label">Calificación</div>
+      <div class="kpi-sublabel" id="kpi-rating-sub">Sin calificaciones</div>
+    </div>
+    <div class="kpi-item">
+      <div class="kpi-value" id="kpi-favoritos">0</div>
+      <div class="kpi-label">En favoritos</div>
+      <div class="kpi-sublabel" id="kpi-favoritos-sub">Todavía ninguno</div>
+    </div>
+  </div>
+
+  <!-- MIS MATERIALES -->
+  <section class="prov-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">MI INVENTARIO</span>
+        <h2>Materiales publicados</h2>
+        <p>Gestiona las materias primas que ofreces al mercado.</p>
+      </div>
+      <div id="materiales-container">
+        <div class="empty-state">
+          <div class="empty-state-icon">📦</div>
+          <h3>No has publicado materiales todavía</h3>
+          <p>Publica tu primer material para que las empresas puedan encontrarte en la plataforma.</p>
+          <button class="btn btn-primary" onclick="openModal('modal-material')">Publicar mi primer material</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTADO DEL NEGOCIO -->
+  <section class="prov-section" style="background:var(--neutral-50)">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">ESTADO DEL NEGOCIO</span>
+        <h2 id="checklist-title">Salud de tu perfil</h2>
+        <p id="checklist-sub">Completa cada punto para ganar más visibilidad en la plataforma.</p>
+      </div>
+      <div id="onboarding-container"></div>
+      <div class="checklist" id="checklist-container"></div>
+    </div>
+  </section>
+
+  <!-- ACTIVIDAD RECIENTE -->
+  <section class="prov-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">ACTIVIDAD RECIENTE</span>
+        <h2>Lo que ha pasado en tu perfil</h2>
+      </div>
+      <div id="actividad-container">
+        <div class="notif-empty">
+          <div class="notif-empty-icon">✅</div>
+          <h4>Todo está al día</h4>
+          <p>Aquí aparecerán nuevas actividades cuando alguien visite tu perfil o te contacte.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer-container"></div>
+
+  <!-- MODAL: Publicar Material -->
+  <div class="modal-overlay" id="modal-material">
+    <div class="modal-box">
+      <h3>📦 Publicar Material</h3>
+      <form id="form-material" onsubmit="submitMaterial(event)">
+        <div class="form-group">
+          <label>Nombre del material *</label>
+          <input type="text" id="mat-nombre" placeholder="Ej. PET Molido Transparente" required>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem">
+          <div class="form-group">
+            <label>Cantidad disponible *</label>
+            <input type="text" id="mat-cantidad" placeholder="Ej. 500" required>
+          </div>
+          <div class="form-group">
+            <label>Unidad *</label>
+            <select id="mat-unidad">
+              <option value="kg">Kilogramos (kg)</option>
+              <option value="toneladas">Toneladas</option>
+              <option value="litros">Litros</option>
+              <option value="metros">Metros</option>
+              <option value="unidades">Unidades</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea id="mat-descripcion" rows="3" placeholder="Descripción del material, calidad, proceso..."></textarea>
+        </div>
+        <div style="display:flex; gap:0.75rem; justify-content:flex-end; margin-top:1rem">
+          <button type="button" class="btn btn-outline" onclick="closeModal('modal-material')">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-mat">Publicar Material</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CELEBRACIÓN OVERLAY -->
+  <div class="celebration-overlay" id="celebration">
+    <div class="confetti" id="confetti"></div>
+    <div class="celebration-box">
+      <span class="celebration-emoji" id="cel-emoji">🎉</span>
+      <div class="celebration-title" id="cel-title">¡Excelente!</div>
+      <div class="celebration-sub" id="cel-sub">Has publicado tu primer material.</div>
+      <button class="btn btn-primary" onclick="closeCelebration()" style="margin-top:0.5rem">Continuar →</button>
+    </div>
+  </div>
+
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/animations.js"></script>
+  <script>
+    const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
+    if (!user || user.rol !== 'proveedor') window.location.href = 'login.html';
+
+    // ── Navbar ──
+    function buildProvNavbar(u) {
+      const name = u.company || u.nombre || 'Proveedor';
+      const initials = name.substring(0, 2).toUpperCase();
+      return `
+        <nav class="navbar" id="navbar">
+          <div class="navbar-inner">
+            <a href="dashboard-proveedor.html" class="navbar-logo">
+              ${getLogoSVG(36)}
+              <span class="navbar-logo-text">Pro<span>Vend</span></span>
+            </a>
+            <div class="navbar-nav">
+              <a href="dashboard-proveedor.html" class="navbar-link active">Mi Negocio</a>
+              <a href="perfil-proveedor.html?id=${u.id}" target="_blank" class="navbar-link">Perfil Público</a>
             </div>
-
-            <!-- Acciones Rápidas -->
-            <section class="saas-card">
-                <h2 class="saas-card-title">Acciones Rápidas</h2>
-                <div class="quick-actions">
-                    <button class="btn-action"><span>➕</span> Nuevo Material</button>
-                    <button class="btn-action"><span>📦</span> Nuevo Producto</button>
-                    <button class="btn-action"><span>✏️</span> Editar Perfil</button>
-                    <button class="btn-action"><span>⭐</span> Ver Reseñas</button>
-                    <button class="btn-action"><span>✔️</span> Solicitar Verif.</button>
-                    <a href="perfil-proveedor.html?id=1" target="_blank" class="btn-action" style="border-color:var(--primary-300)"><span>👁️</span> Perfil Público</a>
-                </div>
-            </section>
-
-            <div class="grid-2col">
-                <!-- Columna Izquierda -->
-                <div>
-                    <!-- Actividad Reciente -->
-                    <section class="saas-card">
-                        <h2 class="saas-card-title">Actividad Reciente</h2>
-                        <div id="feed-container">
-                            <!-- JS fills -->
-                        </div>
-                    </section>
-                </div>
-
-                <!-- Columna Derecha -->
-                <div>
-                    <!-- Estado Verificación -->
-                    <section class="saas-card" style="padding:0; border:none; background:transparent;">
-                        <div class="verify-card">
-                            <div class="verify-header">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
-                                Cuenta Verificada
-                            </div>
-                            <div class="verify-body">
-                                <div class="verify-item"><strong>Nivel</strong><span>Proveedor Oro</span></div>
-                                <div class="verify-item"><strong>Tiempo</strong><span>2 años</span></div>
-                                <div class="verify-item"><strong>Última revisión</strong><span>Hace 4 meses</span></div>
-                                <div class="verify-item"><strong>Estado</strong><span style="color:var(--success-600)">Activo</span></div>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Estadísticas Simuladas -->
-                    <section class="saas-card">
-                        <h2 class="saas-card-title">Visitas (Últimos 7 días)</h2>
-                        <div class="chart-placeholder">
-                            <!-- Simple CSS Bar Chart -->
-                            <div class="chart-bar" style="height: 30%;"></div>
-                            <div class="chart-bar" style="height: 50%;"></div>
-                            <div class="chart-bar" style="height: 40%;"></div>
-                            <div class="chart-bar" style="height: 70%;"></div>
-                            <div class="chart-bar" style="height: 60%;"></div>
-                            <div class="chart-bar" style="height: 90%;"></div>
-                            <div class="chart-bar" style="height: 100%; background:var(--primary-500)"></div>
-                            
-                            <!-- Fake SVG Line -->
-                            <svg class="chart-line" viewBox="0 0 100 100" preserveAspectRatio="none">
-                                <polyline points="5,70 19,50 33,60 47,30 61,40 75,10 89,0" fill="none" stroke="var(--primary-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div style="display:flex; justify-content:space-between; margin-top:0.5rem; color:var(--neutral-400); font-size:0.75rem;">
-                            <span>Lun</span><span>Mar</span><span>Mie</span><span>Jue</span><span>Vie</span><span>Sab</span><span>Dom</span>
-                        </div>
-                    </section>
-                </div>
+            <div class="navbar-actions" style="gap:0.75rem">
+              <button id="notif-btn" style="background:none; border:none; cursor:pointer; color:var(--neutral-600); position:relative;" title="Notificaciones">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span id="notif-dot" style="display:none; position:absolute; top:-2px; right:-2px; width:8px; height:8px; background:var(--danger-500); border-radius:50%; border:2px solid white;"></span>
+              </button>
+              <div style="display:flex; align-items:center; gap:0.5rem; padding:0.3rem 0.75rem; border-radius:99px; border:1px solid var(--neutral-200); background:white; box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+                <div style="width:28px; height:28px; background:var(--primary-100); color:var(--primary-700); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem;">${initials}</div>
+                <span style="font-size:0.875rem; font-weight:500; color:var(--neutral-800); max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${name}</span>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="ProVendAuth.logout()" style="color:var(--danger-600)">Salir</button>
             </div>
-        </div>
+          </div>
+        </nav>`;
+    }
 
-        <!-- VISTA: INVENTARIO -->
-        <div id="view-inventario" class="view-section">
-            <header class="page-header">
-                <div>
-                    <h1 class="page-title">Gestión de Inventario</h1>
-                    <p class="page-subtitle">Administra tus materiales y productos publicados.</p>
-                </div>
-                <div style="display:flex; gap:1rem;">
-                    <button class="btn btn-outline">➕ Material</button>
-                    <button class="btn btn-primary">📦 Producto</button>
-                </div>
-            </header>
+    document.getElementById('navbar-container').innerHTML = buildProvNavbar(user);
+    document.getElementById('footer-container').innerHTML = buildFooter();
+    document.getElementById('btn-perfil-publico').href = `perfil-proveedor.html?id=${user.id}`;
 
-            <section class="saas-card" style="padding:0; overflow:hidden;">
-                <div style="padding:1.5rem; border-bottom:1px solid var(--neutral-100);">
-                    <h2 class="saas-card-title" style="margin:0;">Materiales (Materias Primas)</h2>
-                </div>
-                <table class="inventory-table">
-                    <thead>
-                        <tr>
-                            <th>Imagen</th>
-                            <th>Nombre</th>
-                            <th>Disponible</th>
-                            <th>Estado</th>
-                            <th style="text-align:right">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="materials-tbody">
-                        <!-- JS Fills -->
-                    </tbody>
-                </table>
-            </section>
+    // Saludo
+    const name = user.company || user.nombre || 'Proveedor';
+    const hour = new Date().getHours();
+    const greet = hour < 12 ? 'Buenos días' : hour < 18 ? 'Buenas tardes' : 'Buenas noches';
+    document.getElementById('prov-title').textContent = `${greet}, ${name}`;
 
-            <section class="saas-card" style="padding:0; overflow:hidden;">
-                <div style="padding:1.5rem; border-bottom:1px solid var(--neutral-100);">
-                    <h2 class="saas-card-title" style="margin:0;">Productos (Bienes Procesados)</h2>
-                </div>
-                <table class="inventory-table">
-                    <thead>
-                        <tr>
-                            <th>Imagen</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                            <th>Categoría</th>
-                            <th>Estado</th>
-                            <th style="text-align:right">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="products-tbody">
-                        <!-- JS Fills -->
-                    </tbody>
-                </table>
-            </section>
-        </div>
+    // ── Modals ──
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target === m) m.classList.remove('open'); }));
 
-    </main>
+    // ── Animación KPI ──
+    function animateKPI(el, newVal) {
+      el.classList.remove('kpi-updated');
+      void el.offsetWidth;
+      el.textContent = newVal;
+      el.classList.add('kpi-updated');
+    }
 
-    <script src="js/mockData.js"></script>
-    <script>
-        // Lógica de Vistas
-        function switchView(viewId, element) {
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            document.getElementById('view-' + viewId).classList.add('active');
-            
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            element.classList.add('active');
+    // ── Confeti ──
+    function launchConfetti() {
+      const container = document.getElementById('confetti');
+      const colors = ['#2B7DE9','#4ade80','#f59e0b','#ec4899','#8b5cf6','#ef4444'];
+      container.innerHTML = '';
+      for (let i = 0; i < 60; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.cssText = `
+          left: ${Math.random() * 100}%;
+          background: ${colors[Math.floor(Math.random() * colors.length)]};
+          width: ${6 + Math.random() * 8}px;
+          height: ${6 + Math.random() * 8}px;
+          border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+          animation-duration: ${1.5 + Math.random() * 2}s;
+          animation-delay: ${Math.random() * 0.5}s;`;
+        container.appendChild(piece);
+      }
+    }
+
+    function showCelebration(emoji, title, sub) {
+      document.getElementById('cel-emoji').textContent = emoji;
+      document.getElementById('cel-title').textContent = title;
+      document.getElementById('cel-sub').textContent = sub;
+      launchConfetti();
+      document.getElementById('celebration').classList.add('show');
+    }
+
+    function closeCelebration() {
+      document.getElementById('celebration').classList.remove('show');
+      document.getElementById('confetti').innerHTML = '';
+    }
+
+    // ── Dashboard ──
+    let prevKpi = null;
+
+    async function loadDashboard() {
+      try {
+        // KPIs
+        const kpiRes = await fetch(`/api/dashboard/proveedor/${user.id}`);
+        const kpi = await kpiRes.json();
+
+        animateKPI(document.getElementById('kpi-materiales'), kpi.materiales || 0);
+        animateKPI(document.getElementById('kpi-productos'), kpi.productos || 0);
+        animateKPI(document.getElementById('kpi-visitas'), kpi.visitas || 0);
+        animateKPI(document.getElementById('kpi-resenas'), kpi.resenas || 0);
+        animateKPI(document.getElementById('kpi-favoritos'), kpi.favoritos || 0);
+
+        // Sub-labels KPI (punto 9)
+        document.getElementById('kpi-materiales-sub').textContent = kpi.materiales > 0 ? `${kpi.materiales} publicado${kpi.materiales > 1 ? 's' : ''}` : 'Todavía sin publicar';
+        document.getElementById('kpi-productos-sub').textContent = kpi.productos > 0 ? `${kpi.productos} publicado${kpi.productos > 1 ? 's' : ''}` : 'Todavía sin publicar';
+        document.getElementById('kpi-visitas-sub').textContent = kpi.visitas > 0 ? 'Visitas a tu perfil' : 'Todavía sin visitas';
+        document.getElementById('kpi-resenas-sub').textContent = kpi.resenas > 0 ? `${kpi.resenas} reseña${kpi.resenas > 1 ? 's' : ''} recibida${kpi.resenas > 1 ? 's' : ''}` : 'Todavía sin reseñas';
+        document.getElementById('kpi-favoritos-sub').textContent = kpi.favoritos > 0 ? 'Empresas que te guardaron' : 'Todavía ninguno';
+
+        const rating = Number(kpi.rating) || 0;
+        if (kpi.resenas > 0) {
+          animateKPI(document.getElementById('kpi-rating'), `★ ${rating.toFixed(1)}`);
+          document.getElementById('kpi-rating').style.color = 'var(--warning-500)';
+          document.getElementById('kpi-rating-sub').textContent = `Sobre ${kpi.resenas} reseña${kpi.resenas > 1 ? 's' : ''}`;
+        } else {
+          document.getElementById('kpi-rating-sub').textContent = 'Sin calificaciones';
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const metrics = window.ProVendData.getProveedorMetrics();
-            const feed = window.ProVendData.getFeedProveedor();
-            const materiales = window.ProVendData.getInventarioMateriales();
-            const productos = window.ProVendData.getInventarioProductos();
+        // ── Onboarding dinámico (punto 1) ──
+        const steps = [
+          { done: true,              label: 'Crear tu cuenta', desc: 'Ya estás registrado en ProVend.' },
+          { done: kpi.materiales > 0, label: 'Publicar tu primer material', desc: 'Para que las empresas puedan encontrarte.', action: "openModal('modal-material')", actionLabel: 'Publicar →' },
+          { done: false,              label: 'Completar información comercial', desc: 'Dirección, teléfono, WhatsApp y categoría.' },
+          { done: false,              label: 'Solicitar verificación', desc: 'Los verificados reciben 3× más contactos.' },
+        ];
 
-            // Llenar KPIs
-            document.getElementById('kpi-prod').textContent = metrics.productos;
-            document.getElementById('kpi-mat').textContent = metrics.materiales;
-            document.getElementById('kpi-vis').textContent = metrics.visitas.toLocaleString();
-            document.getElementById('kpi-con').textContent = metrics.contactos;
-            document.getElementById('kpi-rat').textContent = metrics.rating;
-            document.getElementById('kpi-ver').textContent = metrics.verificacion;
+        const allDone = steps.every(s => s.done);
+        const currentIdx = steps.findIndex(s => !s.done);
 
-            // Llenar Feed
-            const feedContainer = document.getElementById('feed-container');
-            feed.forEach(item => {
-                feedContainer.innerHTML += `
-                    <div class="feed-item">
-                        <div class="feed-icon">${item.icono}</div>
-                        <div>
-                            <div class="feed-text">${item.texto}</div>
-                            <div class="feed-time">${item.tiempo}</div>
-                        </div>
-                    </div>
-                `;
-            });
+        // Health pill — modo onboarding vs. modo porcentaje (punto 10)
+        const pillContent = document.getElementById('health-pill-content');
+        const healthBar = document.getElementById('health-bar-wrap');
 
-            // Llenar Tabla Materiales
-            const matTable = document.getElementById('materials-tbody');
-            materiales.forEach(m => {
-                const statusHtml = m.estado === 'Activo' 
-                    ? `<span class="inv-status">${m.estado}</span>` 
-                    : `<span class="inv-status" style="background:var(--neutral-100); color:var(--neutral-600)">${m.estado}</span>`;
-                matTable.innerHTML += `
-                    <tr>
-                        <td><img src="${m.imagen}" class="inv-img"></td>
-                        <td style="font-weight:600">${m.nombre}</td>
-                        <td>${m.cantidad} ${m.unidad}</td>
-                        <td>${statusHtml}</td>
-                        <td style="text-align:right">
-                            <button style="border:none;background:none;cursor:pointer;color:var(--primary-600);margin-right:0.5rem">Editar</button>
-                            <button style="border:none;background:none;cursor:pointer;color:var(--error-600)">Eliminar</button>
-                        </td>
-                    </tr>
-                `;
-            });
+        // Calcular score para cuando ya completó onboarding
+        let score = 0;
+        if (user.company || user.nombre) score += 30;
+        if (user.email) score += 20;
+        if (kpi.materiales > 0) score += 30;
+        if (kpi.resenas > 0) score += 20;
 
-            // Llenar Tabla Productos
-            const prodTable = document.getElementById('products-tbody');
-            productos.forEach(p => {
-                const statusHtml = p.estado === 'Activo' 
-                    ? `<span class="inv-status">${p.estado}</span>` 
-                    : `<span class="inv-status" style="background:var(--neutral-100); color:var(--neutral-600)">${p.estado}</span>`;
-                prodTable.innerHTML += `
-                    <tr>
-                        <td><img src="${p.imagen}" class="inv-img"></td>
-                        <td style="font-weight:600">${p.nombre}</td>
-                        <td>${p.precio}</td>
-                        <td><span style="background:var(--primary-50); color:var(--primary-700); padding:0.25rem 0.5rem; border-radius:4px; font-size:0.75rem;">${p.categoria}</span></td>
-                        <td>${statusHtml}</td>
-                        <td style="text-align:right">
-                            <button style="border:none;background:none;cursor:pointer;color:var(--primary-600);margin-right:0.5rem">Editar</button>
-                            <button style="border:none;background:none;cursor:pointer;color:var(--error-600)">Eliminar</button>
-                        </td>
-                    </tr>
-                `;
-            });
+        if (!allDone && currentIdx <= 1) {
+          // Modo onboarding: mostrar "Paso X de Y"
+          document.getElementById('health-label').textContent = 'Primeros pasos';
+          pillContent.innerHTML = `
+            <div class="health-step-label">Paso ${currentIdx + 1} de ${steps.length}</div>
+            <div class="health-step-sub">${steps[currentIdx].label}</div>`;
+          healthBar.style.display = 'none';
+          document.getElementById('health-hint').textContent = `${steps.filter(s=>s.done).length}/${steps.length} completados`;
+        } else {
+          // Modo porcentaje
+          document.getElementById('health-label').textContent = 'Salud del perfil';
+          pillContent.innerHTML = `<div class="health-pct">${score}%</div>`;
+          healthBar.style.display = 'block';
+          setTimeout(() => { document.getElementById('health-fill').style.width = score + '%'; }, 100);
+          const pending = 4 - steps.filter(s => s.done).length;
+          document.getElementById('health-hint').textContent = pending > 0 ? `⚠ ${pending} acción${pending > 1 ? 'es' : ''} pendiente${pending > 1 ? 's' : ''}` : '✅ Perfil completo';
+        }
+
+        // Onboarding card (solo si hay pasos sin completar)
+        const obContainer = document.getElementById('onboarding-container');
+        if (!allDone) {
+          let stepsHTML = steps.map((s, i) => {
+            const state = s.done ? 'done' : (i === currentIdx ? 'current' : 'pending');
+            return `
+              <div class="ob-step ${state}">
+                <div class="ob-step-num ${state}">${s.done ? '✓' : i + 1}</div>
+                <div class="ob-step-info">
+                  <div class="ob-step-title">${s.label}</div>
+                  <div class="ob-step-desc">${s.desc}</div>
+                </div>
+                ${s.action && !s.done && i === currentIdx ? `<button class="ob-step-action" onclick="${s.action}">${s.actionLabel}</button>` : ''}
+              </div>`;
+          }).join('');
+
+          obContainer.innerHTML = `
+            <div class="onboarding-card">
+              <div class="onboarding-label">🚀 Primeros pasos</div>
+              <div class="onboarding-title">Configura tu perfil en ${steps.length} pasos</div>
+              <div class="onboarding-sub">Completa estos pasos para que las empresas puedan encontrarte.</div>
+              <div class="onboarding-steps">${stepsHTML}</div>
+            </div>`;
+        } else {
+          obContainer.innerHTML = '';
+        }
+
+        // Checklist detallado (punto 2)
+        const checkData = [
+          { ok: !!(user.company || user.nombre), main: 'Nombre de empresa registrado', sub: user.company || user.nombre || '—' },
+          { ok: !!user.email, main: 'Correo de contacto', sub: user.email || 'No registrado' },
+          { ok: kpi.materiales > 0, main: 'Materiales publicados', sub: kpi.materiales > 0 ? `${kpi.materiales} material${kpi.materiales > 1 ? 'es' : ''} activo${kpi.materiales > 1 ? 's' : ''}` : 'Publica al menos uno' },
+          { ok: kpi.resenas > 0, main: 'Reseñas recibidas', sub: kpi.resenas > 0 ? `${kpi.resenas} reseña${kpi.resenas > 1 ? 's' : ''} de empresas` : 'Aún no tienes reseñas' },
+        ];
+
+        document.getElementById('checklist-container').innerHTML = checkData.map(c => `
+          <div class="check-item ${c.ok ? 'ok' : 'warn'}">
+            <div class="check-icon-dot ${c.ok ? 'ok' : 'warn'}">${c.ok ? '✔' : '!'}</div>
+            <div class="check-text">
+              <div class="check-main">${c.main}</div>
+              <div class="check-sub">${c.sub}</div>
+            </div>
+          </div>`).join('');
+
+        // Materiales
+        const matRes = await fetch(`/api/dashboard/proveedor/${user.id}/materiales`);
+        const mats = await matRes.json();
+        const matContainer = document.getElementById('materiales-container');
+
+        if (mats.length === 0) {
+          matContainer.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">📦</div>
+              <h3>No has publicado materiales todavía</h3>
+              <p>Publica tu primer material para que las empresas puedan encontrarte en la plataforma.</p>
+              <button class="btn btn-primary" onclick="openModal('modal-material')">Publicar mi primer material</button>
+            </div>`;
+        } else {
+          const grid = document.createElement('div');
+          grid.className = 'inv-grid';
+          mats.forEach((m, idx) => {
+            const card = document.createElement('div');
+            card.className = 'inv-card';
+            card.style.animationDelay = `${idx * 0.08}s`;
+            card.innerHTML = `
+              <div class="inv-card-body">
+                <div class="inv-card-name">${m.nombre}</div>
+                <div class="inv-card-meta">📦 ${m.cantidad} ${m.unidad}</div>
+                ${m.descripcion ? `<div class="inv-card-meta">${m.descripcion}</div>` : ''}
+                <span class="inv-card-status">Activo</span>
+                <div class="inv-card-actions">
+                  <button onclick="alert('Próximamente')">✏️ Editar</button>
+                  <button class="danger" onclick="deleteMaterial(${m.id}, this)">🗑 Eliminar</button>
+                </div>
+              </div>`;
+            grid.appendChild(card);
+          });
+          matContainer.innerHTML = '';
+          matContainer.appendChild(grid);
+        }
+
+        // Notificaciones (punto 6)
+        const notifRes = await fetch(`/api/notificaciones/${user.id}`);
+        const notifs = await notifRes.json();
+        const actContainer = document.getElementById('actividad-container');
+
+        const unread = notifs.filter(n => !n.leida);
+        if (unread.length > 0) document.getElementById('notif-dot').style.display = 'block';
+
+        if (notifs.length === 0) {
+          actContainer.innerHTML = `
+            <div class="notif-empty">
+              <div class="notif-empty-icon">✅</div>
+              <h4>Todo está al día</h4>
+              <p>Aquí aparecerán nuevas actividades cuando alguien visite tu perfil o te contacte.</p>
+            </div>`;
+        } else {
+          const list = document.createElement('div');
+          list.style.cssText = 'display:flex;flex-direction:column;gap:0.75rem;max-width:640px;margin:0 auto';
+          notifs.forEach(n => {
+            const d = new Date(n.created_at);
+            list.innerHTML += `
+              <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.25rem;background:white;border:1px solid var(--neutral-200);border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);${!n.leida ? 'border-left:3px solid var(--primary-500)' : ''}">
+                <div style="font-size:1.25rem">${n.tipo === 'visita' ? '👀' : n.tipo === 'material' ? '📦' : '🔔'}</div>
+                <div style="flex:1">
+                  <div style="font-weight:500;color:var(--neutral-800)">${n.mensaje}</div>
+                  <div style="font-size:0.75rem;color:var(--neutral-400);margin-top:0.25rem">${timeAgo(d)}</div>
+                </div>
+              </div>`;
+          });
+          actContainer.innerHTML = '';
+          actContainer.appendChild(list);
+        }
+
+        // Actualizar subtítulo del hero
+        const acts = [];
+        if (kpi.visitas > 0) acts.push(`${kpi.visitas} visitas al perfil`);
+        if (kpi.resenas > 0) acts.push(`${kpi.resenas} reseñas`);
+        if (kpi.favoritos > 0) acts.push(`${kpi.favoritos} en favoritos`);
+        document.getElementById('prov-subtitle').textContent = acts.length > 0
+          ? 'Tu actividad: ' + acts.join(' · ')
+          : 'Completa tu perfil para ganar más visibilidad.';
+
+        prevKpi = kpi;
+      } catch(e) {
+        console.warn('Error cargando dashboard:', e);
+        document.getElementById('prov-subtitle').textContent = 'Error conectando con el servidor.';
+      }
+    }
+
+    async function submitMaterial(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-submit-mat');
+      btn.textContent = 'Publicando...'; btn.disabled = true;
+
+      const isFirst = !prevKpi || prevKpi.materiales === 0;
+
+      try {
+        const res = await fetch('/api/materiales', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            proveedor_id: user.id,
+            nombre: document.getElementById('mat-nombre').value,
+            cantidad: document.getElementById('mat-cantidad').value,
+            unidad: document.getElementById('mat-unidad').value,
+            descripcion: document.getElementById('mat-descripcion').value
+          })
         });
-    </script>
+        if (!res.ok) throw new Error();
+        closeModal('modal-material');
+        document.getElementById('form-material').reset();
+
+        // Punto 7 — Celebración primer material
+        if (isFirst) {
+          setTimeout(() => {
+            showCelebration('🎉', '¡Excelente!', 'Has publicado tu primer material. Ya puedes comenzar a recibir visitas.');
+          }, 400);
+        }
+
+        await loadDashboard();
+      } catch {
+        showToast('Error al publicar material', 'error');
+      } finally {
+        btn.textContent = 'Publicar Material'; btn.disabled = false;
+      }
+    }
+
+    async function deleteMaterial(id, btn) {
+      if (!confirm('¿Eliminar este material?')) return;
+      btn.textContent = '...'; btn.disabled = true;
+      await fetch(`/api/materiales/${id}`, {method: 'DELETE'});
+      showToast('Material eliminado', 'info');
+      loadDashboard();
+    }
+
+    function timeAgo(date) {
+      const s = Math.floor((new Date() - date) / 1000);
+      if (s < 60) return 'Hace un momento';
+      if (s < 3600) return `Hace ${Math.floor(s/60)} minutos`;
+      if (s < 86400) return `Hace ${Math.floor(s/3600)} horas`;
+      return `Hace ${Math.floor(s/86400)} días`;
+    }
+
+    function showToast(msg, type) {
+      const t = document.createElement('div');
+      t.style.cssText = `position:fixed;bottom:2rem;right:2rem;background:${type==='success'?'#059669':type==='error'?'#dc2626':'#374151'};color:white;padding:1rem 1.5rem;border-radius:12px;font-weight:500;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2);animation:slideUp 0.3s ease`;
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    loadDashboard();
+  </script>
 </body>
 </html>

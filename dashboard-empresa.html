@@ -1,373 +1,424 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Empresa — ProVend</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/pages.css">
-    <style>
-        /* Estilos específicos y limpios para el Dashboard B2B */
-        body {
-            background-color: #f8fafc; /* Fondo gris muy claro, sin glassmorphism */
-        }
-        .dashboard-main {
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        /* Tarjetas limpias estilo SaaS */
-        .saas-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            border: 1px solid var(--neutral-200);
-            margin-bottom: 2rem;
-        }
-        .saas-card-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--neutral-800);
-            margin-bottom: 1rem;
-            border-bottom: 1px solid var(--neutral-100);
-            padding-bottom: 0.75rem;
-        }
-        
-        /* Grid de KPIs */
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .kpi-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--neutral-200);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-        }
-        .kpi-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-600);
-            margin-bottom: 0.25rem;
-        }
-        .kpi-label {
-            color: var(--neutral-500);
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProVend — Mi Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <style>
+    .dashboard-hero {
+      background: linear-gradient(135deg, var(--primary-50) 0%, #ffffff 60%, var(--primary-100) 100%);
+      padding: 5rem 2rem 4rem; position: relative; overflow: hidden; text-align: center;
+    }
+    .dashboard-hero::before {
+      content: ''; position: absolute; width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--primary-200), transparent 70%);
+      top: -200px; right: -100px; opacity: 0.4; border-radius: 50%;
+    }
+    .dashboard-hero .container { position: relative; z-index: 2; }
 
-        /* Acciones Rápidas */
-        .quick-actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-        .quick-action-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem 1rem;
-            background: white;
-            border: 1px solid var(--neutral-200);
-            border-radius: 12px;
-            color: var(--neutral-700);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            gap: 0.75rem;
-        }
-        .quick-action-btn:hover {
-            border-color: var(--primary-500);
-            color: var(--primary-600);
-            background: var(--primary-50);
-            transform: translateY(-2px);
-        }
-        .quick-action-icon {
-            font-size: 1.5rem;
-        }
+    .hero-greeting {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: white; border: 1px solid var(--neutral-200); border-radius: 99px;
+      padding: 0.4rem 1rem; font-size: var(--fs-sm); font-weight: 600; color: var(--primary-600);
+      margin-bottom: 1.5rem; box-shadow: var(--shadow-sm);
+      animation: heroSlideUp 0.6s ease-out both;
+    }
+    .dashboard-hero h1 {
+      font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 800; line-height: 1.15;
+      letter-spacing: -0.03em; color: var(--neutral-900); margin-bottom: 0.75rem;
+      animation: heroSlideUp 0.7s ease-out 0.1s both;
+    }
+    .dashboard-hero h1 span { color: var(--primary-500); }
+    .dashboard-hero p.sub {
+      color: var(--neutral-600); font-size: var(--fs-lg); max-width: 520px;
+      margin: 0 auto 2.5rem; animation: heroSlideUp 0.7s ease-out 0.2s both;
+    }
+    .dashboard-search { animation: heroSlideUp 0.7s ease-out 0.3s both; max-width: 620px; margin: 0 auto 1.5rem; }
+    .dashboard-tags {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem;
+      animation: heroSlideUp 0.7s ease-out 0.4s both;
+    }
+    .dashboard-tags span { color: var(--neutral-500); font-size: var(--fs-sm); }
+    .dashboard-tags a { font-size: var(--fs-sm); color: var(--primary-600); font-weight: 500; text-decoration: none; }
+    .dashboard-tags a:hover { text-decoration: underline; }
 
-        /* Actividad Reciente */
-        .activity-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        .activity-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--neutral-100);
-        }
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-        .activity-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--primary-500);
-        }
-        .activity-time {
-            margin-left: auto;
-            font-size: 0.75rem;
-            color: var(--neutral-400);
-        }
+    /* Stats row */
+    .dashboard-stats {
+      display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+      padding: 2.5rem 2rem; background: white; border-bottom: 1px solid var(--neutral-200);
+    }
+    .d-stat { display: flex; align-items: center; gap: 0.75rem; }
+    .d-stat-icon { width: 40px; height: 40px; background: var(--primary-50); color: var(--primary-600); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .d-stat-value { font-size: var(--fs-xl); font-weight: 700; color: var(--neutral-900); line-height: 1; }
+    .d-stat-label { font-size: var(--fs-xs); color: var(--neutral-500); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.1rem; }
 
-        /* Estado del perfil */
-        .profile-status-list {
-            list-style: none;
-            padding: 0;
-        }
-        .profile-status-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-        }
-        .status-ok { color: var(--success-500); }
-        .status-warn { color: var(--warning-500); }
-        
-        .progress-bar-bg {
-            background: var(--neutral-200);
-            height: 8px;
-            border-radius: 4px;
-            margin-top: 1rem;
-            overflow: hidden;
-        }
-        .progress-bar-fill {
-            background: var(--success-500);
-            height: 100%;
-            width: 85%;
-        }
+    /* Sections */
+    .dashboard-section { padding: 4rem 2rem; }
+    .dashboard-section:nth-child(even) { background: var(--neutral-50); }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 3rem; }
+    .section-header-label {
+      display: inline-block; font-size: var(--fs-xs); font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.15em; color: var(--primary-600);
+      background: var(--primary-50); padding: 0.3rem 1rem; border-radius: 99px; margin-bottom: 1rem;
+    }
+    .section-header h2 { font-size: var(--fs-3xl); font-weight: 700; color: var(--neutral-900); margin-bottom: 0.75rem; }
+    .section-header p { color: var(--neutral-500); font-size: var(--fs-lg); max-width: 500px; margin: 0 auto; }
 
-        /* Layout lateral para perfil y materiales */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-        }
-        @media (max-width: 900px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Materiales Tags */
-        .material-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .material-tag {
-            background: var(--neutral-100);
-            color: var(--neutral-700);
-            padding: 0.25rem 0.75rem;
-            border-radius: 99px;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-    </style>
+    /* Provider cards */
+    .providers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .prov-card {
+      background: white; border: 1px solid var(--neutral-200); border-radius: var(--radius-xl);
+      padding: 1.5rem; box-shadow: var(--shadow-card); transition: all var(--transition-base);
+    }
+    .prov-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-3px); border-color: var(--primary-200); }
+    .prov-card-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .prov-avatar { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; color: white; flex-shrink: 0; }
+    .prov-card-action {
+      display: block; text-align: center; padding: 0.6rem; border: 1px solid var(--neutral-200);
+      border-radius: var(--radius-lg); color: var(--primary-600); font-weight: 500; text-decoration: none;
+      font-size: var(--fs-sm); transition: all var(--transition-fast); margin-top: 1rem;
+    }
+    .prov-card-action:hover { background: var(--primary-50); border-color: var(--primary-300); }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center; padding: 4rem 2rem; color: var(--neutral-500);
+      background: var(--neutral-50); border-radius: var(--radius-xl);
+      border: 2px dashed var(--neutral-200);
+    }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-state h3 { font-size: var(--fs-xl); font-weight: 600; color: var(--neutral-700); margin-bottom: 0.5rem; }
+    .empty-state p { font-size: var(--fs-base); margin-bottom: 1.5rem; max-width: 360px; margin-left: auto; margin-right: auto; }
+
+    /* Market section */
+    .market-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; }
+    .market-card {
+      background: white; border: 1px solid var(--neutral-200); border-radius: var(--radius-xl);
+      padding: 1.75rem 1.25rem; text-align: center; box-shadow: var(--shadow-card); transition: all var(--transition-base);
+    }
+    .market-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+    .market-num { font-size: 2.25rem; font-weight: 800; color: var(--primary-600); }
+    .market-label { font-size: var(--fs-sm); color: var(--neutral-600); font-weight: 500; margin-top: 0.25rem; }
+
+    /* Actions */
+    .acciones-list { display: flex; flex-direction: column; gap: 1rem; max-width: 600px; margin: 0 auto; }
+    .accion-item {
+      display: flex; align-items: center; gap: 1rem; background: white;
+      border: 1px solid var(--neutral-200); border-radius: var(--radius-xl); padding: 1.25rem 1.5rem;
+      text-decoration: none; color: var(--neutral-800); font-weight: 500;
+      box-shadow: var(--shadow-card); transition: all var(--transition-base);
+    }
+    .accion-item:hover { border-color: var(--primary-400); box-shadow: var(--shadow-blue); transform: translateX(4px); color: var(--primary-700); }
+    .accion-emoji { font-size: 1.5rem; width: 48px; height: 48px; background: var(--primary-50); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+    @keyframes heroSlideUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  </style>
 </head>
 <body>
-    <div id="navbar-container"></div>
-    
-    <!-- Eliminamos el sidebar completo para dar una experiencia de pantalla completa estilo Portal -->
-    
-    <main class="dashboard-main">
-        <!-- 1. BIENVENIDA -->
-        <div class="dashboard-header" style="margin-bottom: 2rem;">
-            <h1 class="dashboard-title" style="font-size: 2rem;">Dashboard Empresa</h1>
-            <p class="dashboard-subtitle" style="font-size: 1.125rem;">👋 Bienvenida de vuelta, <span id="user-name-display">María López</span></p>
+  <div id="navbar-container"></div>
+
+  <!-- HERO -->
+  <section class="dashboard-hero">
+    <div class="container">
+      <div class="hero-greeting" id="greeting-badge">👋 Cargando tu perfil...</div>
+      <h1>¿Qué estás <span>buscando hoy</span>?</h1>
+      <p class="sub">Tu plataforma B2B para conectar con los mejores proveedores de Nicaragua.</p>
+      <div class="dashboard-search">
+        <div class="search-bar">
+          <span class="search-bar-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          </span>
+          <input id="hero-search-input" type="text" placeholder="Buscar proveedores, materiales o categorías...">
+          <button class="btn btn-primary" onclick="goSearch()">Buscar</button>
         </div>
+      </div>
+      <div class="dashboard-tags">
+        <span>Explorar:</span>
+        <a href="explorar.html?tab=empresas">Todos los proveedores</a>
+        <a href="explorar.html?tab=materiales">Materiales</a>
+        <a href="categorias.html">Categorías</a>
+      </div>
+    </div>
+  </section>
 
-        <!-- 2. KPIs -->
-        <div class="kpi-grid">
-            <div class="kpi-card">
-                <div class="kpi-value">27</div>
-                <div class="kpi-label">Proveedores visitados</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-value">8</div>
-                <div class="kpi-label">Favoritos</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-value">15</div>
-                <div class="kpi-label">Contactos realizados</div>
-            </div>
-            <div class="kpi-card">
-                <div class="kpi-value">1,250 kg</div>
-                <div class="kpi-label">Material encontrado</div>
-            </div>
+  <!-- MI ACTIVIDAD REAL -->
+  <div class="dashboard-stats" id="activity-stats">
+    <div class="d-stat">
+      <div class="d-stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      </div>
+      <div>
+        <div class="d-stat-value" id="stat-visitados">0</div>
+        <div class="d-stat-label">Proveedores visitados</div>
+      </div>
+    </div>
+    <div class="d-stat">
+      <div class="d-stat-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+      </div>
+      <div>
+        <div class="d-stat-value" id="stat-favoritos">0</div>
+        <div class="d-stat-label">En favoritos</div>
+      </div>
+    </div>
+    <div class="d-stat">
+      <div class="d-stat-icon" style="background:var(--success-100); color:var(--success-600)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      </div>
+      <div>
+        <div class="d-stat-value" id="stat-nuevos" style="color:var(--success-600)">0</div>
+        <div class="d-stat-label">Nuevos proveedores</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MIS FAVORITOS -->
+  <section class="dashboard-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">MIS FAVORITOS</span>
+        <h2>Tus proveedores guardados</h2>
+        <p>Accede rápidamente a los proveedores que más te interesan.</p>
+      </div>
+      <div id="favoritos-container">
+        <div class="empty-state">
+          <div class="empty-state-icon">❤️</div>
+          <h3>Aún no tienes favoritos</h3>
+          <p>Guarda los proveedores que más te interesen para encontrarlos rápido.</p>
+          <a href="explorar.html" class="btn btn-primary">Explorar proveedores</a>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- 3. ACCIONES RÁPIDAS -->
-        <section class="saas-card">
-            <h2 class="saas-card-title">🚀 Acciones rápidas</h2>
-            <div class="quick-actions-grid">
-                <a href="explorar.html?tab=empresas" class="quick-action-btn">
-                    <span class="quick-action-icon">🔍</span>
-                    Buscar proveedor
-                </a>
-                <a href="explorar.html?tab=materiales" class="quick-action-btn">
-                    <span class="quick-action-icon">📦</span>
-                    Buscar material
-                </a>
-                <a href="categorias.html" class="quick-action-btn">
-                    <span class="quick-action-icon">📂</span>
-                    Explorar categorías
-                </a>
-                <a href="#" class="quick-action-btn">
-                    <span class="quick-action-icon">⭐</span>
-                    Favoritos
-                </a>
-                <a href="#" class="quick-action-btn">
-                    <span class="quick-action-icon">📊</span>
-                    Historial
-                </a>
-            </div>
-        </section>
-
-        <div class="dashboard-grid">
-            <!-- COLUMNA IZQUIERDA (Principal) -->
-            <div>
-                <!-- 4. ACTIVIDAD RECIENTE -->
-                <section class="saas-card">
-                    <h2 class="saas-card-title">📋 Actividad reciente</h2>
-                    <div class="activity-list" id="activity-container">
-                        <!-- Llenado por mockData.js -->
-                    </div>
-                </section>
-
-                <!-- 5. PROVEEDORES DESTACADOS -->
-                <section class="saas-card">
-                    <h2 class="saas-card-title">⭐ Proveedores destacados <br><span style="font-size:0.875rem; color:var(--neutral-500); font-weight:normal">Recientemente agregados a la plataforma</span></h2>
-                    <div class="grid-providers" id="featured-providers" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-                        <!-- Llenado por mockData.js -->
-                    </div>
-                </section>
-            </div>
-
-            <!-- COLUMNA DERECHA (Secundaria) -->
-            <div>
-                <!-- ESTADO DEL PERFIL -->
-                <section class="saas-card">
-                    <h2 class="saas-card-title">Perfil de Empresa</h2>
-                    <ul class="profile-status-list">
-                        <li><span class="status-ok">✔</span> Información completada</li>
-                        <li><span class="status-ok">✔</span> Logo cargado</li>
-                        <li><span class="status-ok">✔</span> Correo verificado</li>
-                        <li><span class="status-warn">⚠</span> Falta agregar dirección</li>
-                    </ul>
-                    <div style="margin-top:1rem; font-size:0.875rem; font-weight:600; display:flex; justify-content:space-between;">
-                        <span>Completitud:</span>
-                        <span>85%</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill"></div>
-                    </div>
-                    <button class="btn btn-outline" style="width:100%; margin-top:1.5rem;">Completar perfil</button>
-                </section>
-
-                <!-- 6. MATERIALES POPULARES -->
-                <section class="saas-card">
-                    <h2 class="saas-card-title">🔥 Materiales populares</h2>
-                    <div class="material-tags" id="popular-materials">
-                        <!-- Llenado por mockData.js -->
-                    </div>
-                </section>
-
-                <!-- 7. CONFIGURACIÓN -->
-                <section class="saas-card">
-                    <h2 class="saas-card-title">⚙ Configuración rápida</h2>
-                    <ul class="profile-status-list" style="gap:1rem; display:flex; flex-direction:column;">
-                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Preferencias</a></li>
-                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Idioma</a></li>
-                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Notificaciones</a></li>
-                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Datos de empresa</a></li>
-                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Contraseña</a></li>
-                        <li><a href="#" style="color:var(--danger-500); text-decoration:none;">Eliminar cuenta</a></li>
-                    </ul>
-                </section>
-            </div>
+  <!-- MERCADO EN VIVO -->
+  <section class="dashboard-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">PLATAFORMA EN VIVO</span>
+        <h2>Estado del mercado</h2>
+        <p>Datos reales de actividad en ProVend Nicaragua.</p>
+      </div>
+      <div class="market-grid" id="market-grid">
+        <div class="market-card">
+          <div class="market-num" id="mkt-proveedores">—</div>
+          <div class="market-label">Proveedores registrados</div>
         </div>
+        <div class="market-card">
+          <div class="market-num" id="mkt-empresas">—</div>
+          <div class="market-label">Empresas registradas</div>
+        </div>
+        <div class="market-card">
+          <div class="market-num" id="mkt-materiales">—</div>
+          <div class="market-label">Materiales disponibles</div>
+        </div>
+        <div class="market-card" style="background:var(--primary-50); border-color:var(--primary-200)">
+          <div class="market-num" id="mkt-verificados" style="color:var(--primary-700)">—</div>
+          <div class="market-label" style="color:var(--primary-700); font-weight:600">Proveedores verificados</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    </main>
+  <!-- ACCIONES RECOMENDADAS -->
+  <section class="dashboard-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">ACCIONES RECOMENDADAS</span>
+        <h2>¿Qué quieres hacer hoy?</h2>
+      </div>
+      <div class="acciones-list">
+        <a href="explorar.html?tab=empresas" class="accion-item">
+          <div class="accion-emoji">🔍</div>
+          <div><div style="font-weight:600">Buscar nuevos proveedores</div><div style="font-size:0.875rem; color:var(--neutral-500); margin-top:0.15rem">Explora el directorio completo y filtra por categoría o ubicación.</div></div>
+        </a>
+        <a href="explorar.html?tab=materiales" class="accion-item">
+          <div class="accion-emoji">📦</div>
+          <div><div style="font-weight:600">Explorar materiales disponibles</div><div style="font-size:0.875rem; color:var(--neutral-500); margin-top:0.15rem">Encuentra materias primas publicadas por proveedores verificados.</div></div>
+        </a>
+        <a href="categorias.html" class="accion-item">
+          <div class="accion-emoji">🗂️</div>
+          <div><div style="font-weight:600">Ver todas las categorías</div><div style="font-size:0.875rem; color:var(--neutral-500); margin-top:0.15rem">Encuentra industrias específicas y proveedores especializados.</div></div>
+        </a>
+      </div>
+    </div>
+  </section>
 
-    <script src="js/mockData.js"></script>
-    <script src="js/components.js"></script>
-    <script src="js/auth.js"></script>
-    <script>
-        document.getElementById('navbar-container').innerHTML = createNavbar();
+  <!-- CATEGORÍAS -->
+  <section class="categories-section section" style="background:var(--neutral-50);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">CATEGORÍAS</span>
+        <h2>Explora por categoría</h2>
+        <p>Encuentra proveedores en las principales industrias de Nicaragua.</p>
+      </div>
+      <div id="categories-grid" class="grid-categories"></div>
+    </div>
+  </section>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Cargar datos del usuario
-            const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
-            if (user) {
-                document.getElementById('user-name-display').textContent = user.nombre || user.name || 'Empresa';
-            }
+  <div id="footer-container"></div>
 
-            // Llenar Actividad
-            const activityContainer = document.getElementById('activity-container');
-            const actividades = window.ProVendData.getActividadReciente();
-            actividades.forEach(act => {
-                activityContainer.innerHTML += `
-                    <div class="activity-item">
-                        <div class="activity-dot"></div>
-                        <span>${act.texto}</span>
-                        <span class="activity-time">${act.tiempo}</span>
-                    </div>
-                `;
-            });
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/animations.js"></script>
+  <script>
+    const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
+    if (!user || user.rol !== 'empresa') {
+      window.location.href = 'login.html';
+    }
 
-            // Llenar Materiales Populares
-            const materialsContainer = document.getElementById('popular-materials');
-            const materiales = window.ProVendData.getMaterialesPopulares();
-            materiales.forEach(mat => {
-                materialsContainer.innerHTML += `<span class="material-tag">${mat}</span>`;
-            });
+    function buildAuthNavbar(u) {
+      const name = u.company || u.nombre || 'Mi cuenta';
+      const initials = name.substring(0, 2).toUpperCase();
+      return `
+        <nav class="navbar" id="navbar">
+          <div class="navbar-inner">
+            <a href="dashboard-empresa.html" class="navbar-logo">
+              ${getLogoSVG(36)}
+              <span class="navbar-logo-text">Pro<span>Vend</span></span>
+            </a>
+            <div class="navbar-nav">
+              <a href="dashboard-empresa.html" class="navbar-link active">Inicio</a>
+              <a href="explorar.html" class="navbar-link">Explorar</a>
+              <a href="explorar.html?tab=materiales" class="navbar-link">Materiales</a>
+              <a href="categorias.html" class="navbar-link">Categorías</a>
+            </div>
+            <div class="navbar-actions" style="gap:0.75rem">
+              <button id="notif-btn" style="background:none; border:none; cursor:pointer; color:var(--neutral-600); position:relative;" title="Notificaciones">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span id="notif-dot" style="display:none; position:absolute; top:-2px; right:-2px; width:8px; height:8px; background:var(--danger-500); border-radius:50%; border:2px solid white;"></span>
+              </button>
+              <div style="display:flex; align-items:center; gap:0.5rem; padding: 0.3rem 0.75rem; border-radius:99px; border:1px solid var(--neutral-200); background:white; box-shadow:var(--shadow-xs)">
+                <div style="width:28px; height:28px; background:var(--primary-100); color:var(--primary-700); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem;">${initials}</div>
+                <span style="font-size:0.875rem; font-weight:500; color:var(--neutral-800); max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${name}</span>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="ProVendAuth.logout()" style="color:var(--danger-600)">Salir</button>
+            </div>
+          </div>
+        </nav>
+      `;
+    }
 
-            // Llenar Proveedores Destacados
-            const providersContainer = document.getElementById('featured-providers');
-            const proveedores = window.ProVendData.getProveedores().slice(0, 2); // Mostrar solo 2 para no saturar
-            
-            // Función simplificada para crear tarjeta usando los nuevos datos
-            proveedores.forEach(p => {
-                providersContainer.innerHTML += `
-                    <div class="provider-card" style="background:white; border:1px solid var(--neutral-200); box-shadow:none;">
-                        <img src="${p.logo}" class="provider-logo" alt="${p.nombre}">
-                        <div class="provider-info">
-                            <h3 class="provider-name">${p.nombre}</h3>
-                            <p class="provider-category">${p.categoria} • ${p.ciudad}</p>
-                            <div class="provider-rating">
-                                <span class="stars">★★★★★</span>
-                                <span class="rating-number">${p.rating}</span>
-                                <span class="reviews-count">(${p.reviews} reseñas)</span>
-                            </div>
-                            <div class="provider-tags">
-                                ${p.materiales.slice(0,2).map(m => `<span class="tag">${m}</span>`).join('')}
-                            </div>
-                            <div class="provider-actions">
-                                <a href="perfil-proveedor.html?id=${p.id}" class="btn btn-primary" style="width:100%; text-align:center;">Ver Perfil</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        });
-    </script>
+    document.getElementById('navbar-container').innerHTML = buildAuthNavbar(user);
+    document.getElementById('footer-container').innerHTML = buildFooter();
+    renderCategoryCards('categories-grid');
+
+    // Saludo personalizado
+    const name = user.company || user.nombre || '';
+    const hour = new Date().getHours();
+    const greet = hour < 12 ? 'Buenos días' : hour < 18 ? 'Buenas tardes' : 'Buenas noches';
+    document.getElementById('greeting-badge').textContent = `👋 ${greet}, ${name}`;
+
+    // Cargar datos reales de la API
+    async function loadDashboard() {
+      try {
+        // 1. Estadísticas de mi actividad
+        const actRes = await fetch(`/api/dashboard/empresa/${user.id}`);
+        const act = await actRes.json();
+        document.getElementById('stat-visitados').textContent = act.proveedores_visitados || 0;
+        document.getElementById('stat-favoritos').textContent = act.favoritos || 0;
+
+        // ¿Es el primer ingreso? (sin actividad)
+        const isFirstTime = !act.proveedores_visitados && !act.favoritos;
+        if (isFirstTime) {
+          // Mostrar bienvenida especial encima de todo
+          const welcomeBanner = document.createElement('div');
+          welcomeBanner.style.cssText = 'background:linear-gradient(135deg,var(--primary-50),white);border:1px solid var(--primary-100);border-radius:16px;padding:2rem;text-align:center;margin-bottom:2rem;max-width:600px;margin-left:auto;margin-right:auto;';
+          welcomeBanner.innerHTML = `
+            <div style="font-size:2.5rem;margin-bottom:0.75rem">👋</div>
+            <h2 style="font-size:1.5rem;font-weight:700;color:var(--neutral-900);margin-bottom:0.5rem">
+              Bienvenido a ProVend, ${name}
+            </h2>
+            <p style="color:var(--neutral-600);max-width:420px;margin:0 auto 1.5rem">
+              Todavía no has realizado ninguna búsqueda. Empieza buscando un material o un proveedor para tu negocio.
+            </p>
+            <a href="explorar.html" class="btn btn-primary" style="font-size:1rem;padding:0.75rem 2rem">
+              🔍 Buscar ahora
+            </a>`;
+          const firstSection = document.querySelector('.dashboard-section');
+          if (firstSection) firstSection.prepend(welcomeBanner);
+        }
+
+        // 2. Estadísticas globales del mercado
+        const statsRes = await fetch('/api/stats');
+        const stats = await statsRes.json();
+        document.getElementById('mkt-proveedores').textContent = stats.proveedores || 0;
+        document.getElementById('mkt-empresas').textContent = stats.empresas || 0;
+        document.getElementById('mkt-materiales').textContent = stats.materiales || 0;
+        document.getElementById('mkt-verificados').textContent = stats.verificados || 0;
+        document.getElementById('stat-nuevos').textContent = stats.proveedores || 0;
+
+
+        // 3. Favoritos reales
+        const favRes = await fetch(`/api/dashboard/empresa/${user.id}/favoritos`);
+        const favs = await favRes.json();
+        const favContainer = document.getElementById('favoritos-container');
+
+        if (favs.length === 0) {
+          favContainer.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">❤️</div>
+              <h3>Aún no tienes favoritos</h3>
+              <p>Explora proveedores y guarda los que más te interesen haciendo clic en el corazón de su perfil.</p>
+              <a href="explorar.html" class="btn btn-primary">Explorar proveedores</a>
+            </div>`;
+        } else {
+          const grid = document.createElement('div');
+          grid.className = 'providers-grid';
+          favs.forEach(p => {
+            const initials = (p.company || p.nombre || 'PR').substring(0, 2).toUpperCase();
+            const colors = ['#2B7DE9','#27ae60','#e67e22','#9b59b6','#e74c3c'];
+            const color = colors[p.id % colors.length];
+            grid.innerHTML += `
+              <div class="prov-card">
+                <div class="prov-card-top">
+                  <div class="prov-avatar" style="background:${color}">${initials}</div>
+                  <div>
+                    <div style="font-weight:600; color:var(--neutral-900)">${p.company || p.nombre} ${p.verificado ? '✅' : ''}</div>
+                    <div style="font-size:0.875rem; color:var(--neutral-500)">${p.categoria || 'Proveedor'}</div>
+                  </div>
+                </div>
+                <div style="font-size:0.875rem; color:var(--neutral-500)">
+                  ★ ${Number(p.rating).toFixed(1)} (${p.reviews} reseñas)
+                </div>
+                <a href="perfil-proveedor.html?id=${p.id}" class="prov-card-action">Ver Perfil →</a>
+              </div>`;
+          });
+          favContainer.innerHTML = '';
+          favContainer.appendChild(grid);
+        }
+
+        // 4. Notificaciones
+        const notifRes = await fetch(`/api/notificaciones/${user.id}`);
+        const notifs = await notifRes.json();
+        const unread = notifs.filter(n => !n.leida);
+        if (unread.length > 0) {
+          document.getElementById('notif-dot').style.display = 'block';
+        }
+
+      } catch (e) {
+        console.warn('Error cargando dashboard:', e);
+      }
+    }
+
+    loadDashboard();
+
+    function goSearch() {
+      const q = document.getElementById('hero-search-input').value.trim();
+      window.location.href = 'explorar.html?tab=empresas' + (q ? '&q=' + encodeURIComponent(q) : '');
+    }
+    document.getElementById('hero-search-input').addEventListener('keypress', e => {
+      if (e.key === 'Enter') goSearch();
+    });
+  </script>
 </body>
 </html>
