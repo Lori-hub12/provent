@@ -402,6 +402,62 @@ app.put('/api/perfiles_proveedor/:id', (req, res) => {
     );
 });
 
+// ===================== BUSCADOR DINÁMICO =====================
+app.get('/api/search', (req, res) => {
+    const q = req.query.q ? req.query.q.trim().toLowerCase() : '';
+    const type = req.query.type || 'materiales';
+    let locations = req.query.ubicacion ? req.query.ubicacion.split(',') : [];
+    const verificados = req.query.verificados === 'true';
+
+    let query = '';
+    let params = [];
+
+    if (type === 'materiales') {
+        query = `
+            SELECT m.*, p.company as empresa_nombre, p.ciudad, p.verificado, p.logo_url, u.nombre as proveedor_nombre 
+            FROM materiales m 
+            JOIN perfiles_proveedor p ON m.proveedor_id = p.usuario_id 
+            JOIN usuarios u ON m.proveedor_id = u.id
+            WHERE m.estado = 'Activo'
+        `;
+        
+        if (q) {
+            query += ` AND (LOWER(m.nombre) LIKE ? OR LOWER(m.descripcion) LIKE ?)`;
+            params.push(`%${q}%`, `%${q}%`);
+        }
+    } else {
+        query = `
+            SELECT p.*, u.nombre as proveedor_nombre, u.email 
+            FROM perfiles_proveedor p 
+            JOIN usuarios u ON p.usuario_id = u.id 
+            WHERE u.rol = 'proveedor'
+        `;
+        
+        if (q) {
+            query += ` AND (LOWER(p.company) LIKE ? OR LOWER(u.nombre) LIKE ? OR LOWER(p.descripcion) LIKE ? OR LOWER(p.categoria) LIKE ?)`;
+            params.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`);
+        }
+    }
+
+    if (locations.length > 0) {
+        const placeholders = locations.map(() => '?').join(',');
+        query += ` AND p.ciudad IN (${placeholders})`;
+        params.push(...locations);
+    }
+
+    if (verificados) {
+        query += ` AND p.verificado = 1`;
+    }
+
+    // Ordenar por fecha de creación (los más recientes primero)
+    query += ` ORDER BY ${type === 'materiales' ? 'm.created_at' : 'p.updated_at'} DESC LIMIT 50`;
+
+    db.all(query, params, (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
 // ===================== FAVORITOS =====================
 app.post('/api/favoritos', (req, res) => {
     const { empresa_id, proveedor_id } = req.body;
