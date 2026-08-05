@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -421,7 +421,7 @@
     async function loadDashboard() {
       try {
         // KPIs
-        const kpiRes = await fetch(`/api/dashboard/proveedor/${user.id}`);
+        const kpiRes = await fetch(`http://localhost:3000/api/dashboard/proveedor/${user.id}`);
         const kpi = await kpiRes.json();
 
         animateKPI(document.getElementById('kpi-materiales'), kpi.materiales || 0);
@@ -531,7 +531,7 @@
           </div>`).join('');
 
         // Materiales
-        const matRes = await fetch(`/api/dashboard/proveedor/${user.id}/materiales`);
+        const matRes = await fetch(`http://localhost:3000/api/dashboard/proveedor/${user.id}/materiales`);
         const mats = await matRes.json();
         const matContainer = document.getElementById('materiales-container');
 
@@ -568,7 +568,7 @@
         }
 
         // Notificaciones (punto 6)
-        const notifRes = await fetch(`/api/notificaciones/${user.id}`);
+        const notifRes = await fetch(`http://localhost:3000/api/notificaciones/${user.id}`);
         const notifs = await notifRes.json();
         const actContainer = document.getElementById('actividad-container');
 
@@ -624,7 +624,7 @@
       const isFirst = !prevKpi || prevKpi.materiales === 0;
 
       try {
-        const res = await fetch('/api/materiales', {
+        const res = await fetch('http://localhost:3000/api/materiales', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -657,7 +657,7 @@
     async function deleteMaterial(id, btn) {
       if (!confirm('¿Eliminar este material?')) return;
       btn.textContent = '...'; btn.disabled = true;
-      await fetch(`/api/materiales/${id}`, {method: 'DELETE'});
+      await fetch(`http://localhost:3000/api/materiales/${id}`, {method: 'DELETE'});
       showToast('Material eliminado', 'info');
       loadDashboard();
     }

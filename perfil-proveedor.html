@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -196,13 +196,13 @@
 
         async function loadProfile() {
             try {
-                const res = await fetch(`/api/proveedores/${providerId}`);
+                const res = await fetch(`http://localhost:3000/api/proveedores/${providerId}`);
                 if (!res.ok) throw new Error('No encontrado');
                 const p = await res.json();
 
                 // Registrar visita
                 if (user && user.id !== p.id) {
-                    fetch('/api/visitas', {
+                    fetch('http://localhost:3000/api/visitas', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ proveedor_id: p.id, visitante_id: user.id })
@@ -293,7 +293,7 @@
                 document.getElementById('info-verif').textContent = p.verificado ? 'Verificado ✅' : 'Pendiente de verificación';
 
                 // Materiales del proveedor
-                const matRes = await fetch(`/api/dashboard/proveedor/${p.id}/materiales`);
+                const matRes = await fetch(`http://localhost:3000/api/dashboard/proveedor/${p.id}/materiales`);
                 const mats = await matRes.json();
                 const matDiv = document.getElementById('materiales-perfil');
                 if (mats.length === 0) {
@@ -310,7 +310,7 @@
                 }
 
                 // Reseñas
-                const revRes = await fetch(`/api/dashboard/proveedor/${p.id}/resenas`);
+                const revRes = await fetch(`http://localhost:3000/api/dashboard/proveedor/${p.id}/resenas`);
                 const revs = await revRes.json();
                 const revDiv = document.getElementById('resenas-container');
                 if (revs.length === 0) {
@@ -348,7 +348,7 @@
                 alert('Debes iniciar sesión como Empresa para guardar favoritos.');
                 return;
             }
-            const res = await fetch('/api/favoritos', {
+            const res = await fetch('http://localhost:3000/api/favoritos', {
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({ empresa_id: user.id, proveedor_id: parseInt(providerId) })

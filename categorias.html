@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -572,7 +572,7 @@
       `).join('');
 
       // Fetch real stats
-      fetch('/api/stats')
+      fetch('http://localhost:3000/api/stats')
         .then(res => res.json())
         .then(stats => {
           if(stats.proveedores > 0 || stats.empresas > 0) {

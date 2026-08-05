@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -142,7 +142,7 @@
         // Cargar proveedores reales desde la API
         async function loadProviders() {
             try {
-                const res = await fetch('/api/proveedores');
+                const res = await fetch('http://localhost:3000/api/proveedores');
                 allProviders = await res.json();
             } catch(e) {
                 allProviders = [];

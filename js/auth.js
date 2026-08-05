@@ -1,4 +1,4 @@
-/* ============================================
+﻿/* ============================================
    ProVend — auth.js
    Mock authentication with localStorage
    ============================================ */
@@ -14,7 +14,7 @@ const mockUsers = [
 
 async function login(email, password) {
   try {
-    const res = await fetch('/api/login', {
+    const res = await fetch('http://localhost:3000/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -31,7 +31,7 @@ async function login(email, password) {
 
 async function register(data) {
   try {
-    const res = await fetch('/api/register', {
+    const res = await fetch('http://localhost:3000/api/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
