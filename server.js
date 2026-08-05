@@ -450,7 +450,7 @@ app.get('/api/search', (req, res) => {
     }
 
     // Ordenar por fecha de creación (los más recientes primero)
-    query += ` ORDER BY ${type === 'materiales' ? 'm.created_at' : 'p.updated_at'} DESC LIMIT 50`;
+    query += ` ORDER BY ${type === 'materiales' ? 'm.created_at' : 'u.created_at'} DESC LIMIT 50`;
 
     db.all(query, params, (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
