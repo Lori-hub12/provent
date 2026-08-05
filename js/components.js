@@ -1,4 +1,4 @@
-﻿/* ============================================
+/* ============================================
    ProVend — components.js
    Shared components: Navbar, Footer, Logo SVG
    ============================================ */
@@ -85,6 +85,33 @@ function generateStars(rating, size = 16) {
 
 // ---- Build Navbar HTML ----
 function buildNavbar(activePage = '') {
+  let user = null;
+  try {
+    const stored = localStorage.getItem('ProVend_user');
+    if (stored) user = JSON.parse(stored);
+  } catch(e) {}
+
+  let desktopActions = `
+        <a href="login.html" class="btn btn-ghost btn-sm">Iniciar Sesión</a>
+        <a href="registro.html" class="btn btn-primary btn-sm">Registrarse</a>`;
+        
+  let mobileActions = `
+      <a href="login.html" class="btn btn-outline btn-block">Iniciar Sesión</a>
+      <a href="registro.html" class="btn btn-primary btn-block">Registrarse gratis</a>`;
+
+  if (user) {
+    const dashboardLink = user.rol === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html';
+    const logoutAction = "if(window.ProVendAuth) { ProVendAuth.logout(); } else { localStorage.removeItem('ProVend_user'); window.location.href='index.html'; }";
+    
+    desktopActions = `
+        <a href="${dashboardLink}" class="btn btn-ghost btn-sm" style="color:var(--primary-600); font-weight:600;">Mi Panel</a>
+        <button class="btn btn-ghost btn-sm" onclick="${logoutAction}" style="color:var(--danger-500)">Salir</button>`;
+        
+    mobileActions = `
+      <a href="${dashboardLink}" class="btn btn-primary btn-block">Ir a mi Panel</a>
+      <button class="btn btn-outline btn-block" onclick="${logoutAction}" style="color:var(--danger-600); border-color:var(--danger-200)">Cerrar Sesión</button>`;
+  }
+
   return `
   <nav class="navbar" id="navbar">
     <div class="navbar-inner">
@@ -100,8 +127,7 @@ function buildNavbar(activePage = '') {
       </div>
       
       <div class="navbar-actions">
-        <a href="login.html" class="btn btn-ghost btn-sm">Iniciar Sesión</a>
-        <a href="registro.html" class="btn btn-primary btn-sm">Registrarse</a>
+        ${desktopActions}
         <button class="navbar-mobile-btn" id="mobile-menu-btn" aria-label="Abrir menú">
           ${icons.menu}
         </button>
@@ -127,8 +153,7 @@ function buildNavbar(activePage = '') {
       <a href="index.html#como-funciona" class="mobile-menu-link">${icons.checkCircle} Cómo funciona</a>
     </div>
     <div class="mobile-menu-actions">
-      <a href="login.html" class="btn btn-outline btn-block">Iniciar Sesión</a>
-      <a href="registro.html" class="btn btn-primary btn-block">Registrarse gratis</a>
+      ${mobileActions}
     </div>
   </div>`;
 }

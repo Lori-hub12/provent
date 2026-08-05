@@ -18,6 +18,9 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
     } else {
         console.log('✅ Conectado a SQLite.');
         db.serialize(() => {
+            // Habilitar Foreign Keys en SQLite
+            db.run(`PRAGMA foreign_keys = ON;`);
+
             // Usuarios
             db.run(`CREATE TABLE IF NOT EXISTS usuarios (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +29,8 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
                 password TEXT,
                 rol TEXT,
                 company TEXT,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )`);
 
             // Perfiles de proveedor
@@ -48,7 +52,8 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
                 tiempo_respuesta TEXT DEFAULT '24 horas',
                 estado TEXT DEFAULT 'Disponible',
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY(usuario_id) REFERENCES usuarios(id)
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
             )`);
 
             // Materiales del proveedor
@@ -62,7 +67,8 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
                 imagen_url TEXT,
                 estado TEXT DEFAULT 'Activo',
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY(proveedor_id) REFERENCES usuarios(id)
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(proveedor_id) REFERENCES usuarios(id) ON DELETE CASCADE
             )`);
 
             // Productos del proveedor
@@ -76,7 +82,8 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
                 imagen_url TEXT,
                 estado TEXT DEFAULT 'Activo',
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY(proveedor_id) REFERENCES usuarios(id)
+                updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(proveedor_id) REFERENCES usuarios(id) ON DELETE CASCADE
             )`);
 
             // Visitas a perfiles
@@ -84,7 +91,8 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 proveedor_id INTEGER,
                 visitante_id INTEGER,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(proveedor_id) REFERENCES usuarios(id) ON DELETE CASCADE
             )`);
 
             // Favoritos
@@ -93,7 +101,9 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
                 empresa_id INTEGER,
                 proveedor_id INTEGER,
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                UNIQUE(empresa_id, proveedor_id)
+                UNIQUE(empresa_id, proveedor_id),
+                FOREIGN KEY(empresa_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+                FOREIGN KEY(proveedor_id) REFERENCES usuarios(id) ON DELETE CASCADE
             )`);
 
             // Reseñas
@@ -103,7 +113,9 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
                 empresa_id INTEGER,
                 rating INTEGER,
                 comentario TEXT,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(proveedor_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+                FOREIGN KEY(empresa_id) REFERENCES usuarios(id) ON DELETE CASCADE
             )`);
 
             // Notificaciones
@@ -113,8 +125,16 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
                 tipo TEXT,
                 mensaje TEXT,
                 leida INTEGER DEFAULT 0,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
             )`);
+
+            // -------------------- INDICES PARA RENDIMIENTO --------------------
+            db.run(`CREATE INDEX IF NOT EXISTS idx_usuarios_rol ON usuarios(rol);`);
+            db.run(`CREATE INDEX IF NOT EXISTS idx_perfiles_categoria ON perfiles_proveedor(categoria);`);
+            db.run(`CREATE INDEX IF NOT EXISTS idx_materiales_proveedor ON materiales(proveedor_id);`);
+            db.run(`CREATE INDEX IF NOT EXISTS idx_favoritos_empresa ON favoritos(empresa_id);`);
+            db.run(`CREATE INDEX IF NOT EXISTS idx_notificaciones_usuario ON notificaciones(usuario_id, leida);`);
         });
     }
 });

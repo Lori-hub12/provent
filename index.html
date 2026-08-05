@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -267,19 +267,7 @@
   <script src="js/animations.js"></script>
   <script src="js/auth.js"></script>
   <script>
-    // Si ya está logueado, actualizar navbar
-    const _u = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
-    if (_u) {
-      document.getElementById('navbar-container').innerHTML = buildNavbar('home').replace(
-        '<a href="login.html" class="btn btn-ghost btn-sm">Iniciar Sesión</a>',
-        `<a href="${_u.rol === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html'}" class="btn btn-ghost btn-sm">Mi Panel</a>`
-      ).replace(
-        '<a href="registro.html" class="btn btn-primary btn-sm">Registrarse</a>',
-        `<button class="btn btn-ghost btn-sm" onclick="ProVendAuth.logout()" style="color:var(--danger-600)">Salir</button>`
-      );
-    } else {
-      document.getElementById('navbar-container').innerHTML = buildNavbar('home');
-    }
+    document.getElementById('navbar-container').innerHTML = buildNavbar('home');
 
     // Cargar estadísticas reales y gestionar estado vacío
     fetch('http://localhost:3000/api/stats').then(r => r.json()).then(s => {
