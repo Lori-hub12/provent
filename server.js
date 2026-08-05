@@ -70,6 +70,18 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
             )`);
 
             // Perfiles de proveedor
+            db.run(`CREATE TABLE IF NOT EXISTS perfiles_empresa (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                usuario_id INTEGER UNIQUE,
+                logo_url TEXT,
+                rubro_industria TEXT,
+                ciudad_operacion TEXT,
+                telefono_contacto TEXT,
+                tamano_empresa TEXT,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
+            )`);
+
             db.run(`CREATE TABLE IF NOT EXISTS perfiles_proveedor (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 usuario_id INTEGER UNIQUE,

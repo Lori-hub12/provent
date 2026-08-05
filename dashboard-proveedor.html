@@ -298,8 +298,33 @@
             </select>
           </div>
         </div>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem">
+          <div class="form-group" style="margin-bottom:0">
+            <label>Precio Estimado</label>
+            <input type="text" id="mat-precio" placeholder="Ej. $120 / Ton">
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label>Volumen Minimo</label>
+            <input type="text" id="mat-volumen" placeholder="Ej. 1 Tonelada">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem">
+          <div class="form-group" style="margin-bottom:0">
+            <label>Frecuencia</label>
+            <select id="mat-frecuencia">
+              <option value="Mensual">Mensual</option>
+              <option value="Semanal">Semanal</option>
+              <option value="Unica vez">Unica vez</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label>Calidad / Pureza</label>
+            <input type="text" id="mat-calidad" placeholder="Ej. Lavado 99%">
+          </div>
+        </div>
         <div class="form-group">
-          <label>Descripción</label>
+          <label>Descripcion</label>
           <textarea id="mat-descripcion" rows="3" placeholder="Descripción del material, calidad, proceso..."></textarea>
         </div>
         <div class="form-group">
