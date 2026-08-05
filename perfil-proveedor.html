@@ -11,6 +11,56 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages.css">
+    <style>
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid var(--neutral-200);
+        }
+        .trust-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .trust-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--neutral-500);
+            font-weight: 600;
+        }
+        .trust-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--neutral-900);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success-500);
+        }
+        .commercial-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .commercial-info-item strong {
+            display: block;
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+            margin-bottom: 0.25rem;
+        }
+    </style>
 </head>
 <body>
     <div id="navbar-container"></div>
@@ -23,117 +73,147 @@
                 </a>
                 <div class="profile-header-inner">
                     <div class="profile-main-info">
-                        <div class="profile-logo" id="profile-logo">TS</div>
+                        <img class="profile-logo" id="profile-logo" src="" alt="Logo">
                         <div class="profile-name">
-                            <h1 id="profile-name">TechNica Solutions</h1>
-                            <span class="badge-verified" id="profile-verified">
+                            <h1 id="profile-name">Cargando...</h1>
+                            <span class="badge-verified" id="profile-verified" style="display:none;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
                                 Verificado
                             </span>
                         </div>
                         <div class="profile-tags" id="profile-tags">
-                            <span class="badge badge-primary">Tecnología</span>
-                            <span class="tag">Software</span>
-                            <span class="tag">Cloud</span>
+                            <!-- JS Fills tags -->
                         </div>
-                        <div class="profile-meta">
-                            <span class="profile-meta-item" id="profile-location">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                                Managua, Nicaragua
-                            </span>
-                            <span class="profile-meta-item" id="profile-rating">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                <strong>4.8</strong> (127 reseñas)
-                            </span>
+                        
+                        <!-- Panel de Confianza (Métricas MVP) -->
+                        <div class="trust-grid">
+                            <div class="trust-item">
+                                <span class="trust-label">Estado</span>
+                                <span class="trust-value"><div class="status-dot"></div> <span id="trust-status">Disponible</span></span>
+                            </div>
+                            <div class="trust-item">
+                                <span class="trust-label">Tiempo respuesta</span>
+                                <span class="trust-value" id="trust-time">24 horas</span>
+                            </div>
+                            <div class="trust-item">
+                                <span class="trust-label">Última actividad</span>
+                                <span class="trust-value" id="trust-activity">Hace 1 día</span>
+                            </div>
+                            <div class="trust-item">
+                                <span class="trust-label">Verificado</span>
+                                <span class="trust-value" id="trust-verified-text">Sí</span>
+                            </div>
                         </div>
-                        <p class="profile-description" id="profile-desc">Empresa líder en desarrollo de software empresarial y soluciones cloud para empresas en crecimiento. Con más de 10 años de experiencia, hemos ayudado a cientos de empresas a transformar digitalmente sus operaciones.</p>
-                        <div class="profile-certifications" id="profile-certs">
-                            <span class="badge badge-outline">ISO 9001</span>
-                            <span class="badge badge-outline">Microsoft Partner</span>
-                            <span class="badge badge-outline">AWS Partner</span>
-                        </div>
+
+                        <p class="profile-description" id="profile-desc" style="margin-top: 1.5rem;"></p>
                     </div>
+                    
                     <div class="profile-contact-panel">
                         <div class="contact-panel">
+                            <div style="text-align:center; margin-bottom:1rem; font-size:0.875rem; color:var(--neutral-500);">
+                                <span class="stars" style="color:var(--warning-500)">★★★★★</span>
+                                <strong style="color:var(--neutral-900)" id="contact-rating">4.8</strong> 
+                                (<span id="contact-reviews">0</span> reseñas)
+                            </div>
                             <a href="#" class="btn btn-whatsapp btn-block btn-lg" id="whatsapp-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                                Contactar por WhatsApp
-                            </a>
-                            <div class="contact-actions">
-                                <a href="#" class="contact-action-btn" id="email-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                                    Email
-                                </a>
-                                <a href="#" class="contact-action-btn" id="phone-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                    Llamar
-                                </a>
-                                <a href="#" class="contact-action-btn" id="web-btn" style="grid-column:span 2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                                    Visitar Sitio Web
-                                </a>
-                            </div>
-                            <div class="contact-social-row">
-                                <button class="contact-social-btn" id="fav-btn" data-tooltip="Guardar favorito">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                                </button>
-                                <button class="contact-social-btn" data-tooltip="Compartir">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="profile-content">
-            <div class="tab-wrapper">
-                <div class="tabs">
-                    <button class="tab active" data-tab="tab-about">Acerca de</button>
-                    <button class="tab" data-tab="tab-products">Productos (4)</button>
-                    <button class="tab" data-tab="tab-reviews">Reseñas (4)</button>
-                </div>
-                <div class="tab-content active" id="tab-about">
-                    <h3 style="margin-bottom:1rem">Descripción de la Empresa</h3>
-                    <p style="line-height:1.75;color:var(--neutral-600)">TechNica Solutions es una empresa nicaragüense fundada en 2014, especializada en el desarrollo de software empresarial a medida y soluciones en la nube. Nuestro equipo de más de 30 profesionales ha implementado soluciones tecnológicas para más de 200 empresas en Nicaragua y Centroamérica.</p>
-                    <h3 style="margin:2rem 0 1rem">Información de Contacto</h3>
-                    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem">
-                        <div><strong style="font-size:0.875rem;color:var(--neutral-500)">Teléfono</strong><p>+505 8800-1234</p></div>
-                        <div><strong style="font-size:0.875rem;color:var(--neutral-500)">Email</strong><p>info@technica.com.ni</p></div>
-                        <div><strong style="font-size:0.875rem;color:var(--neutral-500)">Sitio Web</strong><p>technica.com.ni</p></div>
-                        <div><strong style="font-size:0.875rem;color:var(--neutral-500)">Ubicación</strong><p>Managua, Nicaragua</p></div>
-                    </div>
-                </div>
-                <div class="tab-content" id="tab-products">
-                    <div class="grid-products">
-                        <div class="product-card"><div class="product-card-image" style="background:linear-gradient(135deg,var(--primary-50),var(--primary-100));display:flex;align-items:center;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary-300)" stroke-width="1"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></div><div class="product-card-body"><h4 class="product-card-name">ERP Empresarial</h4><p class="product-card-provider">Sistema de gestión integral</p></div></div>
-                        <div class="product-card"><div class="product-card-image" style="background:linear-gradient(135deg,var(--primary-50),var(--primary-100));display:flex;align-items:center;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary-300)" stroke-width="1"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></div><div class="product-card-body"><h4 class="product-card-name">App Móvil Custom</h4><p class="product-card-provider">Desarrollo iOS y Android</p></div></div>
-                        <div class="product-card"><div class="product-card-image" style="background:linear-gradient(135deg,var(--primary-50),var(--primary-100));display:flex;align-items:center;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary-300)" stroke-width="1"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"></path></svg></div><div class="product-card-body"><h4 class="product-card-name">Cloud Migration</h4><p class="product-card-provider">Migración a la nube</p></div></div>
-                        <div class="product-card"><div class="product-card-image" style="background:linear-gradient(135deg,var(--primary-50),var(--primary-100));display:flex;align-items:center;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary-300)" stroke-width="1"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg></div><div class="product-card-body"><h4 class="product-card-name">Soporte IT 24/7</h4><p class="product-card-provider">Soporte técnico continuo</p></div></div>
-                    </div>
-                </div>
-                <div class="tab-content" id="tab-reviews">
-                    <div class="review-item"><div class="review-header"><div class="review-author"><div class="avatar avatar-sm">M</div><div><div class="review-author-name">María López</div><div class="review-author-company">Distribuidora El Sol</div></div></div><span class="review-date">Hace 2 semanas</span></div><div style="margin-bottom:0.75rem" id="review-stars-1"></div><p class="review-text">Excelente servicio y calidad de productos. La entrega fue puntual y el equipo de atención al cliente fue muy profesional.</p></div>
-                    <div class="review-item"><div class="review-header"><div class="review-author"><div class="avatar avatar-sm">C</div><div><div class="review-author-name">Carlos Mendoza</div><div class="review-author-company">Importadora del Pacífico</div></div></div><span class="review-date">Hace 1 mes</span></div><div style="margin-bottom:0.75rem" id="review-stars-2"></div><p class="review-text">Llevamos 3 años trabajando juntos y siempre han cumplido con los estándares más altos.</p></div>
-                    <div class="review-item"><div class="review-header"><div class="review-author"><div class="avatar avatar-sm">A</div><div><div class="review-author-name">Ana Gutiérrez</div><div class="review-author-company">Restaurantes Don Julio</div></div></div><span class="review-date">Hace 1 mes</span></div><div style="margin-bottom:0.75rem" id="review-stars-3"></div><p class="review-text">Buenos productos y precios competitivos. La comunicación por WhatsApp es rápida y eficiente.</p></div>
-                    <div class="review-item"><div class="review-header"><div class="review-author"><div class="avatar avatar-sm">R</div><div><div class="review-author-name">Roberto Vega</div><div class="review-author-company">Hotel Las Brumas</div></div></div><span class="review-date">Hace 2 meses</span></div><div style="margin-bottom:0.75rem" id="review-stars-4"></div><p class="review-text">ProVend nos ayudó a encontrar exactamente el proveedor que necesitábamos.</p></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="footer-container"></div>
-
-    <script src="js/components.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/animations.js"></script>
-    <script>
-        document.getElementById('navbar-container').innerHTML = createNavbar();
-        document.getElementById('footer-container').innerHTML = createFooter();
-        document.getElementById('review-stars-1').innerHTML = generateStars(5);
-        document.getElementById('review-stars-2').innerHTML = generateStars(5);
-        document.getElementById('review-stars-3').innerHTML = generateStars(4);
-        document.getElementById('review-stars-4').innerHTML = generateStars(5);
-    </script>
-</body>
-</html>
+83:                                 Contactar por WhatsApp
+84:                             </a>
+85:                             <div class="contact-actions" style="margin-top:1rem;">
+86:                                 <a href="#" class="contact-action-btn" id="email-btn">
+87:                                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+88:                                     Email
+89:                                 </a>
+90:                                 <button class="contact-social-btn" id="fav-btn" data-tooltip="Guardar favorito">
+91:                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
+92:                                 </button>
+93:                             </div>
+94:                         </div>
+95:                     </div>
+96:                 </div>
+97:             </div>
+98:         </div>
+99:         
+100:         <!-- Info Comercial -->
+101:         <div class="profile-content">
+102:             <div class="tab-wrapper" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200);">
+103:                 <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Información Comercial</h3>
+104:                 <div class="commercial-info">
+105:                     <div class="commercial-info-item">
+106:                         <strong>Ubicación Base</strong>
+107:                         <p id="info-city">Managua</p>
+108:                     </div>
+109:                     <div class="commercial-info-item">
+110:                         <strong>Cobertura</strong>
+111:                         <p id="info-coverage">Nacional</p>
+112:                     </div>
+113:                     <div class="commercial-info-item">
+114:                         <strong>Horario de Atención</strong>
+115:                         <p id="info-schedule">Lunes a Viernes</p>
+116:                     </div>
+117:                     <div class="commercial-info-item">
+118:                         <strong>Años de Experiencia</strong>
+119:                         <p id="info-experience">10 años</p>
+120:                     </div>
+121:                 </div>
+122:             </div>
+123:         </div>
+124:     </div>
+125:     <div id="footer-container"></div>
+126: 
+127:     <script src="js/mockData.js"></script>
+128:     <script src="js/components.js"></script>
+129:     <script src="js/auth.js"></script>
+130:     <script>
+131:         document.getElementById('navbar-container').innerHTML = createNavbar();
+132:         document.getElementById('footer-container').innerHTML = createFooter();
+133: 
+134:         document.addEventListener('DOMContentLoaded', () => {
+135:             const urlParams = new URLSearchParams(window.location.search);
+136:             const providerId = urlParams.get('id') || 1; // Default a 1 si no hay ID
+137:             const provider = window.ProVendData.getProveedorById(providerId);
+138: 
+139:             if (provider) {
+140:                 document.getElementById('profile-logo').src = provider.logo;
+141:                 document.getElementById('profile-name').textContent = provider.nombre;
+142:                 if (provider.verificado) {
+143:                     document.getElementById('profile-verified').style.display = 'inline-flex';
+144:                     document.getElementById('trust-verified-text').textContent = "Sí";
+145:                 } else {
+146:                     document.getElementById('trust-verified-text').textContent = "No";
+147:                 }
+148: 
+149:                 // Tags
+150:                 const tagsHtml = `
+151:                     <span class="badge badge-primary">${provider.categoria}</span>
+152:                     ${provider.materiales.map(m => `<span class="tag">${m}</span>`).join('')}
+153:                 `;
+154:                 document.getElementById('profile-tags').innerHTML = tagsHtml;
+155:                 
+156:                 document.getElementById('profile-desc').textContent = provider.descripcion;
+157:                 
+158:                 // Trust Metrics
+159:                 document.getElementById('trust-status').textContent = provider.estado;
+160:                 document.getElementById('trust-time').textContent = provider.tiempoRespuesta;
+161:                 document.getElementById('trust-activity').textContent = provider.ultimaActividad;
+162:                 
+163:                 // Contact Panel
+164:                 document.getElementById('contact-rating').textContent = provider.rating;
+165:                 document.getElementById('contact-reviews').textContent = provider.reviews;
+166:                 
+167:                 // Links
+168:                 document.getElementById('whatsapp-btn').href = `https://wa.me/50588888888?text=Hola,%20les%20encontramos%20en%20ProVend.%20Nos%20gustaría%20saber%20más%20sobre%20sus%20productos.`;
+169:                 document.getElementById('email-btn').href = `mailto:contacto@${provider.nombre.toLowerCase().replace(/ /g,'')}.com`;
+170:                 
+171:                 // Commercial Info
+172:                 document.getElementById('info-city').textContent = provider.ciudad;
+173:                 document.getElementById('info-coverage').textContent = provider.cobertura;
+174:                 document.getElementById('info-schedule').textContent = provider.horario;
+175:                 document.getElementById('info-experience').textContent = provider.experiencia;
+176:             } else {
+177:                 document.getElementById('profile-name').textContent = "Proveedor no encontrado";
+178:             }
+179:         });
+180:     </script>
+181: </body>
+182: </html>

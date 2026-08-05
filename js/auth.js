@@ -12,29 +12,43 @@ const mockUsers = [
   { id: 3, email: 'admin@ProVend.ni', password: 'admin123', name: 'Admin ProVend', role: 'admin', company: 'ProVend' },
 ];
 
-// ---- Auth Functions ----
-function login(email, password) {
-  const user = mockUsers.find(u => u.email === email && u.password === password);
-  if (user) {
-    const session = { ...user };
-    delete session.password;
-    localStorage.setItem(AUTH_KEY, JSON.stringify(session));
-    return { success: true, user: session };
+async function login(email, password) {
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+
+    localStorage.setItem(AUTH_KEY, JSON.stringify(data.user));
+    return { success: true, user: data.user };
+  } catch (err) {
+    return { success: false, error: err.message || 'Error de conexión' };
   }
-  return { success: false, error: 'Correo o contraseña incorrectos' };
 }
 
-function register(data) {
-  // Simulate registration
-  const newUser = {
-    id: Date.now(),
-    email: data.email,
-    name: data.name,
-    role: data.role || 'empresa',
-    company: data.company || ''
-  };
-  localStorage.setItem(AUTH_KEY, JSON.stringify(newUser));
-  return { success: true, user: newUser };
+async function register(data) {
+  try {
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        nombre: data.name,
+        email: data.email,
+        password: data.password,
+        rol: data.role
+      })
+    });
+    const result = await res.json();
+    if (!res.ok) throw new Error(result.error);
+
+    localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
+    return { success: true, user: result.user };
+  } catch (err) {
+    return { success: false, error: err.message || 'Error de conexión' };
+  }
 }
 
 function logout() {
@@ -64,7 +78,7 @@ function initLoginForm() {
   const form = document.getElementById('login-form');
   if (!form) return;
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const email = document.getElementById('login-email').value.trim();
@@ -83,12 +97,12 @@ function initLoginForm() {
       return;
     }
 
-    const result = login(email, password);
+    const result = await login(email, password);
     
     if (result.success) {
       showToast('¡Bienvenido de vuelta!', 'success');
       setTimeout(() => {
-        const role = result.user.role;
+        const role = result.user.rol || result.user.role;
         if (role === 'admin') {
           window.location.href = 'admin.html';
         } else if (role === 'proveedor') {
@@ -150,7 +164,7 @@ function initRegisterForm() {
     });
   });
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name = document.getElementById('register-name').value.trim();
@@ -188,7 +202,7 @@ function initRegisterForm() {
     if (!password || password.length < 6) { showFieldError('register-password', 'Mínimo 6 caracteres'); return; }
     if (terms && !terms.checked) { showToast('Debes aceptar los términos de servicio', 'warning'); return; }
 
-    const result = register({ name, email, company, role: selectedType });
+    const result = await register({ name, email, company, password, role: selectedType });
 
     if (result.success) {
       showToast('¡Cuenta creada exitosamente!', 'success');
@@ -199,6 +213,8 @@ function initRegisterForm() {
           window.location.href = 'dashboard-empresa.html';
         }
       }, 1000);
+    } else {
+      showToast(result.error, 'error');
     }
   });
 }

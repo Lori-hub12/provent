@@ -11,131 +11,363 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages.css">
+    <style>
+        /* Estilos específicos y limpios para el Dashboard B2B */
+        body {
+            background-color: #f8fafc; /* Fondo gris muy claro, sin glassmorphism */
+        }
+        .dashboard-main {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* Tarjetas limpias estilo SaaS */
+        .saas-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--neutral-200);
+            margin-bottom: 2rem;
+        }
+        .saas-card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--neutral-800);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--neutral-100);
+            padding-bottom: 0.75rem;
+        }
+        
+        /* Grid de KPIs */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .kpi-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--neutral-200);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-600);
+            margin-bottom: 0.25rem;
+        }
+        .kpi-label {
+            color: var(--neutral-500);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* Acciones Rápidas */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .quick-action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            color: var(--neutral-700);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            gap: 0.75rem;
+        }
+        .quick-action-btn:hover {
+            border-color: var(--primary-500);
+            color: var(--primary-600);
+            background: var(--primary-50);
+            transform: translateY(-2px);
+        }
+        .quick-action-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Actividad Reciente */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--neutral-100);
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-500);
+        }
+        .activity-time {
+            margin-left: auto;
+            font-size: 0.75rem;
+            color: var(--neutral-400);
+        }
+
+        /* Estado del perfil */
+        .profile-status-list {
+            list-style: none;
+            padding: 0;
+        }
+        .profile-status-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+        .status-ok { color: var(--success-500); }
+        .status-warn { color: var(--warning-500); }
+        
+        .progress-bar-bg {
+            background: var(--neutral-200);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            background: var(--success-500);
+            height: 100%;
+            width: 85%;
+        }
+
+        /* Layout lateral para perfil y materiales */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        @media (max-width: 900px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Materiales Tags */
+        .material-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .material-tag {
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            padding: 0.25rem 0.75rem;
+            border-radius: 99px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+    </style>
 </head>
 <body>
     <div id="navbar-container"></div>
-    <div class="dashboard-layout">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-user">
-                    <div class="avatar">ML</div>
-                    <div class="sidebar-user-info">
-                        <div class="sidebar-user-name">María López</div>
-                        <div class="sidebar-user-role">Empresa</div>
-                    </div>
-                </div>
-            </div>
-            <nav class="sidebar-nav">
-                <span class="sidebar-section-title">General</span>
-                <a class="sidebar-link active" data-section="perfil">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    <span>Mi Perfil</span>
-                </a>
-                <a class="sidebar-link" data-section="favoritos">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                    <span>Favoritos</span>
-                </a>
-                <a class="sidebar-link" data-section="historial">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    <span>Historial</span>
-                </a>
-                <span class="sidebar-section-title">Cuenta</span>
-                <a class="sidebar-link" data-section="configuracion">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                    <span>Configuración</span>
-                </a>
-                <a class="sidebar-link" href="index.html" onclick="if(window.ProVendAuth)ProVendAuth.logout()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                    <span>Cerrar Sesión</span>
-                </a>
-            </nav>
-        </aside>
-        <main class="dashboard-main">
-            <div class="dashboard-header">
-                <div>
-                    <h1 class="dashboard-title">Mi Perfil</h1>
-                    <p class="dashboard-subtitle">Bienvenida de vuelta, María</p>
-                </div>
-            </div>
-            <div class="stats-grid">
-                <div class="stats-card">
-                    <div class="stats-card-header">
-                        <div class="stats-card-icon blue">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                        </div>
-                    </div>
-                    <div class="stats-card-value">12</div>
-                    <div class="stats-card-label">Favoritos</div>
-                </div>
-                <div class="stats-card">
-                    <div class="stats-card-header">
-                        <div class="stats-card-icon green">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-                        </div>
-                    </div>
-                    <div class="stats-card-value">48</div>
-                    <div class="stats-card-label">Búsquedas</div>
-                </div>
-                <div class="stats-card">
-                    <div class="stats-card-header">
-                        <div class="stats-card-icon yellow">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                        </div>
-                    </div>
-                    <div class="stats-card-value">8</div>
-                    <div class="stats-card-label">Contactos</div>
-                </div>
-                <div class="stats-card">
-                    <div class="stats-card-header">
-                        <div class="stats-card-icon red">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        </div>
-                    </div>
-                    <div class="stats-card-value">156</div>
-                    <div class="stats-card-label">Proveedores Vistos</div>
-                </div>
-            </div>
-            <div class="dashboard-section active" id="perfil" style="display:block">
-                <div class="card"><div class="card-body"><h3 style="margin-bottom:1.5rem">Información Personal</h3>
-                    <div class="grid-2">
-                        <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" value="María López" readonly></div>
-                        <div class="form-group"><label class="form-label">Email</label><input class="form-input" value="empresa@demo.com" readonly></div>
-                        <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" value="Distribuidora El Sol"></div>
-                        <div class="form-group"><label class="form-label">Teléfono</label><input class="form-input" value="+505 8800-0000"></div>
-                    </div>
-                    <button class="btn btn-primary" style="margin-top:1rem">Guardar Cambios</button>
-                </div></div>
-            </div>
-            <div class="dashboard-section" id="favoritos" style="display:none">
-                <div id="fav-providers" class="grid-providers"></div>
-            </div>
-            <div class="dashboard-section" id="historial" style="display:none">
-                <div class="card"><div class="card-body"><h3 style="margin-bottom:1rem">Búsquedas Recientes</h3><div style="display:flex;flex-direction:column;gap:0.75rem"><div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;justify-content:space-between"><span>"Proveedores de tecnología"</span><span style="color:var(--neutral-400);font-size:0.875rem">Hace 2 horas</span></div><div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;justify-content:space-between"><span>"Café orgánico Matagalpa"</span><span style="color:var(--neutral-400);font-size:0.875rem">Hace 1 día</span></div><div style="padding:0.75rem;border-radius:0.5rem;background:var(--neutral-50);display:flex;justify-content:space-between"><span>"Materiales de construcción"</span><span style="color:var(--neutral-400);font-size:0.875rem">Hace 3 días</span></div></div></div></div>
-            </div>
-            <div class="dashboard-section" id="configuracion" style="display:none">
-                <div class="card"><div class="card-body"><h3 style="margin-bottom:1.5rem">Configuración de Cuenta</h3><div class="form-group"><label class="form-label">Notificaciones por email</label><label class="form-checkbox"><input type="checkbox" checked> Recibir alertas de nuevos proveedores</label></div><div class="form-group"><label class="form-label">Idioma</label><select class="form-select"><option>Español</option><option>English</option></select></div><button class="btn btn-primary">Guardar</button></div></div>
-            </div>
-        </main>
-    </div>
+    
+    <!-- Eliminamos el sidebar completo para dar una experiencia de pantalla completa estilo Portal -->
+    
+    <main class="dashboard-main">
+        <!-- 1. BIENVENIDA -->
+        <div class="dashboard-header" style="margin-bottom: 2rem;">
+            <h1 class="dashboard-title" style="font-size: 2rem;">Dashboard Empresa</h1>
+            <p class="dashboard-subtitle" style="font-size: 1.125rem;">👋 Bienvenida de vuelta, <span id="user-name-display">María López</span></p>
+        </div>
 
+        <!-- 2. KPIs -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-value">27</div>
+                <div class="kpi-label">Proveedores visitados</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">8</div>
+                <div class="kpi-label">Favoritos</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">15</div>
+                <div class="kpi-label">Contactos realizados</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value">1,250 kg</div>
+                <div class="kpi-label">Material encontrado</div>
+            </div>
+        </div>
+
+        <!-- 3. ACCIONES RÁPIDAS -->
+        <section class="saas-card">
+            <h2 class="saas-card-title">🚀 Acciones rápidas</h2>
+            <div class="quick-actions-grid">
+                <a href="explorar.html?tab=empresas" class="quick-action-btn">
+                    <span class="quick-action-icon">🔍</span>
+                    Buscar proveedor
+                </a>
+                <a href="explorar.html?tab=materiales" class="quick-action-btn">
+                    <span class="quick-action-icon">📦</span>
+                    Buscar material
+                </a>
+                <a href="categorias.html" class="quick-action-btn">
+                    <span class="quick-action-icon">📂</span>
+                    Explorar categorías
+                </a>
+                <a href="#" class="quick-action-btn">
+                    <span class="quick-action-icon">⭐</span>
+                    Favoritos
+                </a>
+                <a href="#" class="quick-action-btn">
+                    <span class="quick-action-icon">📊</span>
+                    Historial
+                </a>
+            </div>
+        </section>
+
+        <div class="dashboard-grid">
+            <!-- COLUMNA IZQUIERDA (Principal) -->
+            <div>
+                <!-- 4. ACTIVIDAD RECIENTE -->
+                <section class="saas-card">
+                    <h2 class="saas-card-title">📋 Actividad reciente</h2>
+                    <div class="activity-list" id="activity-container">
+                        <!-- Llenado por mockData.js -->
+                    </div>
+                </section>
+
+                <!-- 5. PROVEEDORES DESTACADOS -->
+                <section class="saas-card">
+                    <h2 class="saas-card-title">⭐ Proveedores destacados <br><span style="font-size:0.875rem; color:var(--neutral-500); font-weight:normal">Recientemente agregados a la plataforma</span></h2>
+                    <div class="grid-providers" id="featured-providers" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                        <!-- Llenado por mockData.js -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- COLUMNA DERECHA (Secundaria) -->
+            <div>
+                <!-- ESTADO DEL PERFIL -->
+                <section class="saas-card">
+                    <h2 class="saas-card-title">Perfil de Empresa</h2>
+                    <ul class="profile-status-list">
+                        <li><span class="status-ok">✔</span> Información completada</li>
+                        <li><span class="status-ok">✔</span> Logo cargado</li>
+                        <li><span class="status-ok">✔</span> Correo verificado</li>
+                        <li><span class="status-warn">⚠</span> Falta agregar dirección</li>
+                    </ul>
+                    <div style="margin-top:1rem; font-size:0.875rem; font-weight:600; display:flex; justify-content:space-between;">
+                        <span>Completitud:</span>
+                        <span>85%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill"></div>
+                    </div>
+                    <button class="btn btn-outline" style="width:100%; margin-top:1.5rem;">Completar perfil</button>
+                </section>
+
+                <!-- 6. MATERIALES POPULARES -->
+                <section class="saas-card">
+                    <h2 class="saas-card-title">🔥 Materiales populares</h2>
+                    <div class="material-tags" id="popular-materials">
+                        <!-- Llenado por mockData.js -->
+                    </div>
+                </section>
+
+                <!-- 7. CONFIGURACIÓN -->
+                <section class="saas-card">
+                    <h2 class="saas-card-title">⚙ Configuración rápida</h2>
+                    <ul class="profile-status-list" style="gap:1rem; display:flex; flex-direction:column;">
+                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Preferencias</a></li>
+                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Idioma</a></li>
+                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Notificaciones</a></li>
+                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Datos de empresa</a></li>
+                        <li><a href="#" style="color:var(--neutral-700); text-decoration:none;">Contraseña</a></li>
+                        <li><a href="#" style="color:var(--danger-500); text-decoration:none;">Eliminar cuenta</a></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+
+    </main>
+
+    <script src="js/mockData.js"></script>
     <script src="js/components.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/dashboard.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/animations.js"></script>
     <script>
         document.getElementById('navbar-container').innerHTML = createNavbar();
 
-        // Render favorite provider cards
-        if (typeof providers !== 'undefined' && typeof createProviderCard === 'function') {
-            var favContainer = document.getElementById('fav-providers');
-            var favIndices = [0, 1, 4];
-            favIndices.forEach(function(i) {
-                if (providers[i]) {
-                    favContainer.innerHTML += createProviderCard(providers[i]);
-                }
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cargar datos del usuario
+            const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
+            if (user) {
+                document.getElementById('user-name-display').textContent = user.nombre || user.name || 'Empresa';
+            }
+
+            // Llenar Actividad
+            const activityContainer = document.getElementById('activity-container');
+            const actividades = window.ProVendData.getActividadReciente();
+            actividades.forEach(act => {
+                activityContainer.innerHTML += `
+                    <div class="activity-item">
+                        <div class="activity-dot"></div>
+                        <span>${act.texto}</span>
+                        <span class="activity-time">${act.tiempo}</span>
+                    </div>
+                `;
             });
-        }
+
+            // Llenar Materiales Populares
+            const materialsContainer = document.getElementById('popular-materials');
+            const materiales = window.ProVendData.getMaterialesPopulares();
+            materiales.forEach(mat => {
+                materialsContainer.innerHTML += `<span class="material-tag">${mat}</span>`;
+            });
+
+            // Llenar Proveedores Destacados
+            const providersContainer = document.getElementById('featured-providers');
+            const proveedores = window.ProVendData.getProveedores().slice(0, 2); // Mostrar solo 2 para no saturar
+            
+            // Función simplificada para crear tarjeta usando los nuevos datos
+            proveedores.forEach(p => {
+                providersContainer.innerHTML += `
+                    <div class="provider-card" style="background:white; border:1px solid var(--neutral-200); box-shadow:none;">
+                        <img src="${p.logo}" class="provider-logo" alt="${p.nombre}">
+                        <div class="provider-info">
+                            <h3 class="provider-name">${p.nombre}</h3>
+                            <p class="provider-category">${p.categoria} • ${p.ciudad}</p>
+                            <div class="provider-rating">
+                                <span class="stars">★★★★★</span>
+                                <span class="rating-number">${p.rating}</span>
+                                <span class="reviews-count">(${p.reviews} reseñas)</span>
+                            </div>
+                            <div class="provider-tags">
+                                ${p.materiales.slice(0,2).map(m => `<span class="tag">${m}</span>`).join('')}
+                            </div>
+                            <div class="provider-actions">
+                                <a href="perfil-proveedor.html?id=${p.id}" class="btn btn-primary" style="width:100%; text-align:center;">Ver Perfil</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        });
     </script>
 </body>
 </html>
