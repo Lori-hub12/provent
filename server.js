@@ -2,7 +2,22 @@ const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const path = require('path');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'provend_secreto_super_seguro_2026';
+
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.status(401).json({ error: 'Acceso denegado. Token no proporcionado.' });
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ error: 'Token inválido o expirado.' });
+        req.user = user;
+        next();
+    });
+}
 
 const app = express();
 const PORT = 3000;
@@ -24,7 +39,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-app.post('/api/upload', upload.single('file'), (req, res) => {
+app.post('/api/upload', authenticateToken, upload.single('file'), (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: 'No se subió ningún archivo' });
     }
@@ -183,8 +198,11 @@ app.post('/api/register', async (req, res) => {
                     db.run(`INSERT INTO perfiles_proveedor (usuario_id) VALUES (?)`, [userId]);
                 }
 
+                const token = jwt.sign({ id: userId, rol }, JWT_SECRET, { expiresIn: '7d' });
+
                 res.status(201).json({
                     message: 'Usuario registrado exitosamente',
+                    token,
                     user: { id: userId, nombre, email, rol, company: company || nombre }
                 });
             }
@@ -204,8 +222,10 @@ app.post('/api/login', (req, res) => {
 
         const match = await bcrypt.compare(password, row.password);
         if (match) {
+            const token = jwt.sign({ id: row.id, rol: row.rol }, JWT_SECRET, { expiresIn: '7d' });
             res.json({
                 message: 'Login exitoso',
+                token,
                 user: { id: row.id, nombre: row.nombre, email: row.email, rol: row.rol, company: row.company }
             });
         } else {
@@ -313,7 +333,8 @@ app.get('/api/dashboard/proveedor/:id/resenas', (req, res) => {
     });
 });
 
-app.post('/api/materiales', (req, res) => {
+app.post('/api/materiales', authenticateToken, (req, res) => {
+    if (req.user.id !== parseInt(req.body.proveedor_id)) return res.status(403).json({ error: 'Acceso denegado' });
     const { proveedor_id, nombre, cantidad, unidad, descripcion, imagen_url } = req.body;
     db.run(`INSERT INTO materiales (proveedor_id, nombre, cantidad, unidad, descripcion, imagen_url) VALUES (?,?,?,?,?,?)`,
         [proveedor_id, nombre, cantidad, unidad, descripcion, imagen_url],
@@ -363,7 +384,8 @@ app.get('/api/dashboard/empresa/:id/favoritos', (req, res) => {
     });
 });
 
-app.get('/api/dashboard/empresa/:id/historial', (req, res) => {
+app.get('/api/dashboard/empresa/:id/historial', authenticateToken, (req, res) => {
+    if (req.user.id !== parseInt(req.params.id)) return res.status(403).json({ error: 'Acceso denegado' });
     db.all(`
         SELECT u.id, u.nombre, u.company, p.logo_url, p.categoria, p.verificado, MAX(v.created_at) as last_visited,
                COALESCE(AVG(r.rating), 0) as rating, COUNT(DISTINCT r.id) as reviews
@@ -381,7 +403,8 @@ app.get('/api/dashboard/empresa/:id/historial', (req, res) => {
     });
 });
 
-app.put('/api/usuarios/empresa/:id', (req, res) => {
+app.put('/api/usuarios/empresa/:id', authenticateToken, (req, res) => {
+    if (req.user.id !== parseInt(req.params.id)) return res.status(403).json({ error: 'Acceso denegado' });
     const { nombre, company } = req.body;
     db.run(
         `UPDATE usuarios SET nombre = ?, company = ? WHERE id = ? AND rol = 'empresa'`,
@@ -412,7 +435,8 @@ app.post('/api/visitas', (req, res) => {
     });
 });
 
-app.put('/api/perfiles_proveedor/:id', (req, res) => {
+app.put('/api/perfiles_proveedor/:id', authenticateToken, (req, res) => {
+    if (req.user.id !== parseInt(req.params.id)) return res.status(403).json({ error: 'Acceso denegado' });
     const { logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web } = req.body;
     db.run(`UPDATE perfiles_proveedor SET 
             logo_url = COALESCE(?, logo_url),
@@ -489,7 +513,8 @@ app.get('/api/search', (req, res) => {
 });
 
 // ===================== FAVORITOS =====================
-app.post('/api/favoritos', (req, res) => {
+app.post('/api/favoritos', authenticateToken, (req, res) => {
+    if (req.user.id !== parseInt(req.body.empresa_id)) return res.status(403).json({ error: 'Acceso denegado' });
     const { empresa_id, proveedor_id } = req.body;
     db.run(`INSERT OR IGNORE INTO favoritos (empresa_id, proveedor_id) VALUES (?,?)`, [empresa_id, proveedor_id], function(err) {
         if (err) return res.status(500).json({ error: err.message });
@@ -501,7 +526,8 @@ app.post('/api/favoritos', (req, res) => {
     });
 });
 
-app.delete('/api/favoritos', (req, res) => {
+app.delete('/api/favoritos', authenticateToken, (req, res) => {
+    if (req.user.id !== parseInt(req.body.empresa_id)) return res.status(403).json({ error: 'Acceso denegado' });
     const { empresa_id, proveedor_id } = req.body;
     db.run(`DELETE FROM favoritos WHERE empresa_id = ? AND proveedor_id = ?`, [empresa_id, proveedor_id], (err) => {
         if (err) return res.status(500).json({ error: err.message });

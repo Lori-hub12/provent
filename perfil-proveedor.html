@@ -348,7 +348,7 @@
                 alert('Debes iniciar sesión como Empresa para guardar favoritos.');
                 return;
             }
-            const res = await fetch('http://localhost:3000/api/favoritos', {
+            const res = await ProVendAuth.apiFetch('http://localhost:3000/api/favoritos', {
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({ empresa_id: user.id, proveedor_id: parseInt(providerId) })

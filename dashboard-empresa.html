@@ -355,7 +355,7 @@
     async function loadDashboard() {
       try {
         // 1. Estadísticas de mi actividad
-        const actRes = await fetch(`http://localhost:3000/api/dashboard/empresa/${user.id}`);
+        const actRes = await ProVendAuth.apiFetch(`http://localhost:3000/api/dashboard/empresa/${user.id}`);
         const act = await actRes.json();
         document.getElementById('stat-visitados').textContent = act.proveedores_visitados || 0;
         document.getElementById('stat-favoritos').textContent = act.favoritos || 0;
@@ -392,7 +392,7 @@
 
 
         // 3. Favoritos reales
-        const favRes = await fetch(`http://localhost:3000/api/dashboard/empresa/${user.id}/favoritos`);
+        const favRes = await ProVendAuth.apiFetch(`http://localhost:3000/api/dashboard/empresa/${user.id}/favoritos`);
         const favs = await favRes.json();
         const favContainer = document.getElementById('favoritos-container');
 
@@ -431,7 +431,7 @@
         }
 
         // 4. Historial
-        const histRes = await fetch(`http://localhost:3000/api/dashboard/empresa/${user.id}/historial`);
+        const histRes = await ProVendAuth.apiFetch(`http://localhost:3000/api/dashboard/empresa/${user.id}/historial`);
         const historial = await histRes.json();
         const histContainer = document.getElementById('historial-container');
 
@@ -494,7 +494,7 @@
       const company = document.getElementById('prof-company').value.trim();
       const nombre = document.getElementById('prof-nombre').value.trim();
       try {
-        const res = await fetch(`http://localhost:3000/api/usuarios/empresa/${user.id}`, {
+        const res = await ProVendAuth.apiFetch(`http://localhost:3000/api/usuarios/empresa/${user.id}`, {
           method: 'PUT',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ company, nombre })

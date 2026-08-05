@@ -1,16 +1,44 @@
-﻿/* ============================================
-   ProVend — auth.js
-   Mock authentication with localStorage
+/* ============================================
+   ProVend - auth.js
+   JWT Authentication and API Helper
    ============================================ */
 
 const AUTH_KEY = 'ProVend_user';
+const TOKEN_KEY = 'ProVend_token';
 
-// ---- Mock Users ----
-const mockUsers = [
-  { id: 1, email: 'empresa@demo.com', password: 'demo123', name: 'María López', role: 'empresa', company: 'Distribuidora El Sol' },
-  { id: 2, email: 'proveedor@demo.com', password: 'demo123', name: 'Carlos Mendoza', role: 'proveedor', company: 'TechNica Solutions' },
-  { id: 3, email: 'admin@ProVend.ni', password: 'admin123', name: 'Admin ProVend', role: 'admin', company: 'ProVend' },
-];
+function setSession(user, token) {
+  if(user) localStorage.setItem(AUTH_KEY, JSON.stringify(user));
+  if(token) localStorage.setItem(TOKEN_KEY, token);
+}
+
+function clearSession() {
+  localStorage.removeItem(AUTH_KEY);
+  localStorage.removeItem(TOKEN_KEY);
+}
+
+function getToken() {
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+async function apiFetch(url, options = {}) {
+  const token = getToken();
+  const headers = { ...options.headers };
+  
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
+  const response = await fetch(url, { ...options, headers });
+  
+  if (response.status === 401 || response.status === 403) {
+    // Token invlido o expirado
+    clearSession();
+    window.location.href = 'login.html';
+    throw new Error('Sesin expirada. Vuelve a iniciar sesin.');
+  }
+  
+  return response;
+}
 
 async function login(email, password) {
   try {
@@ -22,10 +50,10 @@ async function login(email, password) {
     const data = await res.json();
     if (!res.ok) throw new Error(data.error);
 
-    localStorage.setItem(AUTH_KEY, JSON.stringify(data.user));
+    setSession(data.user, data.token);
     return { success: true, user: data.user };
   } catch (err) {
-    return { success: false, error: err.message || 'Error de conexión' };
+    return { success: false, error: err.message || 'Error de conexin' };
   }
 }
 
@@ -37,6 +65,7 @@ async function register(data) {
       body: JSON.stringify({
         nombre: data.name,
         email: data.email,
+        company: data.company,
         password: data.password,
         rol: data.role
       })
@@ -44,15 +73,15 @@ async function register(data) {
     const result = await res.json();
     if (!res.ok) throw new Error(result.error);
 
-    localStorage.setItem(AUTH_KEY, JSON.stringify(result.user));
+    setSession(result.user, result.token);
     return { success: true, user: result.user };
   } catch (err) {
-    return { success: false, error: err.message || 'Error de conexión' };
+    return { success: false, error: err.message || 'Error de conexin' };
   }
 }
 
 function logout() {
-  localStorage.removeItem(AUTH_KEY);
+  clearSession();
   window.location.href = 'index.html';
 }
 
@@ -62,7 +91,7 @@ function getCurrentUser() {
 }
 
 function isLoggedIn() {
-  return !!getCurrentUser();
+  return !!getCurrentUser() && !!getToken();
 }
 
 function requireAuth(redirectTo = 'login.html') {
@@ -288,5 +317,5 @@ document.addEventListener('DOMContentLoaded', () => {
 // Make functions globally available
 window.ProVendAuth = {
   login, register, logout, getCurrentUser, isLoggedIn, requireAuth,
-  toggleFavorite, getFavorites, isFavorite
+  toggleFavorite, getFavorites, isFavorite, apiFetch, getToken
 };

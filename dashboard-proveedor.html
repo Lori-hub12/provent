@@ -636,7 +636,7 @@
         if (fileInput.files && fileInput.files[0]) {
           const formData = new FormData();
           formData.append('file', fileInput.files[0]);
-          const uploadRes = await fetch('http://localhost:3000/api/upload', {
+          const uploadRes = await ProVendAuth.apiFetch('http://localhost:3000/api/upload', {
             method: 'POST',
             body: formData
           });
@@ -647,7 +647,7 @@
         }
 
         // 2. Guardar material en DB
-        const res = await fetch('http://localhost:3000/api/materiales', {
+        const res = await ProVendAuth.apiFetch('http://localhost:3000/api/materiales', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -681,7 +681,7 @@
     async function deleteMaterial(id, btn) {
       if (!confirm('¿Eliminar este material?')) return;
       btn.textContent = '...'; btn.disabled = true;
-      await fetch(`http://localhost:3000/api/materiales/${id}`, {method: 'DELETE'});
+      await ProVendAuth.apiFetch(`http://localhost:3000/api/materiales/${id}`, {method: 'DELETE'});
       showToast('Material eliminado', 'info');
       loadDashboard();
     }
