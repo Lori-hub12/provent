@@ -157,16 +157,19 @@ body.dark {
   --neutral-200: #374151;
   --neutral-100: #1F2937;
   --neutral-50: #0B0F19;
-  --primary-900: #F0F5FF;
-  --primary-800: #DCEAFB;
-  --primary-700: #B3D4FC;
-  --primary-600: #7BB8F8;
-  --primary-500: #4A9FF5;
-  --primary-400: #2B7DE9;
-  --primary-300: #1A56A8;
-  --primary-200: #1B2A4A;
-  --primary-100: #0F1B2D;
-  --primary-50:  #0A1628;
+
+  /* ---- Primary: Adjust for dark mode without fully inverting ---- */
+  /* Keeps darks dark for hero/footer, but softens lights for dark mode components */
+  --primary-900: #070F1C;
+  --primary-800: #0A1628;
+  --primary-700: #0F1B2D;
+  --primary-600: #1B2A4A;
+  --primary-500: #2B7DE9;
+  --primary-400: #4A9FF5;
+  --primary-300: #7BB8F8;
+  --primary-200: #1B2A4A; /* Adjusted for dark mode badges/hovers */
+  --primary-100: #0F1B2D; /* Adjusted for dark mode badges/hovers */
+  --primary-50:  #0A1628; /* Adjusted for dark mode badges/hovers */
 
   --glass-bg: rgba(31, 41, 55, 0.85);
   --glass-bg-hover: rgba(31, 41, 55, 0.95);
