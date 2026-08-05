@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -119,26 +119,25 @@
     .accion-item:hover { border-color: var(--primary-400); box-shadow: var(--shadow-blue); transform: translateX(4px); color: var(--primary-700); }
     .accion-emoji { font-size: 1.5rem; width: 48px; height: 48px; background: var(--primary-50); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-    @keyframes heroSlideUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes heroSlideUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    .modal-overlay.active { display: flex; }
+    .modal-content { background: white; padding: 2rem; border-radius: var(--radius-xl); width: 90%; max-width: 500px; box-shadow: var(--shadow-xl); position: relative; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--neutral-500); }
   </style>
 </head>
 <body>
+  <!-- HEADER -->
   <div id="navbar-container"></div>
 
   <!-- HERO -->
-  <section class="dashboard-hero">
+  <header class="dashboard-hero">
     <div class="container">
-      <div class="hero-greeting" id="greeting-badge">?? Cargando tu perfil...</div>
-      <h1>¿Qué estás <span>buscando hoy</span>?</h1>
-      <p class="sub">Tu plataforma B2B para conectar con los mejores proveedores de Nicaragua.</p>
+      <div class="hero-greeting" id="greeting-badge">👋 Cargando...</div>
+      <h1>Panel de <span>Control</span></h1>
+      <p class="sub">Administra tus compras, busca proveedores y gestiona tu empresa.</p>
       <div class="dashboard-search">
-        <div class="search-bar">
-          <span class="search-bar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-          </span>
-          <input id="hero-search-input" type="text" placeholder="Buscar proveedores, materiales o categorías...">
-          <button class="btn btn-primary" onclick="goSearch()">Buscar</button>
-        </div>
+        <button onclick="openProfileModal()" class="btn btn-outline" style="background: white;">⚙️ Editar mi perfil</button>
+        <button onclick="window.location.href='explorar.html'" class="btn btn-primary" style="margin-left: 1rem;">🔍 Buscar Proveedores</button>
       </div>
       <div class="dashboard-tags">
         <span>Explorar:</span>
@@ -199,6 +198,20 @@
     </div>
   </section>
 
+  <!-- HISTORIAL DE VISITAS -->
+  <section class="dashboard-section" style="background:var(--neutral-50); border-top: 1px solid var(--neutral-200);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-header-label">HISTORIAL</span>
+        <h2>Vistos recientemente</h2>
+        <p>Retoma el contacto con los últimos proveedores que visitaste.</p>
+      </div>
+      <div id="historial-container">
+        <!-- Renderizado por JS -->
+      </div>
+    </div>
+  </section>
+
   <!-- MERCADO EN VIVO -->
   <section class="dashboard-section">
     <div class="container">
@@ -251,6 +264,26 @@
       </div>
     </div>
   </section>
+
+  <!-- MODAL DE PERFIL -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeProfileModal()">&times;</button>
+      <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--neutral-900);">Configuración de Empresa</h2>
+      <p style="color: var(--neutral-500); margin-bottom: 1.5rem;">Actualiza tus datos para que los proveedores te reconozcan mejor.</p>
+      <form id="profile-form" onsubmit="saveProfile(event)">
+        <div style="margin-bottom: 1rem;">
+          <label style="display: block; font-weight: 500; margin-bottom: 0.5rem; color: var(--neutral-700);">Nombre de la Empresa</label>
+          <input type="text" id="prof-company" class="input" style="width: 100%;" required>
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+          <label style="display: block; font-weight: 500; margin-bottom: 0.5rem; color: var(--neutral-700);">Tu Nombre (Representante)</label>
+          <input type="text" id="prof-nombre" class="input" style="width: 100%;" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Guardar Cambios</button>
+      </form>
+    </div>
+  </div>
 
   <!-- CATEGORÍAS -->
   <section class="categories-section section" style="background:var(--neutral-50);">
@@ -397,7 +430,40 @@
           favContainer.appendChild(grid);
         }
 
-        // 4. Notificaciones
+        // 4. Historial
+        const histRes = await fetch(`http://localhost:3000/api/dashboard/empresa/${user.id}/historial`);
+        const historial = await histRes.json();
+        const histContainer = document.getElementById('historial-container');
+
+        if (historial.length === 0) {
+          histContainer.innerHTML = `
+            <div class="empty-state" style="padding: 2rem;">
+              <p>No tienes historial de visitas recientes.</p>
+            </div>`;
+        } else {
+          const grid = document.createElement('div');
+          grid.className = 'providers-grid';
+          historial.forEach(p => {
+            const initials = (p.company || p.nombre || 'PR').substring(0, 2).toUpperCase();
+            const colors = ['#2B7DE9','#27ae60','#e67e22','#9b59b6','#e74c3c'];
+            const color = colors[p.id % colors.length];
+            grid.innerHTML += `
+              <div class="prov-card" style="padding: 1rem;">
+                <div class="prov-card-top" style="margin-bottom: 0.5rem;">
+                  <div class="prov-avatar" style="width: 36px; height: 36px; font-size: 0.9rem; background:${color}">${initials}</div>
+                  <div>
+                    <div style="font-weight:600; font-size:0.9rem; color:var(--neutral-900)">${p.company || p.nombre} ${p.verificado ? '✅' : ''}</div>
+                    <div style="font-size:0.75rem; color:var(--neutral-500)">Última visita: ${new Date(p.last_visited).toLocaleDateString()}</div>
+                  </div>
+                </div>
+                <a href="perfil-proveedor.html?id=${p.id}" class="prov-card-action" style="padding: 0.4rem; font-size: 0.8rem;">Volver a ver</a>
+              </div>`;
+          });
+          histContainer.innerHTML = '';
+          histContainer.appendChild(grid);
+        }
+
+        // 5. Notificaciones
         const notifRes = await fetch(`http://localhost:3000/api/notificaciones/${user.id}`);
         const notifs = await notifRes.json();
         const unread = notifs.filter(n => !n.leida);
@@ -412,13 +478,53 @@
 
     loadDashboard();
 
+    // Lógica del Modal de Perfil
+    function openProfileModal() {
+      document.getElementById('prof-company').value = user.company || '';
+      document.getElementById('prof-nombre').value = user.nombre || '';
+      document.getElementById('profile-modal').classList.add('active');
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profile-modal').classList.remove('active');
+    }
+
+    async function saveProfile(e) {
+      e.preventDefault();
+      const company = document.getElementById('prof-company').value.trim();
+      const nombre = document.getElementById('prof-nombre').value.trim();
+      try {
+        const res = await fetch(`http://localhost:3000/api/usuarios/empresa/${user.id}`, {
+          method: 'PUT',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ company, nombre })
+        });
+        if(res.ok) {
+          // Actualizar localStorage
+          user.company = company;
+          user.nombre = nombre;
+          localStorage.setItem('provend_user', JSON.stringify(user));
+          alert('¡Perfil actualizado correctamente!');
+          window.location.reload();
+        } else {
+          alert('Hubo un error al actualizar el perfil.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Error de conexión.');
+      }
+    }
+
     function goSearch() {
-      const q = document.getElementById('hero-search-input').value.trim();
+      const q = document.getElementById('hero-search-input')?.value.trim() || '';
       window.location.href = 'explorar.html?tab=empresas' + (q ? '&q=' + encodeURIComponent(q) : '');
     }
-    document.getElementById('hero-search-input').addEventListener('keypress', e => {
-      if (e.key === 'Enter') goSearch();
-    });
+    const searchInput = document.getElementById('hero-search-input');
+    if (searchInput) {
+      searchInput.addEventListener('keypress', e => {
+        if (e.key === 'Enter') goSearch();
+      });
+    }
   </script>
 </body>
 </html>

@@ -363,6 +363,36 @@ app.get('/api/dashboard/empresa/:id/favoritos', (req, res) => {
     });
 });
 
+app.get('/api/dashboard/empresa/:id/historial', (req, res) => {
+    db.all(`
+        SELECT u.id, u.nombre, u.company, p.logo_url, p.categoria, p.verificado, MAX(v.created_at) as last_visited,
+               COALESCE(AVG(r.rating), 0) as rating, COUNT(DISTINCT r.id) as reviews
+        FROM visitas v
+        JOIN usuarios u ON v.proveedor_id = u.id
+        LEFT JOIN perfiles_proveedor p ON u.id = p.usuario_id
+        LEFT JOIN resenas r ON u.id = r.proveedor_id
+        WHERE v.visitante_id = ?
+        GROUP BY u.id
+        ORDER BY last_visited DESC
+        LIMIT 10
+    `, [req.params.id], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
+app.put('/api/usuarios/empresa/:id', (req, res) => {
+    const { nombre, company } = req.body;
+    db.run(
+        `UPDATE usuarios SET nombre = ?, company = ? WHERE id = ? AND rol = 'empresa'`,
+        [nombre, company, req.params.id],
+        function(err) {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ success: true, changes: this.changes });
+        }
+    );
+});
+
 // ===================== VISITAS =====================
 app.post('/api/visitas', (req, res) => {
     const { proveedor_id, visitante_id } = req.body;
