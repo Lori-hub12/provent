@@ -414,7 +414,7 @@ app.get('/api/search', (req, res) => {
 
     if (type === 'materiales') {
         query = `
-            SELECT m.*, p.company as empresa_nombre, p.ciudad, p.verificado, p.logo_url, u.nombre as proveedor_nombre 
+            SELECT m.*, u.company as empresa_nombre, p.ciudad, p.verificado, p.logo_url, u.nombre as proveedor_nombre 
             FROM materiales m 
             JOIN perfiles_proveedor p ON m.proveedor_id = p.usuario_id 
             JOIN usuarios u ON m.proveedor_id = u.id
@@ -427,14 +427,14 @@ app.get('/api/search', (req, res) => {
         }
     } else {
         query = `
-            SELECT p.*, u.nombre as proveedor_nombre, u.email 
+            SELECT p.*, u.nombre as proveedor_nombre, u.email, u.company 
             FROM perfiles_proveedor p 
             JOIN usuarios u ON p.usuario_id = u.id 
             WHERE u.rol = 'proveedor'
         `;
         
         if (q) {
-            query += ` AND (LOWER(p.company) LIKE ? OR LOWER(u.nombre) LIKE ? OR LOWER(p.descripcion) LIKE ? OR LOWER(p.categoria) LIKE ?)`;
+            query += ` AND (LOWER(u.company) LIKE ? OR LOWER(u.nombre) LIKE ? OR LOWER(p.descripcion) LIKE ? OR LOWER(p.categoria) LIKE ?)`;
             params.push(`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`);
         }
     }
