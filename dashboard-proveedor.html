@@ -232,7 +232,7 @@
       </div>
       <div id="materiales-container">
         <div class="empty-state">
-          <div class="empty-state-icon">??</div>
+          <div class="empty-state-icon">Información</div>
           <h3>No has publicado materiales todavía</h3>
           <p>Publica tu primer material para que las empresas puedan encontrarte en la plataforma.</p>
           <button class="btn btn-primary" onclick="openModal('modal-material')">Publicar mi primer material</button>
@@ -276,7 +276,7 @@
   <!-- MODAL: Publicar Material -->
   <div class="modal-overlay" id="modal-material">
     <div class="modal-box">
-      <h3>?? Publicar Material</h3>
+      <h3>Información Publicar Material</h3>
       <form id="form-material" onsubmit="submitMaterial(event)">
         <div class="form-group">
           <label>Nombre del material *</label>
@@ -314,7 +314,7 @@
   <div class="celebration-overlay" id="celebration">
     <div class="confetti" id="confetti"></div>
     <div class="celebration-box">
-      <span class="celebration-emoji" id="cel-emoji">??</span>
+      <span class="celebration-emoji" id="cel-emoji">Información</span>
       <div class="celebration-title" id="cel-title">¡Excelente!</div>
       <div class="celebration-sub" id="cel-sub">Has publicado tu primer material.</div>
       <button class="btn btn-primary" onclick="closeCelebration()" style="margin-top:0.5rem">Continuar ?</button>
@@ -504,7 +504,7 @@
 
           obContainer.innerHTML = `
             <div class="onboarding-card">
-              <div class="onboarding-label">?? Primeros pasos</div>
+              <div class="onboarding-label">Información Primeros pasos</div>
               <div class="onboarding-title">Configura tu perfil en ${steps.length} pasos</div>
               <div class="onboarding-sub">Completa estos pasos para que las empresas puedan encontrarte.</div>
               <div class="onboarding-steps">${stepsHTML}</div>
@@ -538,7 +538,7 @@
         if (mats.length === 0) {
           matContainer.innerHTML = `
             <div class="empty-state">
-              <div class="empty-state-icon">??</div>
+              <div class="empty-state-icon">Información</div>
               <h3>No has publicado materiales todavía</h3>
               <p>Publica tu primer material para que las empresas puedan encontrarte en la plataforma.</p>
               <button class="btn btn-primary" onclick="openModal('modal-material')">Publicar mi primer material</button>
@@ -553,12 +553,12 @@
             card.innerHTML = `
               <div class="inv-card-body">
                 <div class="inv-card-name">${m.nombre}</div>
-                <div class="inv-card-meta">?? ${m.cantidad} ${m.unidad}</div>
+                <div class="inv-card-meta">Información ${m.cantidad} ${m.unidad}</div>
                 ${m.descripcion ? `<div class="inv-card-meta">${m.descripcion}</div>` : ''}
                 <span class="inv-card-status">Activo</span>
                 <div class="inv-card-actions">
                   <button type="button" disabled title="La edición estará disponible pronto">Editar</button>
-                  <button class="danger" onclick="deleteMaterial(${m.id}, this)">?? Eliminar</button>
+                  <button class="danger" onclick="deleteMaterial(${m.id}, this)">Información Eliminar</button>
                 </div>
               </div>`;
             grid.appendChild(card);
@@ -589,7 +589,7 @@
             const d = new Date(n.created_at);
             list.innerHTML += `
               <div style="display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.25rem;background: var(--white);border:1px solid var(--neutral-200);border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05);${!n.leida ? 'border-left:3px solid var(--primary-500)' : ''}">
-                <div style="font-size:1.25rem">${n.tipo === 'visita' ? '??' : n.tipo === 'material' ? '??' : '??'}</div>
+                <div style="font-size:1.25rem">${n.tipo === 'visita' ? 'Información' : n.tipo === 'material' ? 'Información' : 'Información'}</div>
                 <div style="flex:1">
                   <div style="font-weight:500;color:var(--neutral-800)">${n.mensaje}</div>
                   <div style="font-size:0.75rem;color:var(--neutral-400);margin-top:0.25rem">${timeAgo(d)}</div>
@@ -642,7 +642,7 @@
         // Punto 7 — Celebración primer material
         if (isFirst) {
           setTimeout(() => {
-            showCelebration('??', '¡Excelente!', 'Has publicado tu primer material. Ya puedes comenzar a recibir visitas.');
+            showCelebration('Información', '¡Excelente!', 'Has publicado tu primer material. Ya puedes comenzar a recibir visitas.');
           }, 400);
         }
 

@@ -170,9 +170,9 @@ function buildFooter() {
         </a>
         <p>Conectando empresas, creando oportunidades. La plataforma B2B líder en Nicaragua para descubrir proveedores confiables.</p>
         <div class="footer-social">
-          <a href="#" aria-label="Facebook">${icons.facebook}</a>
-          <a href="#" aria-label="Instagram">${icons.instagram}</a>
-          <a href="#" aria-label="LinkedIn">${icons.linkedin}</a>
+          <a href="https://www.facebook.com/" target="_blank" rel="noreferrer" aria-label="Facebook">${icons.facebook}</a>
+          <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram">${icons.instagram}</a>
+          <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn">${icons.linkedin}</a>
         </div>
       </div>
       
@@ -191,18 +191,18 @@ function buildFooter() {
         <div class="footer-links">
           <a href="sobre-nosotros.html">Sobre nosotros</a>
           <a href="404.html">Blog</a>
-          <a href="#">Contacto</a>
-          <a href="#">Trabaja con nosotros</a>
+          <a href="mailto:contacto@provend.ni">Contacto</a>
+          <a href="mailto:talento@provend.ni">Trabaja con nosotros</a>
         </div>
       </div>
       
       <div class="footer-column">
         <h4>Legal</h4>
         <div class="footer-links">
-          <a href="#">Términos de servicio</a>
-          <a href="#">Política de privacidad</a>
-          <a href="#">Uso de cookies</a>
-          <a href="#">Aviso legal</a>
+          <a href="sobre-nosotros.html">Términos de servicio</a>
+          <a href="sobre-nosotros.html">Política de privacidad</a>
+          <a href="sobre-nosotros.html">Uso de cookies</a>
+          <a href="sobre-nosotros.html">Aviso legal</a>
         </div>
       </div>
     </div>
@@ -211,9 +211,9 @@ function buildFooter() {
       <div class="footer-bottom-inner">
         <span>© 2026 ProVend Nicaragua. Todos los derechos reservados.</span>
         <div class="footer-bottom-links">
-          <a href="#">Privacidad</a>
-          <a href="#">Términos</a>
-          <a href="#">Cookies</a>
+          <a href="sobre-nosotros.html">Privacidad</a>
+          <a href="sobre-nosotros.html">Términos</a>
+          <a href="sobre-nosotros.html">Cookies</a>
         </div>
       </div>
     </div>

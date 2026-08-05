@@ -50,6 +50,18 @@ button {
   background: none;
 }
 
+.link-button {
+  color: var(--primary-500);
+  text-decoration: none;
+  padding: 0;
+}
+
+.link-button:hover,
+.link-button:focus-visible {
+  color: var(--primary-600);
+  text-decoration: underline;
+}
+
 input, select, textarea {
   font-family: inherit;
   font-size: inherit;

@@ -190,7 +190,7 @@
       </div>
       <div id="favoritos-container">
         <div class="empty-state">
-          <div class="empty-state-icon">??</div>
+          <div class="empty-state-icon">Información</div>
           <h3>Aún no tienes favoritos</h3>
           <p>Guarda los proveedores que más te interesen para encontrarlos rápido.</p>
           <a href="explorar.html" class="btn btn-primary">Explorar proveedores</a>
@@ -237,15 +237,15 @@
       </div>
       <div class="acciones-list">
         <a href="explorar.html?tab=empresas" class="accion-item">
-          <div class="accion-emoji">??</div>
+          <div class="accion-emoji">Información</div>
           <div><div style="font-weight:600">Buscar nuevos proveedores</div><div style="font-size:0.875rem; color:var(--neutral-500); margin-top:0.15rem">Explora el directorio completo y filtra por categoría o ubicación.</div></div>
         </a>
         <a href="explorar.html?tab=materiales" class="accion-item">
-          <div class="accion-emoji">??</div>
+          <div class="accion-emoji">Información</div>
           <div><div style="font-weight:600">Explorar materiales disponibles</div><div style="font-size:0.875rem; color:var(--neutral-500); margin-top:0.15rem">Encuentra materias primas publicadas por proveedores verificados.</div></div>
         </a>
         <a href="categorias.html" class="accion-item">
-          <div class="accion-emoji">???</div>
+          <div class="accion-emoji">Información?</div>
           <div><div style="font-weight:600">Ver todas las categorías</div><div style="font-size:0.875rem; color:var(--neutral-500); margin-top:0.15rem">Encuentra industrias específicas y proveedores especializados.</div></div>
         </a>
       </div>
@@ -334,7 +334,7 @@
           const welcomeBanner = document.createElement('div');
           welcomeBanner.style.cssText = 'background:linear-gradient(135deg,var(--primary-50),white);border:1px solid var(--primary-100);border-radius:16px;padding:2rem;text-align:center;margin-bottom:2rem;max-width:600px;margin-left:auto;margin-right:auto;';
           welcomeBanner.innerHTML = `
-            <div style="font-size:2.5rem;margin-bottom:0.75rem">??</div>
+            <div style="font-size:2.5rem;margin-bottom:0.75rem">Información</div>
             <h2 style="font-size:1.5rem;font-weight:700;color:var(--neutral-900);margin-bottom:0.5rem">
               Bienvenido a ProVend, ${name}
             </h2>
@@ -342,7 +342,7 @@
               Todavía no has realizado ninguna búsqueda. Empieza buscando un material o un proveedor para tu negocio.
             </p>
             <a href="explorar.html" class="btn btn-primary" style="font-size:1rem;padding:0.75rem 2rem">
-              ?? Buscar ahora
+              Información Buscar ahora
             </a>`;
           const firstSection = document.querySelector('.dashboard-section');
           if (firstSection) firstSection.prepend(welcomeBanner);
@@ -366,7 +366,7 @@
         if (favs.length === 0) {
           favContainer.innerHTML = `
             <div class="empty-state">
-              <div class="empty-state-icon">??</div>
+              <div class="empty-state-icon">Información</div>
               <h3>Aún no tienes favoritos</h3>
               <p>Explora proveedores y guarda los que más te interesen haciendo clic en el corazón de su perfil.</p>
               <a href="explorar.html" class="btn btn-primary">Explorar proveedores</a>
