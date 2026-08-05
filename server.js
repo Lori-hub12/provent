@@ -179,6 +179,19 @@ const db = new sqlite3.Database('./database.sqlite', (err) => {
                 FOREIGN KEY(usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
             )`);
 
+                        db.run(`CREATE TABLE IF NOT EXISTS requerimientos (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                empresa_id INTEGER,
+                titulo TEXT,
+                cantidad TEXT,
+                unidad TEXT,
+                urgencia TEXT,
+                descripcion TEXT,
+                estado TEXT DEFAULT 'Activo',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(empresa_id) REFERENCES usuarios(id) ON DELETE CASCADE
+            )`);
+
             // -------------------- INDICES PARA RENDIMIENTO --------------------
             db.run(`CREATE INDEX IF NOT EXISTS idx_usuarios_rol ON usuarios(rol);`);
             db.run(`CREATE INDEX IF NOT EXISTS idx_perfiles_categoria ON perfiles_proveedor(categoria);`);

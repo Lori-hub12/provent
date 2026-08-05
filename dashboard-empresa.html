@@ -179,6 +179,67 @@
     </div>
   </div>
 
+  <!-- MIS REQUERIMIENTOS -->
+  <section class="dashboard-section" style="background:var(--white)">
+    <div class="container">
+      <div class="section-header" style="display:flex; justify-content:space-between; align-items:center; text-align:left; margin-bottom:2rem">
+        <div>
+            <span class="section-header-label" style="background:var(--secondary-100); color:var(--secondary-700)">OPORTUNIDADES INVERSAS</span>
+            <h2 style="margin-bottom:0">Mis Requerimientos Activos</h2>
+        </div>
+        <button class="btn btn-primary" onclick="openReqModal()">+ Publicar Requerimiento</button>
+      </div>
+      <div id="requerimientos-container" class="providers-grid">
+        <div class="empty-state" style="grid-column: 1/-1">
+          <div class="empty-state-icon">📢</div>
+          <h3>No tienes requerimientos activos</h3>
+          <p>Publica lo que necesitas comprar y deja que los proveedores te contacten.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL NUEVO REQUERIMIENTO -->
+  <div class="modal-overlay" id="reqModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeReqModal()">×</button>
+      <h3 style="margin-bottom:1.5rem; font-size:1.5rem">Publicar Requerimiento</h3>
+      <form id="form-req" onsubmit="submitReq(event)">
+        <div class="form-group">
+          <label>Título / Qué buscas *</label>
+          <input type="text" id="req-titulo" class="input" style="width:100%" placeholder="Ej. 50 Toneladas de PET lavado" required>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem">
+          <div class="form-group" style="margin-bottom:0">
+            <label>Cantidad *</label>
+            <input type="text" id="req-cantidad" class="input" style="width:100%" placeholder="Ej. 50" required>
+          </div>
+          <div class="form-group" style="margin-bottom:0">
+            <label>Unidad *</label>
+            <select id="req-unidad" class="input" style="width:100%">
+              <option value="toneladas">Toneladas</option>
+              <option value="kg">Kilogramos</option>
+              <option value="unidades">Unidades</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Nivel de Urgencia *</label>
+          <select id="req-urgencia" class="input" style="width:100%">
+            <option value="Alta">Alta (Lo necesito YA)</option>
+            <option value="Media">Media (Esta semana)</option>
+            <option value="Baja">Baja (Para el mes)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Descripción / Detalles</label>
+          <textarea id="req-descripcion" class="input" style="width:100%" rows="3" placeholder="Calidad esperada, forma de pago, etc."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%">Publicar Oportunidad</button>
+      </form>
+    </div>
+  </div>
+
   <!-- MIS FAVORITOS -->
   <section class="dashboard-section">
     <div class="container">

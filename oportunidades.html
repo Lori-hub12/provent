@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oportunidades de Venta - ProVend</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <style>
+        .search-hero {
+            background: linear-gradient(135deg, var(--secondary-700) 0%, var(--primary-800) 100%);
+            padding: 5rem 2rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-hero::before, .search-hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .search-hero::before { width: 300px; height: 300px; top: -100px; left: -50px; }
+        .search-hero::after { width: 400px; height: 400px; bottom: -200px; right: -100px; }
+
+        .search-hero h1 {
+            color: white;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            font-weight: 800;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div id="navbar-container"></div>
+
+    <main style="background:var(--neutral-50); min-height:100vh">
+        <section class="search-hero">
+            <h1>Pizarrón de Oportunidades</h1>
+            <p style="font-size: 1.25rem; opacity: 0.9; max-width: 600px; margin: 0 auto 2rem; position: relative; z-index: 2;">
+                Descubre qué materiales están buscando las grandes empresas hoy mismo y cierra tu próxima venta.
+            </p>
+        </section>
+
+        <section class="container" style="padding: 3rem 1rem;">
+            <div id="loading" style="text-align:center; padding: 3rem; color: var(--neutral-500);">
+                Cargando oportunidades...
+            </div>
+            <div id="results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+                <!-- Cards renderizadas aquí -->
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/components.js"></script>
+    <script>
+        document.getElementById('navbar-container').innerHTML = buildNavbar('oportunidades');
+        document.getElementById('footer-container').innerHTML = buildFooter();
+    </script>
+    <script>
+        // Adjust Nav
+        
+
+        async function loadOportunidades() {
+            const container = document.getElementById('results');
+            const loading = document.getElementById('loading');
+            
+            try {
+                const res = await fetch('http://localhost:3000/api/requerimientos');
+                const reqs = await res.json();
+                
+                loading.style.display = 'none';
+                
+                if (reqs.length === 0) {
+                    container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 3rem; background:white; border-radius:1rem">No hay oportunidades activas en este momento.</div>`;
+                    return;
+                }
+
+                container.innerHTML = '';
+                reqs.forEach(req => {
+                    const urgenciaColor = req.urgencia === 'Alta' ? 'var(--danger-600)' : (req.urgencia === 'Media' ? 'var(--warning-600)' : 'var(--success-600)');
+                    const urgenciaBg = req.urgencia === 'Alta' ? 'var(--danger-50)' : (req.urgencia === 'Media' ? 'var(--warning-50)' : 'var(--success-50)');
+                    
+                    const logoHtml = req.logo_url 
+                        ? `<img src="${req.logo_url}" alt="Logo" style="width:40px; height:40px; border-radius:8px; object-fit:cover;">`
+                        : `<div style="width:40px; height:40px; border-radius:8px; background:var(--neutral-200); display:flex; align-items:center; justify-content:center; font-weight:bold; color:var(--neutral-500)">${req.empresa_nombre.charAt(0)}</div>`;
+
+                    const tel = req.telefono_contacto || '';
+                    const contactBtn = tel ? `<a href="https://wa.me/${tel.replace(/\D/g, '')}?text=Hola, vi su requerimiento de ${req.titulo} en ProVend" target="_blank" class="btn btn-primary" style="flex:1; text-align:center">Contactar por WhatsApp</a>` : `<button class="btn btn-outline" disabled style="flex:1">Sin Teléfono</button>`;
+
+                    container.innerHTML += `
+                        <div class="provider-card" style="background:var(--white);border:1px solid var(--neutral-200);box-shadow:none; display:flex; flex-direction:column;">
+                            <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:1rem">
+                                <span style="background:${urgenciaBg}; color:${urgenciaColor}; padding:4px 10px; border-radius:20px; font-size:0.75rem; font-weight:700">Urgencia: ${req.urgencia}</span>
+                                <span style="color:var(--neutral-500); font-size:0.75rem">${new Date(req.created_at).toLocaleDateString()}</span>
+                            </div>
+                            
+                            <h3 style="font-size:1.1rem; margin-bottom:0.5rem; color:var(--neutral-900)">${req.titulo}</h3>
+                            <div style="display:flex; gap:0.5rem; margin-bottom:1rem">
+                                <span style="background:var(--neutral-100); color:var(--neutral-700); padding:2px 8px; border-radius:6px; font-size:0.875rem; font-weight:600">${req.cantidad} ${req.unidad}</span>
+                            </div>
+                            
+                            <p style="color:var(--neutral-500); font-size:0.875rem; margin-bottom:1.5rem; flex:1">
+                                ${req.descripcion || 'Sin descripción adicional.'}
+                            </p>
+                            
+                            <div style="padding-top:1rem; border-top:1px solid var(--neutral-100); display:flex; align-items:center; gap:0.75rem; margin-bottom:1.5rem">
+                                ${logoHtml}
+                                <div>
+                                    <div style="font-size:0.875rem; font-weight:600">${req.empresa_nombre}</div>
+                                    <div style="font-size:0.75rem; color:var(--neutral-500)">${req.ciudad_operacion || 'Empresa verificada'}</div>
+                                </div>
+                            </div>
+                            
+                            <div style="display:flex; gap:0.5rem">
+                                ${contactBtn}
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                loading.innerHTML = 'Error al cargar las oportunidades.';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadOportunidades);
+        
+        function logout() {
+            ProVendAuth.logout();
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
