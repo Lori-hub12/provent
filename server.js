@@ -11,6 +11,27 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
+// ===================== MULTER (SUBIDA DE ARCHIVOS) =====================
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, uniqueSuffix + path.extname(file.originalname))
+    }
+});
+const upload = multer({ storage: storage });
+
+app.post('/api/upload', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No se subió ningún archivo' });
+    }
+    const fileUrl = `/uploads/${req.file.filename}`;
+    res.json({ url: fileUrl });
+});
+
 // ===================== BASE DE DATOS =====================
 const db = new sqlite3.Database('./database.sqlite', (err) => {
     if (err) {
@@ -293,9 +314,9 @@ app.get('/api/dashboard/proveedor/:id/resenas', (req, res) => {
 });
 
 app.post('/api/materiales', (req, res) => {
-    const { proveedor_id, nombre, cantidad, unidad, descripcion } = req.body;
-    db.run(`INSERT INTO materiales (proveedor_id, nombre, cantidad, unidad, descripcion) VALUES (?,?,?,?,?)`,
-        [proveedor_id, nombre, cantidad, unidad, descripcion],
+    const { proveedor_id, nombre, cantidad, unidad, descripcion, imagen_url } = req.body;
+    db.run(`INSERT INTO materiales (proveedor_id, nombre, cantidad, unidad, descripcion, imagen_url) VALUES (?,?,?,?,?,?)`,
+        [proveedor_id, nombre, cantidad, unidad, descripcion, imagen_url],
         function(err) {
             if (err) return res.status(500).json({ error: err.message });
             // Notificar
@@ -359,6 +380,26 @@ app.post('/api/visitas', (req, res) => {
         }
         res.json({ ok: true });
     });
+});
+
+app.put('/api/perfiles_proveedor/:id', (req, res) => {
+    const { logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web } = req.body;
+    db.run(`UPDATE perfiles_proveedor SET 
+            logo_url = COALESCE(?, logo_url),
+            descripcion = COALESCE(?, descripcion),
+            ciudad = COALESCE(?, ciudad),
+            categoria = COALESCE(?, categoria),
+            telefono = COALESCE(?, telefono),
+            whatsapp = COALESCE(?, whatsapp),
+            sitio_web = COALESCE(?, sitio_web),
+            updated_at = CURRENT_TIMESTAMP
+            WHERE usuario_id = ?`,
+        [logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, req.params.id],
+        function(err) {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ message: 'Perfil actualizado' });
+        }
+    );
 });
 
 // ===================== FAVORITOS =====================
