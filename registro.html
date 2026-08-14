@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -6,95 +6,441 @@
     <title>Crear Cuenta — ProVend</title>
     <meta name="description" content="Crea tu cuenta en ProVend y únete a la red de negocios más grande de Nicaragua.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages.css">
+    <style>
+        body { margin: 0; min-height: 100vh; }
+        .auth-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+        }
+        @media (max-width: 768px) {
+            .auth-split { grid-template-columns: 1fr; }
+            .auth-panel-left { display: none; }
+        }
+
+        /* LEFT PANEL */
+        .auth-panel-left {
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a6b 60%, #0f2b5a 100%);
+            display: flex; flex-direction: column;
+            justify-content: space-between; padding: 2.5rem;
+            position: relative; overflow: hidden;
+        }
+        .auth-panel-left::before {
+            content: ''; position: absolute;
+            width: 500px; height: 500px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(43,125,233,0.2), transparent 70%);
+            top: -150px; right: -150px;
+        }
+        .auth-panel-left::after {
+            content: ''; position: absolute;
+            width: 350px; height: 350px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(14,165,233,0.15), transparent 70%);
+            bottom: -80px; left: -80px;
+        }
+        .auth-left-logo {
+            display: flex; align-items: center; gap: 0.75rem;
+            text-decoration: none; position: relative; z-index: 2;
+        }
+        .auth-left-logo-text { font-size: 1.5rem; font-weight: 800; color: white; }
+        .auth-left-logo-text span { color: #7BB8F8; }
+        .auth-left-content { position: relative; z-index: 2; }
+        .auth-left-title {
+            font-size: clamp(1.75rem, 3vw, 2.25rem);
+            font-weight: 800; color: white; line-height: 1.25;
+            letter-spacing: -0.03em; margin-bottom: 1rem;
+        }
+        .auth-left-title span {
+            background: linear-gradient(135deg, #7BB8F8, #38BDF8);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .auth-left-sub { color: rgba(255,255,255,0.6); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem; }
+
+        .rol-cards { display: flex; flex-direction: column; gap: 1rem; }
+        .rol-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px; padding: 1.25rem;
+            display: flex; gap: 1rem; align-items: flex-start;
+        }
+        .rol-card-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: rgba(43,125,233,0.25);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem; flex-shrink: 0;
+        }
+        .rol-card-title { font-weight: 700; color: white; font-size: 0.95rem; }
+        .rol-card-desc { font-size: 0.8rem; color: rgba(255,255,255,0.55); margin-top: 2px; }
+
+        .auth-left-bottom { position: relative; z-index: 2; }
+        .trust-badges { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .trust-badge {
+            display: flex; align-items: center; gap: 0.5rem;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; padding: 0.5rem 0.875rem;
+            font-size: 0.8rem; color: rgba(255,255,255,0.7);
+        }
+
+        /* RIGHT PANEL */
+        .auth-panel-right {
+            background: var(--white);
+            display: flex; align-items: center; justify-content: center;
+            padding: 2rem; overflow-y: auto;
+        }
+        .auth-form-wrap { width: 100%; max-width: 460px; padding: 0.5rem 0; }
+        .auth-form-header { margin-bottom: 1.75rem; }
+        .auth-form-title {
+            font-size: 1.75rem; font-weight: 800;
+            color: var(--neutral-900); letter-spacing: -0.025em; margin-bottom: 0.4rem;
+        }
+        .auth-form-sub { color: var(--neutral-500); font-size: 0.9rem; }
+
+        /* Account type selector */
+        .type-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem; }
+        .type-card {
+            border: 2px solid var(--neutral-200); border-radius: 12px;
+            padding: 1rem; cursor: pointer; text-align: center;
+            transition: all 200ms ease; background: var(--neutral-50);
+            position: relative; overflow: hidden;
+        }
+        .type-card:hover { border-color: var(--primary-300); background: var(--primary-50); }
+        .type-card.active {
+            border-color: var(--primary-500);
+            background: var(--primary-50);
+            box-shadow: 0 0 0 3px rgba(43,125,233,0.1);
+        }
+        .type-card.active::after {
+            content: '✓'; position: absolute; top: 8px; right: 10px;
+            font-size: 0.75rem; font-weight: 800; color: var(--primary-500);
+        }
+        .type-card-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        .type-card-name { font-weight: 700; font-size: 0.9rem; color: var(--neutral-900); }
+        .type-card-desc { font-size: 0.75rem; color: var(--neutral-500); margin-top: 2px; }
+
+        /* Form fields */
+        .form-field { margin-bottom: 1.1rem; }
+        .form-field label {
+            display: block; font-size: 0.875rem; font-weight: 600;
+            color: var(--neutral-700); margin-bottom: 0.45rem;
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+        @media (max-width: 400px) { .form-row { grid-template-columns: 1fr; } }
+
+        .form-control {
+            width: 100%; padding: 0.7rem 1rem;
+            border: 1.5px solid var(--neutral-200); border-radius: 10px;
+            font-size: 0.9375rem; font-family: var(--font-family);
+            color: var(--neutral-900); background: var(--neutral-50);
+            transition: all 200ms ease; box-sizing: border-box; outline: none;
+        }
+        .form-control:focus {
+            border-color: var(--primary-400); background: var(--white);
+            box-shadow: 0 0 0 3px rgba(43,125,233,0.12);
+        }
+        .form-control.error {
+            border-color: var(--danger-500);
+            box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+        }
+        .field-error { font-size: 0.78rem; color: var(--danger-500); margin-top: 0.3rem; display: none; }
+        .field-error.visible { display: block; }
+
+        .pw-wrapper { position: relative; }
+        .pw-toggle {
+            position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+            cursor: pointer; color: var(--neutral-400);
+            background: none; border: none; padding: 0; display: flex; align-items: center;
+        }
+        .pw-toggle:hover { color: var(--neutral-700); }
+
+        .pw-strength { display: flex; gap: 3px; margin-top: 0.5rem; }
+        .pw-bar { flex: 1; height: 3px; border-radius: 2px; background: var(--neutral-200); transition: background 300ms; }
+        .pw-bar.weak { background: var(--danger-500); }
+        .pw-bar.medium { background: var(--warning-500); }
+        .pw-bar.strong { background: var(--success-500); }
+        .pw-strength-label { font-size: 0.73rem; color: var(--neutral-400); margin-top: 3px; }
+
+        .checkbox-field { display: flex; align-items: flex-start; gap: 0.625rem; margin-bottom: 1.25rem; }
+        .checkbox-field input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; accent-color: var(--primary-500); flex-shrink: 0; }
+        .checkbox-label { font-size: 0.845rem; color: var(--neutral-600); line-height: 1.5; }
+        .checkbox-label a { color: var(--primary-600); font-weight: 600; text-decoration: none; }
+
+        .btn-auth {
+            width: 100%; padding: 0.875rem;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            color: white; border: none; border-radius: 10px;
+            font-size: 1rem; font-weight: 700; cursor: pointer;
+            transition: all 200ms ease;
+            box-shadow: 0 4px 14px rgba(43,125,233,0.35);
+        }
+        .btn-auth:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(43,125,233,0.45); }
+        .btn-auth:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        .alert-error {
+            background: var(--danger-100); border: 1px solid #fca5a5;
+            border-radius: 10px; padding: 0.875rem 1rem;
+            color: var(--danger-600); font-size: 0.875rem;
+            font-weight: 500; margin-bottom: 1rem; display: none;
+            align-items: center; gap: 0.5rem;
+        }
+        .alert-error.visible { display: flex; }
+        .auth-footer-text { text-align: center; font-size: 0.875rem; color: var(--neutral-500); margin-top: 1.25rem; }
+        .auth-footer-text a { color: var(--primary-600); font-weight: 600; text-decoration: none; }
+    </style>
 </head>
 <body>
-    <div class="auth-layout">
-        <div class="auth-card" style="max-width:520px">
-            <div class="auth-logo"><a href="index.html" id="auth-logo-link"></a></div>
-            <h1 class="auth-title">Crear Cuenta</h1>
-            <p class="auth-subtitle">Únete a la red de negocios más grande de Nicaragua</p>
-            <div class="auth-type-selector">
-                <div class="auth-type-option" data-type="empresa">
-                    <div class="auth-type-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg></div>
-                    <div class="auth-type-name">Empresa</div>
-                    <div class="auth-type-desc">Busco proveedores</div>
+<div class="auth-split">
+    <!-- Panel izquierdo -->
+    <div class="auth-panel-left">
+        <a href="index.html" class="auth-left-logo">
+            <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+                <rect width="40" height="40" rx="10" fill="rgba(255,255,255,0.15)"/>
+                <path d="M8 28L20 12L32 28H8Z" fill="white" opacity="0.9"/>
+                <circle cx="20" cy="20" r="4" fill="#38BDF8"/>
+            </svg>
+            <span class="auth-left-logo-text">Pro<span>Vend</span></span>
+        </a>
+
+        <div class="auth-left-content">
+            <h2 class="auth-left-title">Únete a la red de negocios de <span>Nicaragua</span></h2>
+            <p class="auth-left-sub">Más de 100 empresas y proveedores ya están haciendo negocios en ProVend. Tu turno.</p>
+            <div class="rol-cards">
+                <div class="rol-card">
+                    <div class="rol-card-icon">🏢</div>
+                    <div>
+                        <div class="rol-card-title">Soy Empresa Compradora</div>
+                        <div class="rol-card-desc">Busco proveedores, publico requerimientos y gestiono mis compras</div>
+                    </div>
                 </div>
-                <div class="auth-type-option selected" data-type="proveedor">
-                    <div class="auth-type-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg></div>
-                    <div class="auth-type-name">Proveedor</div>
-                    <div class="auth-type-desc">Ofrezco productos</div>
+                <div class="rol-card">
+                    <div class="rol-card-icon">📦</div>
+                    <div>
+                        <div class="rol-card-title">Soy Proveedor</div>
+                        <div class="rol-card-desc">Publico mis materiales y llego a cientos de empresas compradoras</div>
+                    </div>
                 </div>
             </div>
-            <form id="register-form">
-                <div class="form-group">
-                    <label class="form-label">Nombre de Contacto</label>
-                    <input class="form-input" type="text" id="register-name" placeholder="Juan Pérez" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Correo Electrónico</label>
-                    <input class="form-input" type="email" id="register-email" placeholder="correo@ejemplo.com" required>
-                </div>
-                
-                <!-- Campos de Empresa -->
-                <div id="fields-empresa" style="display: none;">
-                    <div class="form-group">
-                        <label class="form-label">Nombre de tu Empresa (Compradora)</label>
-                        <input class="form-input" type="text" id="register-company-empresa" placeholder="Mi Empresa S.A.">
-                    </div>
-                </div>
+        </div>
 
-                <!-- Campos de Proveedor -->
-                <div id="fields-proveedor" style="display: none;">
-                    <div class="form-group">
-                        <label class="form-label">Nombre Comercial del Proveedor</label>
-                        <input class="form-input" type="text" id="register-company-proveedor" placeholder="Ferretería El Sol">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Número RUC</label>
-                        <input class="form-input" type="text" id="register-ruc" placeholder="J0000000000000">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Categoría Principal</label>
-                        <select class="form-input" id="register-category">
-                            <option value="">Selecciona una categoría...</option>
-                            <option value="Tecnología">Tecnología</option>
-                            <option value="Construcción">Construcción</option>
-                            <option value="Alimentos y Bebidas">Alimentos y Bebidas</option>
-                            <option value="Servicios Profesionales">Servicios Profesionales</option>
-                            <option value="Manufactura">Manufactura</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Contraseña</label>
-                    <input class="form-input" type="password" id="register-password" placeholder="Mínimo 6 caracteres" required>
-                    <span class="form-hint">Mínimo 6 caracteres</span>
-                </div>
-                <div class="form-group">
-                    <label class="form-checkbox">
-                        <input type="checkbox" id="register-terms">
-                        Acepto los <a href="#">Términos de Servicio</a> y <a href="#">Política de Privacidad</a>
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block btn-lg">Crear Cuenta Gratis</button>
-            </form>
-            <p class="auth-footer">¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
+        <div class="auth-left-bottom">
+            <div class="trust-badges">
+                <div class="trust-badge">🔒 SSL Seguro</div>
+                <div class="trust-badge">✅ 100% Gratuito</div>
+                <div class="trust-badge">🇳🇮 Hecho en Nicaragua</div>
+            </div>
         </div>
     </div>
 
-    <script src="js/components.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/animations.js"></script>
-    <script>
-        document.getElementById('auth-logo-link').innerHTML = getLogoSVG(40) + '<span class="navbar-logo-text" style="margin-left:8px">Pro<span>Vend</span></span>';
-    </script>
+    <!-- Panel derecho: formulario -->
+    <div class="auth-panel-right">
+        <div class="auth-form-wrap">
+            <div class="auth-form-header">
+                <h1 class="auth-form-title">Crear cuenta gratis</h1>
+                <p class="auth-form-sub">Elige tu tipo de cuenta y completa el formulario.</p>
+            </div>
+
+            <div class="alert-error" id="error-box" role="alert">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                <span id="error-msg">Error de registro</span>
+            </div>
+
+            <!-- Selector de tipo -->
+            <div class="type-selector">
+                <div class="type-card" id="type-empresa" onclick="setType('empresa')">
+                    <div class="type-card-icon">🏢</div>
+                    <div class="type-card-name">Empresa</div>
+                    <div class="type-card-desc">Busco proveedores</div>
+                </div>
+                <div class="type-card active" id="type-proveedor" onclick="setType('proveedor')">
+                    <div class="type-card-icon">📦</div>
+                    <div class="type-card-name">Proveedor</div>
+                    <div class="type-card-desc">Ofrezco productos</div>
+                </div>
+            </div>
+            <input type="hidden" id="selected-type" value="proveedor">
+
+            <form id="register-form" novalidate>
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="r-nombre">Tu Nombre *</label>
+                        <input class="form-control" type="text" id="r-nombre" placeholder="Juan Pérez" required>
+                        <span class="field-error" id="err-nombre">Nombre requerido</span>
+                    </div>
+                    <div class="form-field">
+                        <label for="r-company">Nombre Comercial *</label>
+                        <input class="form-control" type="text" id="r-company" placeholder="Mi Empresa S.A." required>
+                        <span class="field-error" id="err-company">Nombre requerido</span>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="r-email">Correo Electrónico *</label>
+                    <input class="form-control" type="email" id="r-email" placeholder="correo@empresa.com" autocomplete="email" required>
+                    <span class="field-error" id="err-email">Correo inválido</span>
+                </div>
+
+                <!-- Campos extra proveedor -->
+                <div id="fields-proveedor">
+                    <div class="form-row">
+                        <div class="form-field">
+                            <label for="r-ruc">Número RUC</label>
+                            <input class="form-control" type="text" id="r-ruc" placeholder="J0000000000000">
+                        </div>
+                        <div class="form-field">
+                            <label for="r-category">Categoría</label>
+                            <select class="form-control" id="r-category">
+                                <option value="">Selecciona...</option>
+                                <option value="Reciclaje">Reciclaje</option>
+                                <option value="Tecnología">Tecnología</option>
+                                <option value="Construcción">Construcción</option>
+                                <option value="Alimentos y Bebidas">Alimentos y Bebidas</option>
+                                <option value="Manufactura">Manufactura</option>
+                                <option value="Servicios Profesionales">Servicios Profesionales</option>
+                                <option value="Transporte">Transporte</option>
+                                <option value="Agroindustria">Agroindustria</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="r-password">Contraseña *</label>
+                    <div class="pw-wrapper">
+                        <input class="form-control" type="password" id="r-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required style="padding-right:3rem">
+                        <button type="button" class="pw-toggle" id="r-pw-toggle" aria-label="Mostrar contraseña">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                    </div>
+                    <div class="pw-strength">
+                        <div class="pw-bar" id="pw-b1"></div>
+                        <div class="pw-bar" id="pw-b2"></div>
+                        <div class="pw-bar" id="pw-b3"></div>
+                        <div class="pw-bar" id="pw-b4"></div>
+                    </div>
+                    <div class="pw-strength-label" id="pw-label">Escribe tu contraseña</div>
+                    <span class="field-error" id="err-pw">Mínimo 6 caracteres</span>
+                </div>
+
+                <div class="checkbox-field">
+                    <input type="checkbox" id="r-terms">
+                    <label class="checkbox-label" for="r-terms">
+                        Acepto los <a href="#">Términos de Servicio</a> y la <a href="#">Política de Privacidad</a> de ProVend
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-auth" id="submit-btn">Crear Cuenta Gratis 🚀</button>
+            </form>
+
+            <p class="auth-footer-text">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+        </div>
+    </div>
+</div>
+
+<script src="js/components.js"></script>
+<script src="js/auth.js"></script>
+<script>
+    let selectedType = 'proveedor';
+
+    function setType(type) {
+        selectedType = type;
+        document.getElementById('selected-type').value = type;
+        document.getElementById('type-empresa').classList.toggle('active', type === 'empresa');
+        document.getElementById('type-proveedor').classList.toggle('active', type === 'proveedor');
+        document.getElementById('fields-proveedor').style.display = type === 'proveedor' ? '' : 'none';
+        document.getElementById('r-company').placeholder = type === 'empresa' ? 'Mi Empresa Compradora S.A.' : 'Ferretería El Sol';
+    }
+
+    // Toggle password
+    const pwInput = document.getElementById('r-password');
+    document.getElementById('r-pw-toggle').addEventListener('click', () => {
+        const show = pwInput.type === 'password';
+        pwInput.type = show ? 'text' : 'password';
+    });
+
+    // Password strength
+    pwInput.addEventListener('input', () => {
+        const pw = pwInput.value;
+        const bars = [document.getElementById('pw-b1'),document.getElementById('pw-b2'),document.getElementById('pw-b3'),document.getElementById('pw-b4')];
+        const label = document.getElementById('pw-label');
+        bars.forEach(b => { b.className = 'pw-bar'; });
+
+        let strength = 0;
+        if (pw.length >= 6) strength++;
+        if (pw.length >= 8) strength++;
+        if (/[A-Z]/.test(pw) || /\d/.test(pw)) strength++;
+        if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pw)) strength++;
+
+        const cls = strength <= 1 ? 'weak' : strength <= 2 ? 'medium' : 'strong';
+        const labels = ['','Débil 😬','Regular 😐','Buena 👍','Fuerte 🔒'];
+        for (let i = 0; i < strength; i++) bars[i].classList.add(cls);
+        label.textContent = labels[strength] || 'Escribe tu contraseña';
+    });
+
+    // Submit
+    document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errBox = document.getElementById('error-box');
+        const errMsg = document.getElementById('error-msg');
+        errBox.classList.remove('visible');
+
+        const nombre = document.getElementById('r-nombre').value.trim();
+        const company = document.getElementById('r-company').value.trim();
+        const email = document.getElementById('r-email').value.trim();
+        const password = pwInput.value;
+        const terms = document.getElementById('r-terms').checked;
+
+        // Validaciones
+        let valid = true;
+        const setErr = (id, show) => {
+            document.getElementById(id).classList.toggle('visible', show);
+            if (show) valid = false;
+        };
+        setErr('err-nombre', nombre.length < 2);
+        setErr('err-company', company.length < 2);
+        setErr('err-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+        setErr('err-pw', password.length < 6);
+
+        if (!terms) {
+            errMsg.textContent = 'Debes aceptar los Términos de Servicio para continuar.';
+            errBox.classList.add('visible');
+            valid = false;
+        }
+        if (!valid) return;
+
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.textContent = 'Creando cuenta...';
+
+        try {
+            const res = await fetch('http://localhost:3000/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombre, email, password, rol: selectedType, company })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                errMsg.textContent = data.error || 'Error al registrar';
+                errBox.classList.add('visible');
+            } else {
+                ProVendAuth.setSession(data.token, data.user);
+                window.location.href = selectedType === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html';
+            }
+        } catch (err) {
+            errMsg.textContent = 'Error de conexión. Verifica que el servidor esté activo.';
+            errBox.classList.add('visible');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Crear Cuenta Gratis 🚀';
+        }
+    });
+
+    // Init
+    setType('proveedor');
+</script>
 </body>
 </html>

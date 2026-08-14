@@ -317,5 +317,6 @@ document.addEventListener('DOMContentLoaded', () => {
 // Make functions globally available
 window.ProVendAuth = {
   login, register, logout, getCurrentUser, isLoggedIn, requireAuth,
-  toggleFavorite, getFavorites, isFavorite, apiFetch, getToken
+  toggleFavorite, getFavorites, isFavorite, apiFetch, getToken,
+  setSession: (token, user) => setSession(user, token)
 };
