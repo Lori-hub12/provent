@@ -170,7 +170,7 @@
         <p class="sub" id="prov-subtitle">Cargando tu actividad...</p>
         <div style="display:flex; gap:0.75rem; flex-wrap:wrap; animation: slideUp 0.7s ease-out 0.4s both;">
           <a href="perfil-proveedor.html" id="btn-perfil-publico" class="btn btn-primary">??? Ver mi perfil público</a>
-          <button class="btn" style="background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.3)" onclick="openModal('modal-material')">? Publicar material</button>
+          <button class="btn" style="background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.3)" onclick="openMaterialModal()">? Publicar material</button>
         </div>
       </div>
 
@@ -235,7 +235,7 @@
           <div class="empty-state-icon">??</div>
           <h3>No has publicado materiales todavía</h3>
           <p>Publica tu primer material para que las empresas puedan encontrarte en la plataforma.</p>
-          <button class="btn btn-primary" onclick="openModal('modal-material')">Publicar mi primer material</button>
+          <button class="btn btn-primary" onclick="openMaterialModal()">Publicar mi primer material</button>
         </div>
       </div>
     </div>
@@ -447,6 +447,33 @@
 
     // -- Dashboard --
     let prevKpi = null;
+    let currentEditMaterialId = null;
+
+    function openMaterialModal(mat = null) {
+      const form = document.getElementById('form-material');
+      const title = document.querySelector('#modal-material h3');
+      const btn = document.getElementById('btn-submit-mat');
+      
+      if (mat) {
+        currentEditMaterialId = mat.id;
+        title.textContent = '✏️ Editar Material';
+        btn.textContent = 'Guardar Cambios';
+        document.getElementById('mat-nombre').value = mat.nombre || '';
+        document.getElementById('mat-cantidad').value = mat.cantidad || '';
+        document.getElementById('mat-unidad').value = mat.unidad || 'kg';
+        document.getElementById('mat-precio').value = mat.precio_estimado || '';
+        document.getElementById('mat-volumen').value = mat.volumen_minimo || '';
+        document.getElementById('mat-frecuencia').value = mat.frecuencia_disponibilidad || 'Mensual';
+        document.getElementById('mat-calidad').value = mat.calidad_pureza || '';
+        document.getElementById('mat-descripcion').value = mat.descripcion || '';
+      } else {
+        currentEditMaterialId = null;
+        form.reset();
+        title.textContent = '📦 Publicar Material';
+        btn.textContent = 'Publicar Material';
+      }
+      openModal('modal-material');
+    }
 
     async function loadDashboard() {
       try {
@@ -479,7 +506,7 @@
         // -- Onboarding dinámico (punto 1) --
         const steps = [
           { done: true,              label: 'Crear tu cuenta', desc: 'Ya estás registrado en ProVend.' },
-          { done: kpi.materiales > 0, label: 'Publicar tu primer material', desc: 'Para que las empresas puedan encontrarte.', action: "openModal('modal-material')", actionLabel: 'Publicar ?' },
+          { done: kpi.materiales > 0, label: 'Publicar tu primer material', desc: 'Para que las empresas puedan encontrarte.', action: "openMaterialModal()", actionLabel: 'Publicar ?' },
           { done: false,              label: 'Completar información comercial', desc: 'Dirección, teléfono, WhatsApp y categoría.' },
           { done: false,              label: 'Solicitar verificación', desc: 'Los verificados reciben 3× más contactos.' },
         ];
@@ -571,7 +598,7 @@
               <div class="empty-state-icon">??</div>
               <h3>No has publicado materiales todavía</h3>
               <p>Publica tu primer material para que las empresas puedan encontrarte en la plataforma.</p>
-              <button class="btn btn-primary" onclick="openModal('modal-material')">Publicar mi primer material</button>
+              <button class="btn btn-primary" onclick="openMaterialModal()">Publicar mi primer material</button>
             </div>`;
         } else {
           const grid = document.createElement('div');
@@ -588,7 +615,7 @@
                 ${m.descripcion ? `<div class="inv-card-meta">${m.descripcion}</div>` : ''}
                 <span class="inv-card-status">Activo</span>
                 <div class="inv-card-actions">
-                  <button onclick="alert('Próximamente')">✏️ Editar</button>
+                  <button onclick='openMaterialModal(${JSON.stringify(m).replace(/"/g, "&quot;")})'>✏️ Editar</button>
                   <button class="danger" onclick="deleteMaterial(${m.id}, this)">🗑️ Eliminar</button>
                 </div>
               </div>`;
@@ -678,8 +705,11 @@
         const matFrecuencia = document.getElementById('mat-frecuencia');
         const matCalidad = document.getElementById('mat-calidad');
 
-        const res = await ProVendAuth.apiFetch('${API_BASE}/api/materiales', {
-          method: 'POST',
+        const method = currentEditMaterialId ? 'PUT' : 'POST';
+        const url = currentEditMaterialId ? `${API_BASE}/api/materiales/${currentEditMaterialId}` : `${API_BASE}/api/materiales`;
+
+        const res = await ProVendAuth.apiFetch(url, {
+          method: method,
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
             proveedor_id: user.id,
