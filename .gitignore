@@ -1,3 +1,8 @@
 node_modules/
 database.sqlite
 .env
+
+database.sqlite-shm
+database.sqlite-wal
+uploads/
+test.js

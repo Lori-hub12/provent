@@ -341,7 +341,8 @@
     </div>
 </div>
 
-<script src="js/components.js"></script>
+<script src="js/config.js"></script>
+    <script src="js/components.js"></script>
 <script src="js/auth.js"></script>
 <script>
     let selectedType = 'proveedor';
@@ -417,7 +418,7 @@
         btn.textContent = 'Creando cuenta...';
 
         try {
-            const res = await fetch('http://localhost:3000/api/register', {
+            const res = await fetch('${API_BASE}/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nombre, email, password, rol: selectedType, company })

@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /dashboard-proveedor.html
+Disallow: /dashboard-empresa.html
+Disallow: /reset-password.html
+Disallow: /uploads/
+
+Allow: /
+
+Sitemap: https://provend.onrender.com/sitemap.xml

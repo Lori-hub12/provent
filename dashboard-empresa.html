@@ -360,7 +360,8 @@
 
   <div id="footer-container"></div>
 
-  <script src="js/components.js"></script>
+  <script src="js/config.js"></script>
+    <script src="js/components.js"></script>
   <script src="js/app.js"></script>
   <script src="js/auth.js"></script>
   <script src="js/animations.js"></script>
@@ -416,7 +417,7 @@
     async function loadDashboard() {
       try {
         // 1. Estadísticas de mi actividad
-        const actRes = await ProVendAuth.apiFetch(`http://localhost:3000/api/dashboard/empresa/${user.id}`);
+        const actRes = await ProVendAuth.apiFetch(`${API_BASE}/api/dashboard/empresa/${user.id}`);
         const act = await actRes.json();
         document.getElementById('stat-visitados').textContent = act.proveedores_visitados || 0;
         document.getElementById('stat-favoritos').textContent = act.favoritos || 0;
@@ -443,7 +444,7 @@
         }
 
         // 2. Estadísticas globales del mercado
-        const statsRes = await fetch('http://localhost:3000/api/stats');
+        const statsRes = await fetch('${API_BASE}/api/stats');
         const stats = await statsRes.json();
         document.getElementById('mkt-proveedores').textContent = stats.proveedores || 0;
         document.getElementById('mkt-empresas').textContent = stats.empresas || 0;
@@ -453,7 +454,7 @@
 
 
         // 3. Favoritos reales
-        const favRes = await ProVendAuth.apiFetch(`http://localhost:3000/api/dashboard/empresa/${user.id}/favoritos`);
+        const favRes = await ProVendAuth.apiFetch(`${API_BASE}/api/dashboard/empresa/${user.id}/favoritos`);
         const favs = await favRes.json();
         const favContainer = document.getElementById('favoritos-container');
 
@@ -492,7 +493,7 @@
         }
 
         // 4. Historial
-        const histRes = await ProVendAuth.apiFetch(`http://localhost:3000/api/dashboard/empresa/${user.id}/historial`);
+        const histRes = await ProVendAuth.apiFetch(`${API_BASE}/api/dashboard/empresa/${user.id}/historial`);
         const historial = await histRes.json();
         const histContainer = document.getElementById('historial-container');
 
@@ -525,7 +526,7 @@
         }
 
         // 5. Notificaciones
-        const notifRes = await fetch(`http://localhost:3000/api/notificaciones/${user.id}`);
+        const notifRes = await fetch(`${API_BASE}/api/notificaciones/${user.id}`);
         const notifs = await notifRes.json();
         const unread = notifs.filter(n => !n.leida);
         if (unread.length > 0) {
@@ -555,7 +556,7 @@
       const company = document.getElementById('prof-company').value.trim();
       const nombre = document.getElementById('prof-nombre').value.trim();
       try {
-        const res = await ProVendAuth.apiFetch(`http://localhost:3000/api/usuarios/empresa/${user.id}`, {
+        const res = await ProVendAuth.apiFetch(`${API_BASE}/api/usuarios/empresa/${user.id}`, {
           method: 'PUT',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({ company, nombre })

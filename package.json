@@ -2,9 +2,11 @@
   "name": "proconnect",
   "version": "1.0.0",
   "description": "ProVend es un prototipo interactivo y moderno (Front-end) de una plataforma B2B diseñada para conectar empresas y proveedores en Nicaragua de manera eficiente, rápida y transparente.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "repository": {
     "type": "git",

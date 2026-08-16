@@ -84,9 +84,7 @@
     <div id="footer-container"></div>
 
 
-    <audio id="bg-music" loop autoplay>
-        <source src="assets/cancion.mp3" type="audio/mpeg">
-    </audio>
+    
 
     <!-- Scripts -->
     <script src="js/components.js"></script>
@@ -100,10 +98,7 @@
             if (footer) footer.innerHTML = buildFooter();
 
             // Lógica para forzar la música
-            const audio = document.getElementById('bg-music');
             
-            // Intentar reproducir automáticamente
-            let playPromise = audio.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
                     // Si el navegador de Windows lo bloquea por seguridad, 

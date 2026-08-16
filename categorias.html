@@ -451,6 +451,7 @@
     <!-- Footer -->
     <div id="footer-container"></div>
 
+    <script src="js/config.js"></script>
     <script src="js/components.js"></script>
     <script src="js/app.js"></script>
     <script src="js/animations.js"></script>
@@ -572,7 +573,7 @@
       `).join('');
 
       // Fetch real stats
-      fetch('http://localhost:3000/api/stats')
+      fetch('${API_BASE}/api/stats')
         .then(res => res.json())
         .then(stats => {
           if(stats.proveedores > 0 || stats.empresas > 0) {

@@ -287,6 +287,7 @@
     </div>
 
     <script src="js/mockData.js"></script>
+    <script src="js/config.js"></script>
     <script src="js/components.js"></script>
     <script>
         document.getElementById('navbar-container').innerHTML = buildNavbar('explorar');
@@ -296,10 +297,10 @@
         
         let debounceTimer;
 
-        function setTab(tab) {
+        function setTab(tab, evt) {
             currentTab = tab;
             document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            if (evt && evt.target) evt.target.classList.add('active');
             const input = document.getElementById('searchInput');
             input.placeholder = tab === 'materiales' ? 'Ej. Cartón, PET, Aluminio...' : 'Ej. Recicladora, EcoPlast...';
             triggerSearch();
@@ -331,7 +332,7 @@
             if (selectedLocations.length > 0) params.append('ubicacion', selectedLocations.join(','));
 
             try {
-                const res = await fetch(`http://localhost:3000/api/search?${params.toString()}`);
+                const res = await fetch(`${API_BASE}/api/search?${params.toString()}`);
                 if (!res.ok) throw new Error('Error en búsqueda');
                 const data = await res.json();
                 
