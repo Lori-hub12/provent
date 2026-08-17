@@ -757,28 +757,25 @@ app.post('/api/visitas', async (req, res) => {
 // ===================== PERFIL PROVEEDOR =====================
 app.put('/api/perfiles_proveedor/:id', authenticateToken, async (req, res) => {
     if (req.user.id !== parseInt(req.params.id)) return res.status(403).json({ error: 'Acceso denegado' });
-    const { logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, direccion, latitud, longitud, horario, certificados, capacidad_mensual_toneladas, tiene_transporte } = req.body;
+    const { logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte } = req.body;
     try {
         await dbRun(`
-            UPDATE perfiles_proveedor SET
-                logo_url = COALESCE(?, logo_url),
-                descripcion = COALESCE(?, descripcion),
-                ciudad = COALESCE(?, ciudad),
-                categoria = COALESCE(?, categoria),
-                telefono = COALESCE(?, telefono),
-                whatsapp = COALESCE(?, whatsapp),
-                sitio_web = COALESCE(?, sitio_web),
-                direccion = COALESCE(?, direccion),
-                latitud = COALESCE(?, latitud),
-                longitud = COALESCE(?, longitud),
-                horario = COALESCE(?, horario),
-                certificados = COALESCE(?, certificados),
-                capacidad_mensual_toneladas = COALESCE(?, capacidad_mensual_toneladas),
-                tiene_transporte = COALESCE(?, tiene_transporte),
-                updated_at = CURRENT_TIMESTAMP
-            WHERE usuario_id = ?`,
-            [logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, direccion, latitud, longitud, horario, certificados, capacidad_mensual_toneladas, tiene_transporte, req.params.id]
-        );
+            INSERT INTO perfiles_proveedor (
+                usuario_id, logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(usuario_id) DO UPDATE SET
+                logo_url = COALESCE(EXCLUDED.logo_url, perfiles_proveedor.logo_url),
+                descripcion = COALESCE(EXCLUDED.descripcion, perfiles_proveedor.descripcion),
+                ciudad = COALESCE(EXCLUDED.ciudad, perfiles_proveedor.ciudad),
+                categoria = COALESCE(EXCLUDED.categoria, perfiles_proveedor.categoria),
+                telefono = COALESCE(EXCLUDED.telefono, perfiles_proveedor.telefono),
+                whatsapp = COALESCE(EXCLUDED.whatsapp, perfiles_proveedor.whatsapp),
+                sitio_web = COALESCE(EXCLUDED.sitio_web, perfiles_proveedor.sitio_web),
+                horario = COALESCE(EXCLUDED.horario, perfiles_proveedor.horario),
+                cobertura = COALESCE(EXCLUDED.cobertura, perfiles_proveedor.cobertura),
+                capacidad_mensual_toneladas = COALESCE(EXCLUDED.capacidad_mensual_toneladas, perfiles_proveedor.capacidad_mensual_toneladas),
+                tiene_transporte = COALESCE(EXCLUDED.tiene_transporte, perfiles_proveedor.tiene_transporte)
+        `, [req.params.id, logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte]);
         res.json({ message: 'Perfil actualizado' });
     } catch (err) {
         res.status(500).json({ error: err.message });
