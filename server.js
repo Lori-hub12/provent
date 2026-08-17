@@ -803,8 +803,8 @@ app.get('/api/search', async (req, res) => {
             query = `
                 SELECT m.*, u.company as empresa_nombre, p.ciudad, p.verificado, p.logo_url, u.nombre as proveedor_nombre
                 FROM materiales m
-                JOIN perfiles_proveedor p ON m.proveedor_id = p.usuario_id
                 JOIN usuarios u ON m.proveedor_id = u.id
+                LEFT JOIN perfiles_proveedor p ON m.proveedor_id = p.usuario_id
                 WHERE m.estado = 'Activo' AND u.activo = 1
             `;
             if (q) {
@@ -813,9 +813,9 @@ app.get('/api/search', async (req, res) => {
             }
         } else {
             query = `
-                SELECT p.*, u.nombre as proveedor_nombre, u.email, u.company
-                FROM perfiles_proveedor p
-                JOIN usuarios u ON p.usuario_id = u.id
+                SELECT p.*, u.id as usuario_id, u.nombre as proveedor_nombre, u.email, u.company
+                FROM usuarios u
+                LEFT JOIN perfiles_proveedor p ON u.id = p.usuario_id
                 WHERE u.rol = 'proveedor' AND u.activo = 1
             `;
             if (q) {
@@ -832,7 +832,7 @@ app.get('/api/search', async (req, res) => {
 
         if (verificados) query += ` AND p.verificado = 1`;
 
-        query += ` ORDER BY ${type === 'materiales' ? 'm.created_at' : 'u.created_at'} DESC LIMIT 50`;
+        query += ` ORDER BY ${type === 'materiales' ? 'm.created_at DESC' : 'u.id DESC'} LIMIT 50`;
 
         const rows = await dbAll(query, params);
         res.json(rows);
