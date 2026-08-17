@@ -1,12 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión — ProVend</title>
-    <meta name="description" content="Inicia sesión en ProVend para conectar con proveedores y hacer crecer tu negocio en Nicaragua.">
+        <meta name="description" content="ProVend es la plataforma B2B de Nicaragua que conecta empresas con proveedores verificados para optimizar la cadena de suministro.">
+    <meta property="og:title" content="ProVend â€” Conectando Empresas y Proveedores">
+    <meta property="og:description" content="Encuentra proveedores verificados y cotiza materiales para tu empresa en Nicaragua.">
+    <meta property="og:image" content="https://provend.com.ni/assets/images/logo.svg">
+    <meta property="og:url" content="https://provend.com.ni/">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Iniciar SesiÃ³n â€” ProVend</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
@@ -250,19 +257,19 @@
 
         <div class="auth-left-content">
             <h2 class="auth-left-title">La plataforma B2B de <span>Nicaragua</span></h2>
-            <p class="auth-left-sub">Conectamos empresas, proveedores y emprendedores para hacer negocios más rápido y de manera más segura.</p>
+            <p class="auth-left-sub">Conectamos empresas, proveedores y emprendedores para hacer negocios mÃ¡s rÃ¡pido y de manera mÃ¡s segura.</p>
             <div class="auth-feature-list">
                 <div class="auth-feature-item">
-                    <div class="auth-feature-icon">🔗</div>
+                    <div class="auth-feature-icon">ðŸ”—</div>
                     <span>Conecta con cientos de proveedores verificados en segundos</span>
                 </div>
                 <div class="auth-feature-item">
-                    <div class="auth-feature-icon">📢</div>
+                    <div class="auth-feature-icon">ðŸ“¢</div>
                     <span>Publica lo que necesitas y deja que los proveedores te encuentren</span>
                 </div>
                 <div class="auth-feature-item">
-                    <div class="auth-feature-icon">🔒</div>
-                    <span>Plataforma segura con encriptación militar de datos</span>
+                    <div class="auth-feature-icon">ðŸ”’</div>
+                    <span>Plataforma segura con encriptaciÃ³n militar de datos</span>
                 </div>
             </div>
         </div>
@@ -289,46 +296,46 @@
 
             <div class="alert-error" id="error-box" role="alert">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                <span id="error-msg">Error de autenticación</span>
+                <span id="error-msg">Error de autenticaciÃ³n</span>
             </div>
 
-            <!-- Demo rápida -->
+            <!-- Demo rÃ¡pida -->
             <div class="demo-box">
-                <div class="demo-box-title">⚡ Acceso rápido para demostración:</div>
-                <button class="demo-btn" onclick="fillDemo('empresa@demo.com','demo123')">🏢 Demo Empresa</button>
-                <button class="demo-btn" onclick="fillDemo('proveedor@demo.com','demo123')">📦 Demo Proveedor</button>
+                <div class="demo-box-title">âš¡ Acceso rÃ¡pido para demostraciÃ³n:</div>
+                <button class="demo-btn" onclick="fillDemo('empresa@demo.com','demo123')">ðŸ¢ Demo Empresa</button>
+                <button class="demo-btn" onclick="fillDemo('proveedor@demo.com','demo123')">ðŸ“¦ Demo Proveedor</button>
             </div>
 
             <form id="login-form" novalidate>
                 <div class="form-field">
-                    <label for="login-email">Correo Electrónico</label>
+                    <label for="login-email">Correo ElectrÃ³nico</label>
                     <input class="form-control" type="email" id="login-email" placeholder="tu@empresa.com" autocomplete="email" required>
-                    <span class="field-error" id="err-email">Ingresa un correo válido</span>
+                    <span class="field-error" id="err-email">Ingresa un correo vÃ¡lido</span>
                 </div>
 
                 <div class="form-field">
                     <div class="link-row">
-                        <label for="login-password" style="margin-bottom:0">Contraseña</label>
-                        <a href="forgot-password.html" class="auth-link">¿Olvidaste tu contraseña?</a>
+                        <label for="login-password" style="margin-bottom:0">ContraseÃ±a</label>
+                        <a href="forgot-password.html" class="auth-link">Â¿Olvidaste tu contraseÃ±a?</a>
                     </div>
                     <div class="pw-wrapper" style="margin-top:0.5rem">
-                        <input class="form-control" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" required style="padding-right:3rem">
-                        <button type="button" class="pw-toggle" id="toggle-password" aria-label="Mostrar contraseña">
+                        <input class="form-control" type="password" id="login-password" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" autocomplete="current-password" required style="padding-right:3rem">
+                        <button type="button" class="pw-toggle" id="toggle-password" aria-label="Mostrar contraseÃ±a">
                             <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                         </button>
                     </div>
-                    <span class="field-error" id="err-password">Ingresa tu contraseña</span>
+                    <span class="field-error" id="err-password">Ingresa tu contraseÃ±a</span>
                 </div>
 
                 <button type="submit" class="btn-auth" id="submit-btn">
                     <span class="spinner"></span>
-                    <span class="btn-label">Iniciar Sesión</span>
+                    <span class="btn-label">Iniciar SesiÃ³n</span>
                 </button>
             </form>
 
-            <p class="auth-footer-text">¿No tienes cuenta? <a href="registro.html">Regístrate gratis</a></p>
+            <p class="auth-footer-text">Â¿No tienes cuenta? <a href="registro.html">RegÃ­strate gratis</a></p>
             <p style="text-align:center; font-size:0.75rem; color:var(--neutral-400); margin-top:1rem;">
-                Al continuar, aceptas nuestros <a href="#" style="color:var(--neutral-500)">Términos</a> y <a href="#" style="color:var(--neutral-500)">Privacidad</a>
+                Al continuar, aceptas nuestros <a href="#" style="color:var(--neutral-500)">TÃ©rminos</a> y <a href="#" style="color:var(--neutral-500)">Privacidad</a>
             </p>
         </div>
     </div>
@@ -415,7 +422,7 @@
                 window.location.href = data.user.rol === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html';
             }
         } catch (err) {
-            errMsg.textContent = 'Error de conexión. Verifica que el servidor esté activo.';
+            errMsg.textContent = 'Error de conexiÃ³n. Verifica que el servidor estÃ© activo.';
             errBox.classList.add('visible');
         } finally {
             btn.classList.remove('loading');
@@ -432,3 +439,4 @@
 </script>
 </body>
 </html>
+

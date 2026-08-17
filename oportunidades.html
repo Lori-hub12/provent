@@ -1,14 +1,27 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="ProVend es la plataforma B2B de Nicaragua que conecta empresas con proveedores verificados para optimizar la cadena de suministro.">
+    <meta property="og:title" content="ProVend â€” Conectando Empresas y Proveedores">
+    <meta property="og:description" content="Encuentra proveedores verificados y cotiza materiales para tu empresa en Nicaragua.">
+    <meta property="og:image" content="https://provend.com.ni/assets/images/logo.svg">
+    <meta property="og:url" content="https://provend.com.ni/">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>Oportunidades de Venta - ProVend</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="stylesheet" href="css/variables.css">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="stylesheet" href="css/base.css">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="stylesheet" href="css/components.css">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="stylesheet" href="css/layout.css">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="stylesheet" href="css/pages.css">
     <style>
         .search-hero {
@@ -44,9 +57,9 @@
 
     <main style="background:var(--neutral-50); min-height:100vh">
         <section class="search-hero">
-            <h1>Pizarrón de Oportunidades</h1>
+            <h1>PizarrÃ³n de Oportunidades</h1>
             <p style="font-size: 1.25rem; opacity: 0.9; max-width: 600px; margin: 0 auto 2rem; position: relative; z-index: 2;">
-                Descubre qué materiales están buscando las grandes empresas hoy mismo y cierra tu próxima venta.
+                Descubre quÃ© materiales estÃ¡n buscando las grandes empresas hoy mismo y cierra tu prÃ³xima venta.
             </p>
         </section>
 
@@ -55,7 +68,7 @@
                 Cargando oportunidades...
             </div>
             <div id="results" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
-                <!-- Cards renderizadas aquí -->
+                <!-- Cards renderizadas aquÃ­ -->
             </div>
         </section>
     </main>
@@ -66,11 +79,36 @@
     <script src="js/config.js"></script>
     <script src="js/components.js"></script>
     <script>
-        document.getElementById('navbar-container').innerHTML = buildNavbar('oportunidades');
+        const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
+        if (!user) {
+            window.location.href = 'login.html';
+        } else {
+            const name = user.company || user.nombre || 'Usuario';
+            const initials = name.substring(0, 2).toUpperCase();
+            document.getElementById('navbar-container').innerHTML = `
+        <nav class="navbar" id="navbar">
+          <div class="navbar-inner">
+            <a href="${user.rol === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html'}" class="navbar-logo">
+              ${getLogoSVG(36)}
+              <span class="navbar-logo-text">Pro<span>Vend</span></span>
+            </a>
+            <div class="navbar-nav">
+              <a href="oportunidades.html" class="navbar-link active">Oportunidades</a>
+              <a href="${user.rol === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html'}" class="navbar-link">Mi Panel</a>
+            </div>
+            <div class="navbar-actions" style="gap:0.75rem">
+              <div style="display:flex; align-items:center; gap:0.5rem; padding:0.3rem 0.75rem; border-radius:99px; border:1px solid var(--neutral-200); background: var(--white); box-shadow:0 1px 4px rgba(0,0,0,0.06)">
+                <div style="width:28px; height:28px; background:var(--primary-100); color:var(--primary-700); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem;">${initials}</div>
+                <span style="font-size:0.875rem; font-weight:500; color:var(--neutral-800); max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${name}</span>
+              </div>
+              <button class="btn btn-ghost btn-sm" onclick="ProVendAuth.logout()" style="color:var(--danger-600)">Salir</button>
+            </div>
+          </div>
+        </nav>`;
+        }
         document.getElementById('footer-container').innerHTML = buildFooter();
     </script>
     <script>
-        // Adjust Nav
         
 
         async function loadOportunidades() {
@@ -98,7 +136,7 @@
                         : `<div style="width:40px; height:40px; border-radius:8px; background:var(--neutral-200); display:flex; align-items:center; justify-content:center; font-weight:bold; color:var(--neutral-500)">${req.empresa_nombre.charAt(0)}</div>`;
 
                     const tel = req.telefono_contacto || '';
-                    const contactBtn = tel ? `<a href="https://wa.me/${tel.replace(/\D/g, '')}?text=Hola, vi su requerimiento de ${req.titulo} en ProVend" target="_blank" class="btn btn-primary" style="flex:1; text-align:center">Contactar por WhatsApp</a>` : `<button class="btn btn-outline" disabled style="flex:1">Sin Teléfono</button>`;
+                    const contactBtn = tel ? `<a href="https://wa.me/${tel.replace(/\D/g, '')}?text=Hola, vi su requerimiento de ${req.titulo} en ProVend" target="_blank" class="btn btn-primary" style="flex:1; text-align:center">Contactar por WhatsApp</a>` : `<button class="btn btn-outline" disabled style="flex:1">Sin TelÃ©fono</button>`;
 
                     container.innerHTML += `
                         <div class="provider-card" style="background:var(--white);border:1px solid var(--neutral-200);box-shadow:none; display:flex; flex-direction:column;">
@@ -113,7 +151,7 @@
                             </div>
                             
                             <p style="color:var(--neutral-500); font-size:0.875rem; margin-bottom:1.5rem; flex:1">
-                                ${req.descripcion || 'Sin descripción adicional.'}
+                                ${req.descripcion || 'Sin descripciÃ³n adicional.'}
                             </p>
                             
                             <div style="padding-top:1rem; border-top:1px solid var(--neutral-100); display:flex; align-items:center; gap:0.75rem; margin-bottom:1.5rem">
@@ -136,11 +174,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', loadOportunidades);
-        
-        function logout() {
-            ProVendAuth.logout();
-            window.location.reload();
-        }
     </script>
 </body>
 </html>
+

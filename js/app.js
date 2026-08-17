@@ -1,164 +1,10 @@
-﻿/* ============================================
+/* ============================================
    ProVend — app.js
    Main application initialization
    ============================================ */
 
 // ---- Demo Data: Providers ----
-const providers = [
-  {
-    id: 1,
-    name: 'TechNica Solutions',
-    initials: 'TS',
-    category: 'Tecnología',
-    tags: ['Software', 'Cloud', 'Consultoría'],
-    location: 'Managua, Nicaragua',
-    rating: 4.8,
-    reviews: 127,
-    verified: true,
-    description: 'Empresa líder en desarrollo de software empresarial y soluciones cloud para empresas en crecimiento en Nicaragua y Centroamérica.',
-    whatsapp: '+50588001234',
-    email: 'info@technica.com.ni',
-    website: 'https://technica.com.ni',
-    certifications: ['ISO 9001', 'Microsoft Partner', 'AWS Partner'],
-    products: ['ERP Empresarial', 'App Móvil Custom', 'Cloud Migration', 'Soporte IT']
-  },
-  {
-    id: 2,
-    name: 'Café Don Bosco',
-    initials: 'CB',
-    category: 'Alimentos y Bebidas',
-    tags: ['Café', 'Exportación', 'Orgánico'],
-    location: 'Matagalpa, Nicaragua',
-    rating: 4.9,
-    reviews: 89,
-    verified: true,
-    description: 'Producción y exportación de café de especialidad orgánico, cultivado en las montañas de Matagalpa con prácticas sostenibles.',
-    whatsapp: '+50577002345',
-    email: 'ventas@cafedonbosco.ni',
-    website: 'https://cafedonbosco.ni',
-    certifications: ['Orgánico Certificado', 'Fair Trade', 'Rainforest Alliance'],
-    products: ['Café Orgánico Premium', 'Café Molido', 'Café en Grano', 'Cold Brew']
-  },
-  {
-    id: 3,
-    name: 'Construcciones del Norte',
-    initials: 'CN',
-    category: 'Construcción',
-    tags: ['Construcción', 'Infraestructura', 'Diseño'],
-    location: 'Estelí, Nicaragua',
-    rating: 4.7,
-    reviews: 64,
-    verified: true,
-    description: 'Constructora con más de 15 años de experiencia en proyectos residenciales, comerciales e industriales en el norte de Nicaragua.',
-    whatsapp: '+50576003456',
-    email: 'proyectos@construcnorte.ni',
-    website: 'https://construcnorte.ni',
-    certifications: ['Licencia INVUR', 'ISO 14001'],
-    products: ['Construcción Residencial', 'Remodelación', 'Diseño Arquitectónico', 'Consultoría']
-  },
-  {
-    id: 4,
-    name: 'Textiles Centroamérica',
-    initials: 'TC',
-    category: 'Textil y Confección',
-    tags: ['Textil', 'Uniformes', 'Confección'],
-    location: 'Masaya, Nicaragua',
-    rating: 4.6,
-    reviews: 52,
-    verified: false,
-    description: 'Fabricación de uniformes corporativos, ropa de trabajo y textiles personalizados para empresas de toda Centroamérica.',
-    whatsapp: '+50578004567',
-    email: 'pedidos@textilesca.ni',
-    website: '',
-    certifications: [],
-    products: ['Uniformes Corporativos', 'Ropa de Trabajo', 'Bordados', 'Serigrafía']
-  },
-  {
-    id: 5,
-    name: 'TransLogística NI',
-    initials: 'TL',
-    category: 'Transporte y Logística',
-    tags: ['Transporte', 'Logística', 'Distribución'],
-    location: 'Managua, Nicaragua',
-    rating: 4.5,
-    reviews: 73,
-    verified: true,
-    description: 'Servicios de transporte de carga, logística y distribución a nivel nacional e internacional con flota propia.',
-    whatsapp: '+50589005678',
-    email: 'operaciones@translogni.com',
-    website: 'https://translogni.com',
-    certifications: ['ISO 9001', 'BASC'],
-    products: ['Transporte Nacional', 'Carga Internacional', 'Almacenamiento', 'Distribución Urbana']
-  },
-  {
-    id: 6,
-    name: 'AgroInsumos León',
-    initials: 'AL',
-    category: 'Agricultura',
-    tags: ['Agroinsumos', 'Fertilizantes', 'Semillas'],
-    location: 'León, Nicaragua',
-    rating: 4.8,
-    reviews: 95,
-    verified: true,
-    description: 'Distribuidora de insumos agrícolas, fertilizantes, semillas certificadas y equipos para el sector agropecuario nicaragüense.',
-    whatsapp: '+50586006789',
-    email: 'ventas@agroinsumos.ni',
-    website: 'https://agroinsumos.ni',
-    certifications: ['Distribuidor Autorizado', 'MAGFOR'],
-    products: ['Fertilizantes', 'Semillas Certificadas', 'Herbicidas', 'Equipos de Riego']
-  },
-  {
-    id: 7,
-    name: 'Soluciones Gráficas',
-    initials: 'SG',
-    category: 'Servicios Profesionales',
-    tags: ['Diseño', 'Publicidad', 'Imprenta'],
-    location: 'Managua, Nicaragua',
-    rating: 4.4,
-    reviews: 38,
-    verified: false,
-    description: 'Agencia de diseño gráfico, publicidad y servicios de impresión de alta calidad para empresas y eventos.',
-    whatsapp: '+50587007890',
-    email: 'hola@solucionesgraficas.ni',
-    website: '',
-    certifications: [],
-    products: ['Diseño de Marca', 'Material POP', 'Impresión Digital', 'Señalización']
-  },
-  {
-    id: 8,
-    name: 'Ferretería Nacional',
-    initials: 'FN',
-    category: 'Construcción',
-    tags: ['Ferretería', 'Materiales', 'Herramientas'],
-    location: 'Granada, Nicaragua',
-    rating: 4.7,
-    reviews: 112,
-    verified: true,
-    description: 'Distribuidora de materiales de construcción, herramientas y ferretería en general con entregas a todo el país.',
-    whatsapp: '+50575008901',
-    email: 'ventas@ferreterianacional.ni',
-    website: 'https://ferreterianacional.ni',
-    certifications: ['Distribuidor Oficial'],
-    products: ['Cemento y Bloques', 'Herramientas Eléctricas', 'Pinturas', 'Plomería y Electricidad']
-  },
-  {
-    id: 9,
-    name: 'CliniSalud Integral',
-    initials: 'CI',
-    category: 'Salud y Bienestar',
-    tags: ['Salud', 'Equipos Médicos', 'Insumos'],
-    location: 'Managua, Nicaragua',
-    rating: 4.9,
-    reviews: 67,
-    verified: true,
-    description: 'Proveedor de equipos médicos, insumos hospitalarios y soluciones integrales para clínicas y hospitales en Nicaragua.',
-    whatsapp: '+50588009012',
-    email: 'ventas@clinisalud.ni',
-    website: 'https://clinisalud.ni',
-    certifications: ['FDA Approved', 'Registro Sanitario MINSA'],
-    products: ['Equipos de Diagnóstico', 'Insumos Hospitalarios', 'Mobiliario Clínico', 'Esterilización']
-  }
-];
+const providers = [];
 
 // ---- Demo Data: Categories ----
 const categories = [
@@ -246,38 +92,39 @@ const testimonials = [
 
 // ---- Generate Provider Card HTML ----
 function generateProviderCard(provider) {
-  const starsHTML = generateStars(provider.rating);
-  const verifiedBadge = provider.verified 
+  const pName = provider.company || provider.nombre || 'Proveedor';
+  const pCat = provider.categoria || 'Variedad';
+  const pLoc = provider.ciudad || 'Nicaragua';
+  const pInitials = pName.substring(0, 2).toUpperCase();
+  const starsHTML = generateStars(provider.rating || 0);
+  
+  const verifiedBadge = provider.verificado 
     ? `<span class="badge-verified">${icons.shieldCheck} Verificado</span>` 
     : '';
   
-  const tagsHTML = provider.tags.map(tag => 
-    `<span class="tag tag-primary">${tag}</span>`
-  ).join('');
-
   return `
   <a href="perfil-proveedor.html?id=${provider.id}" class="provider-card" id="provider-${provider.id}">
     <div class="provider-card-header">
-      <div class="provider-card-logo">${provider.initials}</div>
+      <div class="provider-card-logo" style="background:var(--primary-100); color:var(--primary-700);">${pInitials}</div>
       <div class="provider-card-info">
         <div class="provider-card-name">
-          ${provider.name}
+          ${pName}
           ${verifiedBadge}
         </div>
-        <div class="provider-card-category">${provider.category}</div>
+        <div class="provider-card-category">${pCat}</div>
         <div class="provider-card-location">
           ${icons.mapPin}
-          ${provider.location}
+          ${pLoc}
         </div>
       </div>
     </div>
-    <p class="provider-card-description line-clamp-2">${provider.description}</p>
-    <div class="provider-card-tags">${tagsHTML}</div>
+    <p class="provider-card-description line-clamp-2">${provider.descripcion || 'Sin descripción disponible.'}</p>
+    <div class="provider-card-tags"></div>
     <div class="provider-card-footer">
       <div class="rating-display">
         ${starsHTML}
-        <span class="rating-value">${provider.rating}</span>
-        <span class="rating-count">(${provider.reviews})</span>
+        <span class="rating-value">${Number(provider.rating || 0).toFixed(1)}</span>
+        <span class="rating-count">(${provider.reviews || 0})</span>
       </div>
     </div>
   </a>`;
@@ -293,13 +140,20 @@ function generateCategoryCard(category) {
   </a>`;
 }
 
-// ---- Render Functions ----
-function renderProviderCards(containerId, list = providers, limit = null) {
+async function renderProviderCards(containerId, limit = null) {
   const container = document.getElementById(containerId);
   if (!container) return;
   
-  const data = limit ? list.slice(0, limit) : list;
-  container.innerHTML = data.map(p => generateProviderCard(p)).join('');
+  try {
+    const res = await fetch(`${API_BASE}/api/proveedores`);
+    if (!res.ok) throw new Error('Error fetching providers');
+    const list = await res.json();
+    const data = limit ? list.slice(0, limit) : list;
+    container.innerHTML = data.map(p => generateProviderCard(p)).join('');
+  } catch (err) {
+    console.error('Failed to load real providers:', err);
+    container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 2rem;">No se pudieron cargar los proveedores.</div>';
+  }
 }
 
 function renderCategoryCards(containerId) {

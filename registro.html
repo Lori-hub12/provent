@@ -1,12 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Cuenta — ProVend</title>
-    <meta name="description" content="Crea tu cuenta en ProVend y únete a la red de negocios más grande de Nicaragua.">
+        <meta name="description" content="ProVend es la plataforma B2B de Nicaragua que conecta empresas con proveedores verificados para optimizar la cadena de suministro.">
+    <meta property="og:title" content="ProVend â€” Conectando Empresas y Proveedores">
+    <meta property="og:description" content="Encuentra proveedores verificados y cotiza materiales para tu empresa en Nicaragua.">
+    <meta property="og:image" content="https://provend.com.ni/assets/images/logo.svg">
+    <meta property="og:url" content="https://provend.com.ni/">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Crear Cuenta â€” ProVend</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
@@ -116,7 +123,7 @@
             box-shadow: 0 0 0 3px rgba(43,125,233,0.1);
         }
         .type-card.active::after {
-            content: '✓'; position: absolute; top: 8px; right: 10px;
+            content: 'âœ“'; position: absolute; top: 8px; right: 10px;
             font-size: 0.75rem; font-weight: 800; color: var(--primary-500);
         }
         .type-card-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
@@ -207,18 +214,18 @@
         </a>
 
         <div class="auth-left-content">
-            <h2 class="auth-left-title">Únete a la red de negocios de <span>Nicaragua</span></h2>
-            <p class="auth-left-sub">Más de 100 empresas y proveedores ya están haciendo negocios en ProVend. Tu turno.</p>
+            <h2 class="auth-left-title">Ãšnete a la red de negocios de <span>Nicaragua</span></h2>
+            <p class="auth-left-sub">MÃ¡s de 100 empresas y proveedores ya estÃ¡n haciendo negocios en ProVend. Tu turno.</p>
             <div class="rol-cards">
                 <div class="rol-card">
-                    <div class="rol-card-icon">🏢</div>
+                    <div class="rol-card-icon">ðŸ¢</div>
                     <div>
                         <div class="rol-card-title">Soy Empresa Compradora</div>
                         <div class="rol-card-desc">Busco proveedores, publico requerimientos y gestiono mis compras</div>
                     </div>
                 </div>
                 <div class="rol-card">
-                    <div class="rol-card-icon">📦</div>
+                    <div class="rol-card-icon">ðŸ“¦</div>
                     <div>
                         <div class="rol-card-title">Soy Proveedor</div>
                         <div class="rol-card-desc">Publico mis materiales y llego a cientos de empresas compradoras</div>
@@ -229,9 +236,9 @@
 
         <div class="auth-left-bottom">
             <div class="trust-badges">
-                <div class="trust-badge">🔒 SSL Seguro</div>
-                <div class="trust-badge">✅ 100% Gratuito</div>
-                <div class="trust-badge">🇳🇮 Hecho en Nicaragua</div>
+                <div class="trust-badge">ðŸ”’ SSL Seguro</div>
+                <div class="trust-badge">âœ… 100% Gratuito</div>
+                <div class="trust-badge">ðŸ‡³ðŸ‡® Hecho en Nicaragua</div>
             </div>
         </div>
     </div>
@@ -252,12 +259,12 @@
             <!-- Selector de tipo -->
             <div class="type-selector">
                 <div class="type-card" id="type-empresa" onclick="setType('empresa')">
-                    <div class="type-card-icon">🏢</div>
+                    <div class="type-card-icon">ðŸ¢</div>
                     <div class="type-card-name">Empresa</div>
                     <div class="type-card-desc">Busco proveedores</div>
                 </div>
                 <div class="type-card active" id="type-proveedor" onclick="setType('proveedor')">
-                    <div class="type-card-icon">📦</div>
+                    <div class="type-card-icon">ðŸ“¦</div>
                     <div class="type-card-name">Proveedor</div>
                     <div class="type-card-desc">Ofrezco productos</div>
                 </div>
@@ -268,7 +275,7 @@
                 <div class="form-row">
                     <div class="form-field">
                         <label for="r-nombre">Tu Nombre *</label>
-                        <input class="form-control" type="text" id="r-nombre" placeholder="Juan Pérez" required>
+                        <input class="form-control" type="text" id="r-nombre" placeholder="Juan PÃ©rez" required>
                         <span class="field-error" id="err-nombre">Nombre requerido</span>
                     </div>
                     <div class="form-field">
@@ -279,25 +286,25 @@
                 </div>
 
                 <div class="form-field">
-                    <label for="r-email">Correo Electrónico *</label>
+                    <label for="r-email">Correo ElectrÃ³nico *</label>
                     <input class="form-control" type="email" id="r-email" placeholder="correo@empresa.com" autocomplete="email" required>
-                    <span class="field-error" id="err-email">Correo inválido</span>
+                    <span class="field-error" id="err-email">Correo invÃ¡lido</span>
                 </div>
 
                 <!-- Campos extra proveedor -->
                 <div id="fields-proveedor">
                     <div class="form-row">
                         <div class="form-field">
-                            <label for="r-ruc">Número RUC</label>
+                            <label for="r-ruc">NÃºmero RUC</label>
                             <input class="form-control" type="text" id="r-ruc" placeholder="J0000000000000">
                         </div>
                         <div class="form-field">
-                            <label for="r-category">Categoría</label>
+                            <label for="r-category">CategorÃ­a</label>
                             <select class="form-control" id="r-category">
                                 <option value="">Selecciona...</option>
                                 <option value="Reciclaje">Reciclaje</option>
-                                <option value="Tecnología">Tecnología</option>
-                                <option value="Construcción">Construcción</option>
+                                <option value="TecnologÃ­a">TecnologÃ­a</option>
+                                <option value="ConstrucciÃ³n">ConstrucciÃ³n</option>
                                 <option value="Alimentos y Bebidas">Alimentos y Bebidas</option>
                                 <option value="Manufactura">Manufactura</option>
                                 <option value="Servicios Profesionales">Servicios Profesionales</option>
@@ -309,10 +316,10 @@
                 </div>
 
                 <div class="form-field">
-                    <label for="r-password">Contraseña *</label>
+                    <label for="r-password">ContraseÃ±a *</label>
                     <div class="pw-wrapper">
-                        <input class="form-control" type="password" id="r-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required style="padding-right:3rem">
-                        <button type="button" class="pw-toggle" id="r-pw-toggle" aria-label="Mostrar contraseña">
+                        <input class="form-control" type="password" id="r-password" placeholder="MÃ­nimo 6 caracteres" autocomplete="new-password" required style="padding-right:3rem">
+                        <button type="button" class="pw-toggle" id="r-pw-toggle" aria-label="Mostrar contraseÃ±a">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
                         </button>
                     </div>
@@ -322,21 +329,21 @@
                         <div class="pw-bar" id="pw-b3"></div>
                         <div class="pw-bar" id="pw-b4"></div>
                     </div>
-                    <div class="pw-strength-label" id="pw-label">Escribe tu contraseña</div>
-                    <span class="field-error" id="err-pw">Mínimo 6 caracteres</span>
+                    <div class="pw-strength-label" id="pw-label">Escribe tu contraseÃ±a</div>
+                    <span class="field-error" id="err-pw">MÃ­nimo 6 caracteres</span>
                 </div>
 
                 <div class="checkbox-field">
                     <input type="checkbox" id="r-terms">
                     <label class="checkbox-label" for="r-terms">
-                        Acepto los <a href="#">Términos de Servicio</a> y la <a href="#">Política de Privacidad</a> de ProVend
+                        Acepto los <a href="#">TÃ©rminos de Servicio</a> y la <a href="#">PolÃ­tica de Privacidad</a> de ProVend
                     </label>
                 </div>
 
-                <button type="submit" class="btn-auth" id="submit-btn">Crear Cuenta Gratis 🚀</button>
+                <button type="submit" class="btn-auth" id="submit-btn">Crear Cuenta Gratis ðŸš€</button>
             </form>
 
-            <p class="auth-footer-text">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+            <p class="auth-footer-text">Â¿Ya tienes cuenta? <a href="login.html">Inicia sesiÃ³n</a></p>
         </div>
     </div>
 </div>
@@ -353,7 +360,7 @@
         document.getElementById('type-empresa').classList.toggle('active', type === 'empresa');
         document.getElementById('type-proveedor').classList.toggle('active', type === 'proveedor');
         document.getElementById('fields-proveedor').style.display = type === 'proveedor' ? '' : 'none';
-        document.getElementById('r-company').placeholder = type === 'empresa' ? 'Mi Empresa Compradora S.A.' : 'Ferretería El Sol';
+        document.getElementById('r-company').placeholder = type === 'empresa' ? 'Mi Empresa Compradora S.A.' : 'FerreterÃ­a El Sol';
     }
 
     // Toggle password
@@ -377,9 +384,9 @@
         if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pw)) strength++;
 
         const cls = strength <= 1 ? 'weak' : strength <= 2 ? 'medium' : 'strong';
-        const labels = ['','Débil 😬','Regular 😐','Buena 👍','Fuerte 🔒'];
+        const labels = ['','DÃ©bil ðŸ˜¬','Regular ðŸ˜','Buena ðŸ‘','Fuerte ðŸ”’'];
         for (let i = 0; i < strength; i++) bars[i].classList.add(cls);
-        label.textContent = labels[strength] || 'Escribe tu contraseña';
+        label.textContent = labels[strength] || 'Escribe tu contraseÃ±a';
     });
 
     // Submit
@@ -407,7 +414,7 @@
         setErr('err-pw', password.length < 6);
 
         if (!terms) {
-            errMsg.textContent = 'Debes aceptar los Términos de Servicio para continuar.';
+            errMsg.textContent = 'Debes aceptar los TÃ©rminos de Servicio para continuar.';
             errBox.classList.add('visible');
             valid = false;
         }
@@ -432,11 +439,11 @@
                 window.location.href = selectedType === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html';
             }
         } catch (err) {
-            errMsg.textContent = 'Error de conexión. Verifica que el servidor esté activo.';
+            errMsg.textContent = 'Error de conexiÃ³n. Verifica que el servidor estÃ© activo.';
             errBox.classList.add('visible');
         } finally {
             btn.disabled = false;
-            btn.textContent = 'Crear Cuenta Gratis 🚀';
+            btn.textContent = 'Crear Cuenta Gratis ðŸš€';
         }
     });
 
@@ -445,3 +452,4 @@
 </script>
 </body>
 </html>
+

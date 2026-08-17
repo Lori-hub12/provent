@@ -483,6 +483,23 @@ app.post('/api/login', authLimiter, async (req, res) => {
 });
 
 // ===================== ESTADÍSTICAS GLOBALES =====================
+app.get('/api/stats/categorias', async (req, res) => {
+    try {
+        const rows = await dbAll(`
+            SELECT p.categoria as name, COUNT(u.id) as count 
+            FROM perfiles_proveedor p
+            JOIN usuarios u ON p.usuario_id = u.id
+            WHERE u.rol = 'proveedor' AND u.activo = 1 AND p.categoria IS NOT NULL AND p.categoria != ''
+            GROUP BY p.categoria
+            ORDER BY count DESC
+        `);
+        res.json(rows);
+    } catch (error) {
+        console.error('Error in /api/stats/categorias:', error);
+        res.status(500).json({ error: 'Database error' });
+    }
+});
+
 app.get('/api/stats', async (req, res) => {
     try {
         const row = await dbGet(`
@@ -610,6 +627,25 @@ app.post('/api/materiales', authenticateToken, async (req, res) => {
         await dbRun(`INSERT INTO notificaciones (usuario_id, tipo, mensaje) VALUES (?, 'material', ?)`,
             [proveedor_id, `Publicaste un nuevo material: ${nombre}`]);
         res.status(201).json({ id: result.lastID, message: 'Material publicado' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.put('/api/materiales/:id', authenticateToken, async (req, res) => {
+    const { nombre, cantidad, unidad, descripcion, imagen_url, precio_estimado, frecuencia_disponibilidad, calidad_pureza, volumen_minimo } = req.body;
+    if (!nombre || !nombre.trim()) return res.status(400).json({ error: 'El nombre del material es requerido' });
+
+    try {
+        const material = await dbGet(`SELECT proveedor_id FROM materiales WHERE id = ?`, [req.params.id]);
+        if (!material) return res.status(404).json({ error: 'Material no encontrado' });
+        if (req.user.id !== material.proveedor_id) return res.status(403).json({ error: 'Acceso denegado' });
+
+        await dbRun(
+            `UPDATE materiales SET nombre=?, cantidad=?, unidad=?, descripcion=?, imagen_url=COALESCE(?, imagen_url), precio_estimado=?, frecuencia_disponibilidad=?, calidad_pureza=?, volumen_minimo=? WHERE id=?`,
+            [sanitizeString(nombre, 150), cantidad, unidad, descripcion, imagen_url, precio_estimado, frecuencia_disponibilidad, calidad_pureza, volumen_minimo, req.params.id]
+        );
+        res.json({ message: 'Material actualizado' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
