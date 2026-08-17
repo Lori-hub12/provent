@@ -856,5 +856,58 @@
 
     loadDashboard();
   </script>
+  <!-- Modal Editar Perfil -->
+  <div id="modal-perfil" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+      <span class="close" onclick="document.getElementById('modal-perfil').style.display='none'">&times;</span>
+      <h3>⚙️ Editar Información Comercial</h3>
+      <p style="color:var(--neutral-500); margin-bottom:1.5rem; font-size:0.9rem;">Completa tu perfil para ganar más confianza de las empresas compradoras.</p>
+      
+      <form id="form-perfil" onsubmit="submitPerfil(event)">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+            <div class="form-group" style="margin-bottom:0;">
+            <label>Ciudad Base *</label>
+            <input type="text" id="perfil-ciudad" placeholder="Ej. Managua, Masaya..." required>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+            <label>Categoría Principal *</label>
+            <input type="text" id="perfil-categoria" placeholder="Ej. Reciclaje de Plásticos" required>
+            </div>
+        </div>
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+            <div class="form-group" style="margin-bottom:0;">
+            <label>Teléfono de Contacto</label>
+            <input type="tel" id="perfil-telefono" placeholder="+505 ...">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+            <label>WhatsApp (solo números)</label>
+            <input type="tel" id="perfil-whatsapp" placeholder="Ej. 50588888888">
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+            <div class="form-group" style="margin-bottom:0;">
+            <label>Capacidad Mensual (Ton)</label>
+            <input type="text" id="perfil-capacidad" placeholder="Ej. 50">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+            <label>¿Ofreces Transporte?</label>
+            <select id="perfil-transporte">
+                <option value="0">No, el cliente retira</option>
+                <option value="1">Sí, ofrezco transporte</option>
+            </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Descripción de la Empresa</label>
+          <textarea id="perfil-descripcion" rows="4" placeholder="Cuéntanos sobre tu operación, años de experiencia, calidad de materiales..."></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" id="btn-submit-perfil" style="width:100%; margin-top:1rem;">Guardar Cambios</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
