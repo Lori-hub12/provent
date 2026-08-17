@@ -857,10 +857,12 @@
     loadDashboard();
   </script>
   <!-- Modal Editar Perfil -->
-  <div id="modal-perfil" class="modal">
-    <div class="modal-content" style="max-width: 600px;">
-      <span class="close" onclick="closeModal('modal-perfil')">&times;</span>
-      <h3>⚙️ Editar Información Comercial</h3>
+  <div id="modal-perfil" class="modal-overlay">
+    <div class="modal-card" style="max-width: 600px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+        <h3 style="margin:0; font-size:1.25rem;">⚙️ Editar Información Comercial</h3>
+        <button style="background:none; border:none; font-size:1.5rem; cursor:pointer;" onclick="closeModal('modal-perfil')">&times;</button>
+      </div>
       <p style="color:var(--neutral-500); margin-bottom:1.5rem; font-size:0.9rem;">Completa tu perfil para ganar más confianza de las empresas compradoras.</p>
       
       <form id="form-perfil" onsubmit="submitPerfil(event)">
