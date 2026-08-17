@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Proveedor ÔÇö ProVend</title>
+    <title>Perfil de Proveedor — ProVend</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
     <link rel="stylesheet" href="css/variables.css">
@@ -12,13 +12,6 @@
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages.css">
     <style>
-        .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 1px solid var(--neutral-200); }
-        @media(max-width:600px) { .trust-grid { grid-template-columns: repeat(2,1fr); } }
-        .trust-item { display: flex; flex-direction: column; gap: 0.25rem; }
-        .trust-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--neutral-500); font-weight: 600; }
-        .trust-value { font-size: 1rem; font-weight: 600; color: var(--neutral-900); display: flex; align-items: center; gap: 0.5rem; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success-500); }
-        .commercial-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
         .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; padding: 1.25rem 1.5rem; background: #f8fafc; border-radius: 12px; border: 1px solid var(--neutral-200); }
         @media(max-width:600px) { .trust-grid { grid-template-columns: repeat(2,1fr); } }
         .trust-item { display: flex; flex-direction: column; gap: 0.25rem; }
@@ -44,9 +37,7 @@
         .mat-card-meta { font-size: 0.8rem; color: var(--neutral-500); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
         .mat-card-badge { background: var(--primary-50); color: var(--primary-700); font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--primary-100); }
         .mat-card-price { margin-top: 0.75rem; font-weight: 700; font-size: 1rem; color: var(--primary-700); }
-        .mat-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-        .mat-tag { background: var(--primary-50); color: var(--primary-700); font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.75rem; border-radius: 99px; border: 1px solid var(--primary-100); }
-
+        
         /* Rating */
         .rating-display-large { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; margin-bottom: 1.25rem; }
         .rating-number-lg { font-size: 2.75rem; font-weight: 800; color: var(--neutral-900); line-height: 1; }
@@ -74,7 +65,6 @@
         .empty-inline h4 { color: var(--neutral-700); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
         .empty-inline p { font-size: 0.875rem; }
     </style>
-
 </head>
 <body>
     <div id="navbar-container"></div>
@@ -87,7 +77,7 @@
                 </a>
                 <div class="profile-header-inner">
                     <div class="profile-main-info">
-                        <!-- Logo / Avatar dinímico -->
+                        <!-- Logo / Avatar dinámico -->
                         <div id="profile-logo-wrapper"></div>
 
                         <div class="profile-name">
@@ -125,7 +115,7 @@
 
                     <div class="profile-contact-panel">
                         <div class="contact-panel">
-                            <!-- Rating dinímico -->
+                            <!-- Rating dinámico -->
                             <div class="rating-display-large" id="rating-display">
                                 <!-- JS fills -->
                             </div>
@@ -154,7 +144,7 @@
                 <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Materiales disponibles</h3>
                 <div id="materiales-perfil">
                     <div class="empty-inline">
-                        <div class="empty-inline-icon">­ƒôª</div>
+                        <div class="empty-inline-icon">&#128230;</div>
                         <h4>No hay materiales publicados</h4>
                         <p>Este proveedor aún no ha publicado materiales.</p>
                     </div>
@@ -166,123 +156,19 @@
                 <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Información Comercial</h3>
                 <div class="commercial-info">
                     <div class="commercial-info-item">
-                        <strong>Ubicaciún Base</strong>
-                        <p id="info-city">ÔÇö</p>
+                        <strong>Ubicación Base</strong>
+                        <p id="info-city">—</p>
                     </div>
                     <div class="commercial-info-item">
                         <strong>Categoría</strong>
-        .star-rating-form span { transition: color 0.2s; }
-
-        /* Empty state */
-        .empty-inline { text-align: center; padding: 2.5rem; color: var(--neutral-500); }
-        .empty-inline-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-        .empty-inline h4 { color: var(--neutral-700); font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
-        .empty-inline p { font-size: 0.875rem; }
-    </style>
-</head>
-<body>
-    <div id="navbar-container"></div>
-    <div class="profile-page">
-        <div class="profile-header">
-            <div class="container">
-                <a href="explorar.html" class="breadcrumb" style="display:inline-flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem;font-size:0.875rem;color:var(--neutral-500);text-decoration:none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
-                    Volver a proveedores
-                </a>
-                <div class="profile-header-inner">
-                    <div class="profile-main-info">
-                        <!-- Logo / Avatar dinímico -->
-                        <div id="profile-logo-wrapper"></div>
-
-                        <div class="profile-name">
-                            <h1 id="profile-name">Cargando...</h1>
-                            <span class="badge-verified" id="profile-verified" style="display:none;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
-                                Verificado
-                            </span>
-                        </div>
-
-                        <div class="profile-tags" id="profile-tags"></div>
-
-                        <!-- Trust Grid -->
-                        <div class="trust-grid">
-                            <div class="trust-item">
-                                <span class="trust-label">Estado</span>
-                                <span class="trust-value"><div class="status-dot"></div> <span id="trust-status">Disponible</span></span>
-                            </div>
-                            <div class="trust-item">
-                                <span class="trust-label">Tiempo respuesta</span>
-                                <span class="trust-value" id="trust-time">24 horas</span>
-                            </div>
-                            <div class="trust-item">
-                                <span class="trust-label">Visitas totales</span>
-                                <span class="trust-value" id="trust-visits">0</span>
-                            </div>
-                            <div class="trust-item">
-                                <span class="trust-label">Verificado</span>
-                                <span class="trust-value" id="trust-verified-text">No</span>
-                            </div>
-                        </div>
-
-                        <p class="profile-description" id="profile-desc" style="margin-top:1.5rem"></p>
-                    </div>
-
-                    <div class="profile-contact-panel">
-                        <div class="contact-panel">
-                            <!-- Rating dinímico -->
-                            <div class="rating-display-large" id="rating-display">
-                                <!-- JS fills -->
-                            </div>
-                            <a href="#" class="btn btn-whatsapp btn-block btn-lg" id="whatsapp-btn" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                                Contactar por WhatsApp
-                            </a>
-                            <div class="contact-actions" style="margin-top:1rem;">
-                                <a href="#" class="contact-action-btn" id="email-btn" style="display:none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                                    Email
-                                </a>
-                                <button class="contact-social-btn" id="fav-btn" title="Guardar en favoritos" onclick="toggleFavorito()">
-                                    <svg id="fav-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Materiales publicados -->
-        <div class="profile-content">
-            <div class="tab-wrapper" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200); margin-bottom:1.5rem;">
-                <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Materiales disponibles</h3>
-                <div id="materiales-perfil">
-                    <div class="empty-inline">
-                        <div class="empty-inline-icon">­ƒôª</div>
-                        <h4>No hay materiales publicados</h4>
-                        <p>Este proveedor aún no ha publicado materiales.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Info Comercial -->
-            <div class="tab-wrapper" id="info-comercial-section" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200); margin-bottom:1.5rem;">
-                <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Información Comercial</h3>
-                <div class="commercial-info">
-                    <div class="commercial-info-item">
-                        <strong>Ubicaciún Base</strong>
-                        <p id="info-city">ÔÇö</p>
-                    </div>
-                    <div class="commercial-info-item">
-                        <strong>Categoría</strong>
-                        <p id="info-cat">ÔÇö</p>
+                        <p id="info-cat">—</p>
                     </div>
                     <div class="commercial-info-item">
                         <strong>Correo de contacto</strong>
-                        <p id="info-email">ÔÇö</p>
+                        <p id="info-email">—</p>
                     </div>
                     <div class="commercial-info-item">
-                        <strong>Estado de verificaciún</strong>
+                        <strong>Estado de verificación</strong>
                         <p id="info-verif">No verificado</p>
                     </div>
                 </div>
@@ -292,34 +178,33 @@
             <div class="tab-wrapper" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200);">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">
                     <h3 style="margin:0;">Reseñas</h3>
-                    <button id="btn-show-review" class="btn btn-primary btn-sm" style="display:none; font-size:0.875rem;">Ô£Å´©Å Escribir reseña</button>
+                    <button id="btn-show-review" class="btn btn-primary btn-sm" style="display:none; font-size:0.875rem;">✏️ Escribir reseña</button>
                 </div>
 
                 <!-- Formulario de reseña (oculto por defecto) -->
                 <div id="review-form-container" style="display:none; background:var(--neutral-50); border:1px solid var(--neutral-200); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
                     <h4 style="margin-bottom:1rem; color:var(--neutral-900);">Deja tu reseña</h4>
                     <div style="margin-bottom:1rem;">
-                        <label class="form-label" style="display:block; margin-bottom:0.5rem; font-weight:600;">Calificaciún</label>
+                        <label class="form-label" style="display:block; margin-bottom:0.5rem; font-weight:600;">Calificación</label>
                         <div class="star-rating-form" id="star-rating-form">
-                            <span data-val="1">Ôÿà</span><span data-val="2">Ôÿà</span><span data-val="3">Ôÿà</span><span data-val="4">Ôÿà</span><span data-val="5">Ôÿà</span>
+                            <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
                         </div>
                         <input type="hidden" id="review-rating" value="0">
                     </div>
                     <div class="form-group" style="margin-bottom:1.25rem;">
                         <label class="form-label" style="display:block; margin-bottom:0.5rem; font-weight:600;">Comentario (opcional)</label>
-                        <textarea id="review-comment" class="form-input" rows="3" placeholder="┬┐Cúmo fue tu experiencia trabajando con este proveedor?" style="width:100%; padding:0.75rem; border:1px solid var(--neutral-300); border-radius:8px;"></textarea>
+                        <textarea id="review-comment" class="form-input" rows="3" placeholder="¿Cómo fue tu experiencia trabajando con este proveedor?" style="width:100%; padding:0.75rem; border:1px solid var(--neutral-300); border-radius:8px;"></textarea>
                     </div>
                     <div style="display:flex; gap:1rem; justify-content:flex-end;">
                         <button class="btn btn-outline" onclick="document.getElementById('review-form-container').style.display='none'">Cancelar</button>
                         <button class="btn btn-primary" id="btn-submit-review" onclick="submitReview()">Publicar Reseña</button>
                     </div>
                 </div>
-
                 <div id="resenas-container">
                     <div class="empty-inline">
-                        <div class="empty-inline-icon">Ô¡É</div>
+                        <div class="empty-inline-icon">⭐</div>
                         <h4>Aún no tiene reseñas</h4>
-                        <p>Las empresas podrín calificar a este proveedor después de realizar un contacto.</p>
+                        <p>Las empresas podrán calificar a este proveedor después de realizar un contacto.</p>
                     </div>
                 </div>
             </div>
@@ -351,7 +236,7 @@
 
                 // Registrar visita
                 if (user && user.id !== p.id) {
-                    fetch(`${API_BASE}/api/visitas`, {
+                    fetch(`${API_BASE}/api/visitas`), {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ proveedor_id: p.id, visitante_id: user.id })
@@ -359,7 +244,7 @@
                 }
 
                 // Title
-                document.title = `${p.company || p.nombre} ÔÇö ProVend`;
+                document.title = `${p.company || p.nombre} — ProVend`;
 
                 // Avatar / Logo
                 const logoWrapper = document.getElementById('profile-logo-wrapper');
@@ -375,8 +260,8 @@
                 document.getElementById('profile-name').textContent = p.company || p.nombre;
                 if (p.verificado) {
                     document.getElementById('profile-verified').style.display = 'inline-flex';
-                    document.getElementById('trust-verified-text').textContent = 'Sá Ô£à';
-                    document.getElementById('info-verif').textContent = 'Verificado Ô£à';
+                    document.getElementById('trust-verified-text').textContent = 'Sí ✅';
+                    document.getElementById('info-verif').textContent = 'Verificado ✅';
                 } else {
                     document.getElementById('trust-verified-text').textContent = 'No';
                     document.getElementById('info-verif').textContent = 'No verificado';
@@ -395,18 +280,18 @@
                 document.getElementById('trust-time').textContent = p.tiempo_respuesta || '24 horas';
                 document.getElementById('trust-visits').textContent = p.visitas_total || 0;
 
-                // Rating dinímico
+                // Rating dinámico
                 const ratingDiv = document.getElementById('rating-display');
                 const rating = Number(p.rating) || 0;
                 const reviews = Number(p.reviews) || 0;
                 if (reviews === 0) {
                     ratingDiv.innerHTML = `
                         <div style="text-align:center; color:var(--neutral-400); font-size:0.875rem; padding:0.5rem 0">
-                            <div style="font-size:1.5rem; margin-bottom:0.25rem">Ô¡É</div>
-                            Sin reseñas todaváa
+                            <div style="font-size:1.5rem; margin-bottom:0.25rem">⭐</div>
+                            Sin reseñas todavía
                         </div>`;
                 } else {
-                    const stars = 'Ôÿà'.repeat(Math.round(rating)) + 'Ôÿå'.repeat(5 - Math.round(rating));
+                    const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
                     ratingDiv.innerHTML = `
                         <div class="rating-number-lg">${rating.toFixed(1)}</div>
                         <div class="rating-stars-lg" style="color:var(--warning-500)">${stars}</div>
@@ -439,7 +324,7 @@
                 document.getElementById('info-city').textContent = p.ciudad || 'No disponible';
                 document.getElementById('info-cat').textContent = p.categoria || 'No disponible';
                 document.getElementById('info-email').textContent = p.email || 'No disponible';
-                document.getElementById('info-verif').textContent = p.verificado ? 'Verificado Ô£à' : 'Pendiente de verificaciún';
+                document.getElementById('info-verif').textContent = p.verificado ? 'Verificado ✅' : 'Pendiente de verificación';
 
                 // Materiales del proveedor
                 const matRes = await fetch(`${API_BASE}/api/dashboard/proveedor/${p.id}/materiales`);
@@ -448,7 +333,7 @@
                 if (mats.length === 0) {
                     matDiv.innerHTML = `
                         <div class="empty-inline">
-                            <div class="empty-inline-icon">&#128230;</div>
+                            <div class="empty-inline-icon">📦</div>
                             <h4>No hay materiales publicados</h4>
                             <p>Este proveedor aún no ha publicado materiales disponibles.</p>
                         </div>`;
@@ -482,12 +367,12 @@
                 if (revs.length === 0) {
                     revDiv.innerHTML = `
                         <div class="empty-inline">
-                            <div class="empty-inline-icon">Ô¡É</div>
+                            <div class="empty-inline-icon">⭐</div>
                             <h4>Aún no tiene reseñas</h4>
-                            <p>Las empresas podrín calificar a este proveedor después de realizar un contacto.</p>
+                            <p>Las empresas podrán calificar a este proveedor después de realizar un contacto.</p>
                         </div>`;
                 } else {
-                    const stars = n => 'Ôÿà'.repeat(n) + 'Ôÿå'.repeat(5-n);
+                    const stars = n => '★'.repeat(n) + '☆'.repeat(5-n);
                     revDiv.innerHTML = revs.map(r => `
                         <div class="review-card">
                             <div class="review-header">
@@ -511,10 +396,10 @@
 
         async function toggleFavorito() {
             if (!user || user.rol !== 'empresa') {
-                alert('Debes iniciar sesiún como Empresa para guardar favoritos.');
+                alert('Debes iniciar sesión como Empresa para guardar favoritos.');
                 return;
             }
-            const res = await ProVendAuth.apiFetch(`${API_BASE}/api/favoritos`, {
+            const res = await ProVendAuth.apiFetch(`${API_BASE}/api/favoritos`), {
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({ empresa_id: user.id, proveedor_id: parseInt(providerId) })
@@ -526,9 +411,9 @@
                 icon.setAttribute('stroke', 'var(--danger-500)');
                 document.getElementById('fav-btn').title = 'Quitar de favoritos';
                 if (data.total === 1) {
-                    showToast('Ô¡É Guardaste tu primer proveedor. Podrís encontrarlo fícilmente desde Favoritos.', 'success', 5000);
+                    showToast('⭐ Guardaste tu primer proveedor. Podrás encontrarlo fácilmente desde Favoritos.', 'success', 5000);
                 } else {
-                    showToast('Guardado en favoritos ÔØñ´©Å', 'success');
+                    showToast('Guardado en favoritos ❤️', 'success');
                 }
             } else {
                 showToast('Ya estaba en tus favoritos', 'info');
@@ -545,7 +430,7 @@
 
         loadProfile();
 
-        // Lúgica del formulario de reseña
+        // Lógica del formulario de reseña
         if (user && user.rol === 'empresa') {
             document.getElementById('btn-show-review').style.display = 'block';
         }
@@ -578,7 +463,7 @@
 
         async function submitReview() {
             if (selectedRating == 0) {
-                showToast('Por favor selecciona una calificaciún', 'error');
+                showToast('Por favor selecciona una calificación', 'error');
                 return;
             }
             const btn = document.getElementById('btn-submit-review');
@@ -600,7 +485,7 @@
                     throw new Error(data.error || 'Error al publicar la reseña');
                 }
                 
-                showToast('┬íReseña publicada con éxito!', 'success');
+                showToast('¡Reseña publicada con éxito!', 'success');
                 
                 // Reset form
                 selectedRating = 0;
