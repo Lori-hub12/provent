@@ -3,17 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="ProVend es la plataforma B2B de Nicaragua que conecta empresas con proveedores verificados para optimizar la cadena de suministro.">
-    <meta property="og:title" content="ProVend â€” Conectando Empresas y Proveedores">
-    <meta property="og:description" content="Encuentra proveedores verificados y cotiza materiales para tu empresa en Nicaragua.">
-    <meta property="og:image" content="https://provend.com.ni/assets/images/logo.svg">
-    <meta property="og:url" content="https://provend.com.ni/">
-    <meta property="og:type" content="website">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>Explorar â€” ProVend</title>
+    <title>Explorar — ProVend</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
@@ -259,7 +251,7 @@
         </div>
         <div class="search-input-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" id="searchInput" placeholder="Ej. CartÃ³n, PET, Aluminio..." onkeyup="filterResults()">
+            <input type="text" id="searchInput" placeholder="Ej. Cartón, PET, Aluminio..." onkeyup="filterResults()">
         </div>
     </header>
 
@@ -267,19 +259,19 @@
         <!-- Filtros -->
         <aside class="filters-sidebar">
             <div class="filter-group">
-                <div class="filter-title">UbicaciÃ³n</div>
+                <div class="filter-title">Ubicación</div>
                 <label class="filter-label"><input type="checkbox" value="Managua" > Managua</label>
-                <label class="filter-label"><input type="checkbox" value="LeÃ³n" > LeÃ³n</label>
+                <label class="filter-label"><input type="checkbox" value="León" > León</label>
                 <label class="filter-label"><input type="checkbox" value="Masaya" > Masaya</label>
                 <label class="filter-label"><input type="checkbox" value="Granada" > Granada</label>
                 <label class="filter-label"><input type="checkbox" value="Chinandega" > Chinandega</label>
-                <label class="filter-label"><input type="checkbox" value="EstelÃ­" > EstelÃ­</label>
+                <label class="filter-label"><input type="checkbox" value="Estelí" > Estelí</label>
                 <label class="filter-label"><input type="checkbox" value="Matagalpa" > Matagalpa</label>
                 <label class="filter-label"><input type="checkbox" value="Rivas" > Rivas</label>
             </div>
             <div class="filter-group">
                 <div class="filter-title">Calidad</div>
-                <label class="filter-label"><input type="checkbox" id="verifiedOnly" > Solo Verificados âœ…</label>
+                <label class="filter-label"><input type="checkbox" id="verifiedOnly" > Solo Verificados ✅</label>
             </div>
         </aside>
 
@@ -310,7 +302,7 @@
             document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
             if (evt && evt.target) evt.target.classList.add('active');
             const input = document.getElementById('searchInput');
-            input.placeholder = tab === 'materiales' ? 'Ej. CartÃ³n, PET, Aluminio...' : 'Ej. Recicladora, EcoPlast...';
+            input.placeholder = tab === 'materiales' ? 'Ej. Cartón, PET, Aluminio...' : 'Ej. Recicladora, EcoPlast...';
             triggerSearch();
         }
 
@@ -341,7 +333,7 @@
 
             try {
                 const res = await fetch(`${API_BASE}/api/search?${params.toString()}`);
-                if (!res.ok) throw new Error('Error en bÃºsqueda');
+                if (!res.ok) throw new Error('Error en búsqueda');
                 const data = await res.json();
                 
                 resultsCount.textContent = data.length;
@@ -363,12 +355,12 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </div>
                         <h3 style="color:var(--neutral-800); font-size:1.5rem; margin-bottom:0.75rem; font-weight:700;">
-                            ${query ? 'No encontramos resultados para "' + query + '"' : 'No hay resultados en esta categorÃ­a'}
+                            ${query ? 'No encontramos resultados para "' + query + '"' : 'No hay resultados en esta categoría'}
                         </h3>
                         <p style="max-width:450px; margin:0 auto 2rem; color:var(--neutral-500); font-size:1.1rem; line-height:1.6;">
-                            Intenta cambiar los filtros, probar otros tÃ©rminos, o cambiar de pestaÃ±a.
+                            Intenta cambiar los filtros, probar otros términos, o cambiar de pestaña.
                         </p>
-                        <button onclick="document.getElementById('searchInput').value=''; document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false); fetchResults()" class="btn btn-outline btn-lg">Limpiar BÃºsqueda</button>
+                        <button onclick="document.getElementById('searchInput').value=''; document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false); fetchResults()" class="btn btn-outline btn-lg">Limpiar Búsqueda</button>
                     </div>`;
                 return;
             }
@@ -388,13 +380,13 @@
                                     <h3 style="font-size:1.2rem; font-weight:700; color:var(--neutral-900); margin:0;">${item.nombre}</h3>
                                     <span style="background:var(--primary-50); color:var(--primary-700); padding:0.2rem 0.6rem; border-radius:99px; font-size:0.75rem; font-weight:600;">${item.cantidad} ${item.unidad}</span>
                                 </div>
-                                <p style="color:var(--neutral-500); font-size:0.9rem; margin-bottom:1rem; flex:1;">${item.descripcion || 'Sin descripciÃ³n detallada.'}</p>
+                                <p style="color:var(--neutral-500); font-size:0.9rem; margin-bottom:1rem; flex:1;">${item.descripcion || 'Sin descripción detallada.'}</p>
                                 
                                 <div style="border-top:1px solid var(--neutral-100); padding-top:1rem; margin-top:auto;">
                                     <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:1rem;">
                                         <div style="width:32px; height:32px; border-radius:50%; background:${color}; color:white; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:bold;">${(item.empresa_nombre || item.proveedor_nombre || 'P').substring(0,2).toUpperCase()}</div>
                                         <div style="font-size:0.85rem; color:var(--neutral-700);">
-                                            <strong>${item.empresa_nombre || item.proveedor_nombre}</strong> ${item.verificado ? '<span style="color:#27ae60">âœ…</span>' : ''}
+                                            <strong>${item.empresa_nombre || item.proveedor_nombre}</strong> ${item.verificado ? '<span style="color:#27ae60">✅</span>' : ''}
                                             <div style="color:var(--neutral-500); font-size:0.75rem;">${item.ciudad || 'Nicaragua'}</div>
                                         </div>
                                     </div>
@@ -416,8 +408,8 @@
                             <div class="provider-card-header">
                                 ${logoHtml}
                                 <div class="provider-card-info">
-                                    <div class="provider-card-name">${name} ${item.verificado ? 'âœ…' : ''}</div>
-                                    <div class="provider-card-category">${item.categoria || 'Proveedor'} ${item.ciudad ? 'Â· ' + item.ciudad : ''}</div>
+                                    <div class="provider-card-name">${name} ${item.verificado ? '✅' : ''}</div>
+                                    <div class="provider-card-category">${item.categoria || 'Proveedor'} ${item.ciudad ? '· ' + item.ciudad : ''}</div>
                                 </div>
                             </div>
                             <div style="margin-top:1rem; color:var(--neutral-600); font-size:0.9rem;">
@@ -448,7 +440,7 @@
                     if (t.textContent.toLowerCase().includes(tabParam)) t.classList.add('active');
                     else t.classList.remove('active');
                 });
-                document.getElementById('searchInput').placeholder = tabParam === 'materiales' ? 'Ej. CartÃ³n, PET, Aluminio...' : 'Ej. Recicladora, EcoPlast...';
+                document.getElementById('searchInput').placeholder = tabParam === 'materiales' ? 'Ej. Cartón, PET, Aluminio...' : 'Ej. Recicladora, EcoPlast...';
             }
 
             fetchResults();
@@ -460,4 +452,3 @@
     </script>
 </body>
 </html>
-

@@ -3,17 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="description" content="ProVend es la plataforma B2B de Nicaragua que conecta empresas con proveedores verificados para optimizar la cadena de suministro.">
-    <meta property="og:title" content="ProVend â€” Conectando Empresas y Proveedores">
-    <meta property="og:description" content="Encuentra proveedores verificados y cotiza materiales para tu empresa en Nicaragua.">
-    <meta property="og:image" content="https://provend.com.ni/assets/images/logo.svg">
-    <meta property="og:url" content="https://provend.com.ni/">
-    <meta property="og:type" content="website">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>ProVend â€” Mi Negocio</title>
+  <title>ProVend — Mi Negocio</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/components.css">
@@ -42,7 +34,7 @@
     .prov-hero h1 { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 0.5rem; animation: slideUp 0.7s ease-out 0.1s both; }
     .prov-hero p.sub { color: var(--primary-200); font-size: 0.95rem; margin-bottom: 2rem; animation: slideUp 0.7s ease-out 0.2s both; }
 
-    /* Health pill â€” sin nÃºmero durante onboarding, con nÃºmero despuÃ©s */
+    /* Health pill — sin número durante onboarding, con número después */
     .health-pill { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 1.5rem 2rem; min-width: 220px; animation: slideUp 0.7s ease-out 0.3s both; }
     .health-label { font-size: 0.75rem; color: var(--primary-300); margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
     .health-step-label { font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.35rem; }
@@ -148,7 +140,7 @@
     .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--neutral-300); border-radius: 10px; font-family: inherit; font-size: 0.875rem; outline: none; transition: all 0.2s; box-sizing: border-box; }
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary-500); box-shadow: 0 0 0 3px var(--primary-100); }
 
-    /* -- CELEBRACIÃ“N -- */
+    /* -- CELEBRACIÓN -- */
     .celebration-overlay { display: none; position: fixed; inset: 0; z-index: 2000; align-items: center; justify-content: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(6px); }
     .celebration-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
     .celebration-box { background: var(--white); border-radius: 24px; padding: 3rem 2.5rem; text-align: center; max-width: 380px; box-shadow: 0 30px 80px rgba(0,0,0,0.2); animation: bounceIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
@@ -173,16 +165,16 @@
   <section class="prov-hero">
     <div class="container">
       <div>
-        <div class="prov-hero-badge">?? Centro de GestiÃ³n Â· ProVend</div>
+        <div class="prov-hero-badge">?? Centro de Gestión · ProVend</div>
         <h1 id="prov-title">Bienvenido de vuelta</h1>
         <p class="sub" id="prov-subtitle">Cargando tu actividad...</p>
         <div style="display:flex; gap:0.75rem; flex-wrap:wrap; animation: slideUp 0.7s ease-out 0.4s both;">
-          <a href="perfil-proveedor.html" id="btn-perfil-publico" class="btn btn-primary">??? Ver mi perfil pÃºblico</a>
+          <a href="perfil-proveedor.html" id="btn-perfil-publico" class="btn btn-primary">??? Ver mi perfil público</a>
           <button class="btn" style="background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.3)" onclick="openMaterialModal()">? Publicar material</button>
         </div>
       </div>
 
-      <!-- Health pill â€” cambia entre modo onboarding y modo porcentaje -->
+      <!-- Health pill — cambia entre modo onboarding y modo porcentaje -->
       <div class="health-pill" id="health-pill">
         <div class="health-label" id="health-label">Tu progreso</div>
         <div id="health-pill-content">
@@ -201,32 +193,32 @@
     <div class="kpi-item">
       <div class="kpi-value" id="kpi-materiales">0</div>
       <div class="kpi-label">Materiales</div>
-      <div class="kpi-sublabel" id="kpi-materiales-sub">TodavÃ­a sin publicar</div>
+      <div class="kpi-sublabel" id="kpi-materiales-sub">Todavía sin publicar</div>
     </div>
     <div class="kpi-item">
       <div class="kpi-value" id="kpi-productos">0</div>
       <div class="kpi-label">Productos</div>
-      <div class="kpi-sublabel" id="kpi-productos-sub">TodavÃ­a sin publicar</div>
+      <div class="kpi-sublabel" id="kpi-productos-sub">Todavía sin publicar</div>
     </div>
     <div class="kpi-item">
       <div class="kpi-value" id="kpi-visitas">0</div>
       <div class="kpi-label">Visitas</div>
-      <div class="kpi-sublabel" id="kpi-visitas-sub">TodavÃ­a sin visitas</div>
+      <div class="kpi-sublabel" id="kpi-visitas-sub">Todavía sin visitas</div>
     </div>
     <div class="kpi-item">
       <div class="kpi-value" id="kpi-resenas">0</div>
-      <div class="kpi-label">ReseÃ±as</div>
-      <div class="kpi-sublabel" id="kpi-resenas-sub">TodavÃ­a sin reseÃ±as</div>
+      <div class="kpi-label">Reseñas</div>
+      <div class="kpi-sublabel" id="kpi-resenas-sub">Todavía sin reseñas</div>
     </div>
     <div class="kpi-item">
-      <div class="kpi-value" id="kpi-rating" style="color:var(--neutral-400)">â€”</div>
-      <div class="kpi-label">CalificaciÃ³n</div>
+      <div class="kpi-value" id="kpi-rating" style="color:var(--neutral-400)">—</div>
+      <div class="kpi-label">Calificación</div>
       <div class="kpi-sublabel" id="kpi-rating-sub">Sin calificaciones</div>
     </div>
     <div class="kpi-item">
       <div class="kpi-value" id="kpi-favoritos">0</div>
       <div class="kpi-label">En favoritos</div>
-      <div class="kpi-sublabel" id="kpi-favoritos-sub">TodavÃ­a ninguno</div>
+      <div class="kpi-sublabel" id="kpi-favoritos-sub">Todavía ninguno</div>
     </div>
   </div>
 
@@ -241,7 +233,7 @@
       <div id="materiales-container">
         <div class="empty-state">
           <div class="empty-state-icon">??</div>
-          <h3>No has publicado materiales todavÃ­a</h3>
+          <h3>No has publicado materiales todavía</h3>
           <p>Publica tu primer material para que las empresas puedan encontrarte en la plataforma.</p>
           <button class="btn btn-primary" onclick="openMaterialModal()">Publicar mi primer material</button>
         </div>
@@ -255,7 +247,7 @@
       <div class="section-header">
         <span class="section-header-label">ESTADO DEL NEGOCIO</span>
         <h2 id="checklist-title">Salud de tu perfil</h2>
-        <p id="checklist-sub">Completa cada punto para ganar mÃ¡s visibilidad en la plataforma.</p>
+        <p id="checklist-sub">Completa cada punto para ganar más visibilidad en la plataforma.</p>
       </div>
       <div id="onboarding-container"></div>
       <div class="checklist" id="checklist-container"></div>
@@ -272,8 +264,8 @@
       <div id="actividad-container">
         <div class="notif-empty">
           <div class="notif-empty-icon">?</div>
-          <h4>Todo estÃ¡ al dÃ­a</h4>
-          <p>AquÃ­ aparecerÃ¡n nuevas actividades cuando alguien visite tu perfil o te contacte.</p>
+          <h4>Todo está al día</h4>
+          <p>Aquí aparecerán nuevas actividades cuando alguien visite tu perfil o te contacte.</p>
         </div>
       </div>
     </div>
@@ -333,7 +325,7 @@
         </div>
         <div class="form-group">
           <label>Descripcion</label>
-          <textarea id="mat-descripcion" rows="3" placeholder="DescripciÃ³n del material, calidad, proceso..."></textarea>
+          <textarea id="mat-descripcion" rows="3" placeholder="Descripción del material, calidad, proceso..."></textarea>
         </div>
         <div class="form-group">
           <label>Imagen del Material</label>
@@ -347,12 +339,12 @@
     </div>
   </div>
 
-  <!-- CELEBRACIÃ“N OVERLAY -->
+  <!-- CELEBRACIÓN OVERLAY -->
   <div class="celebration-overlay" id="celebration">
     <div class="confetti" id="confetti"></div>
     <div class="celebration-box">
       <span class="celebration-emoji" id="cel-emoji">??</span>
-      <div class="celebration-title" id="cel-title">Â¡Excelente!</div>
+      <div class="celebration-title" id="cel-title">¡Excelente!</div>
       <div class="celebration-sub" id="cel-sub">Has publicado tu primer material.</div>
       <button class="btn btn-primary" onclick="closeCelebration()" style="margin-top:0.5rem">Continuar ?</button>
     </div>
@@ -380,19 +372,13 @@
             </a>
             <div class="navbar-nav">
               <a href="dashboard-proveedor.html" class="navbar-link active">Mi Negocio</a>
-              <a href="perfil-proveedor.html?id=${u.id}" target="_blank" class="navbar-link">Perfil PÃºblico</a>
+              <a href="perfil-proveedor.html?id=${u.id}" target="_blank" class="navbar-link">Perfil Público</a>
             </div>
             <div class="navbar-actions" style="gap:0.75rem">
-              <div style="position:relative;">
-                <button id="notif-btn" onclick="document.getElementById('notif-dropdown').style.display = document.getElementById('notif-dropdown').style.display === 'none' ? 'block' : 'none'" style="background:none; border:none; cursor:pointer; color:var(--neutral-600); position:relative;" title="Notificaciones">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                  <span id="notif-dot" style="display:none; position:absolute; top:-2px; right:-2px; width:8px; height:8px; background:var(--danger-500); border-radius:50%; border:2px solid white;"></span>
-                </button>
-                <div id="notif-dropdown" style="display:none; position:absolute; right:0; top:40px; background:white; border:1px solid var(--neutral-200); border-radius:8px; width:280px; padding:1rem; box-shadow:var(--shadow-lg); z-index:1000; text-align:left;">
-                  <h4 style="font-size:0.9rem; margin-bottom:0.5rem; color:var(--neutral-900);">Notificaciones</h4>
-                  <div id="notif-list" style="font-size:0.8rem; color:var(--neutral-600); max-height:200px; overflow-y:auto; display:flex; flex-direction:column; gap:0.5rem;">Cargando...</div>
-                </div>
-              </div>
+              <button id="notif-btn" style="background:none; border:none; cursor:pointer; color:var(--neutral-600); position:relative;" title="Notificaciones">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span id="notif-dot" style="display:none; position:absolute; top:-2px; right:-2px; width:8px; height:8px; background:var(--danger-500); border-radius:50%; border:2px solid white;"></span>
+              </button>
               <div style="display:flex; align-items:center; gap:0.5rem; padding:0.3rem 0.75rem; border-radius:99px; border:1px solid var(--neutral-200); background: var(--white); box-shadow:0 1px 4px rgba(0,0,0,0.06)">
                 <div style="width:28px; height:28px; background:var(--primary-100); color:var(--primary-700); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem;">${initials}</div>
                 <span style="font-size:0.875rem; font-weight:500; color:var(--neutral-800); max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${name}</span>
@@ -410,7 +396,7 @@
     // Saludo
     const name = user.company || user.nombre || 'Proveedor';
     const hour = new Date().getHours();
-    const greet = hour < 12 ? 'Buenos dÃ­as' : hour < 18 ? 'Buenas tardes' : 'Buenas noches';
+    const greet = hour < 12 ? 'Buenos días' : hour < 18 ? 'Buenas tardes' : 'Buenas noches';
     document.getElementById('prov-title').textContent = `${greet}, ${name}`;
 
     // -- Modals --
@@ -418,7 +404,7 @@
     function closeModal(id) { document.getElementById(id).classList.remove('open'); }
     document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target === m) m.classList.remove('open'); }));
 
-    // -- AnimaciÃ³n KPI --
+    // -- Animación KPI --
     function animateKPI(el, newVal) {
       el.classList.remove('kpi-updated');
       void el.offsetWidth;
@@ -470,7 +456,7 @@
       
       if (mat) {
         currentEditMaterialId = mat.id;
-        title.textContent = 'âœï¸ Editar Material';
+        title.textContent = '✏️ Editar Material';
         btn.textContent = 'Guardar Cambios';
         document.getElementById('mat-nombre').value = mat.nombre || '';
         document.getElementById('mat-cantidad').value = mat.cantidad || '';
@@ -483,7 +469,7 @@
       } else {
         currentEditMaterialId = null;
         form.reset();
-        title.textContent = 'ðŸ“¦ Publicar Material';
+        title.textContent = '📦 Publicar Material';
         btn.textContent = 'Publicar Material';
       }
       openModal('modal-material');
@@ -502,37 +488,37 @@
         animateKPI(document.getElementById('kpi-favoritos'), kpi.favoritos || 0);
 
         // Sub-labels KPI (punto 9)
-        document.getElementById('kpi-materiales-sub').textContent = kpi.materiales > 0 ? `${kpi.materiales} publicado${kpi.materiales > 1 ? 's' : ''}` : 'TodavÃ­a sin publicar';
-        document.getElementById('kpi-productos-sub').textContent = kpi.productos > 0 ? `${kpi.productos} publicado${kpi.productos > 1 ? 's' : ''}` : 'TodavÃ­a sin publicar';
-        document.getElementById('kpi-visitas-sub').textContent = kpi.visitas > 0 ? 'Visitas a tu perfil' : 'TodavÃ­a sin visitas';
-        document.getElementById('kpi-resenas-sub').textContent = kpi.resenas > 0 ? `${kpi.resenas} reseÃ±a${kpi.resenas > 1 ? 's' : ''} recibida${kpi.resenas > 1 ? 's' : ''}` : 'TodavÃ­a sin reseÃ±as';
-        document.getElementById('kpi-favoritos-sub').textContent = kpi.favoritos > 0 ? 'Empresas que te guardaron' : 'TodavÃ­a ninguno';
+        document.getElementById('kpi-materiales-sub').textContent = kpi.materiales > 0 ? `${kpi.materiales} publicado${kpi.materiales > 1 ? 's' : ''}` : 'Todavía sin publicar';
+        document.getElementById('kpi-productos-sub').textContent = kpi.productos > 0 ? `${kpi.productos} publicado${kpi.productos > 1 ? 's' : ''}` : 'Todavía sin publicar';
+        document.getElementById('kpi-visitas-sub').textContent = kpi.visitas > 0 ? 'Visitas a tu perfil' : 'Todavía sin visitas';
+        document.getElementById('kpi-resenas-sub').textContent = kpi.resenas > 0 ? `${kpi.resenas} reseña${kpi.resenas > 1 ? 's' : ''} recibida${kpi.resenas > 1 ? 's' : ''}` : 'Todavía sin reseñas';
+        document.getElementById('kpi-favoritos-sub').textContent = kpi.favoritos > 0 ? 'Empresas que te guardaron' : 'Todavía ninguno';
 
         const rating = Number(kpi.rating) || 0;
         if (kpi.resenas > 0) {
           animateKPI(document.getElementById('kpi-rating'), `? ${rating.toFixed(1)}`);
           document.getElementById('kpi-rating').style.color = 'var(--warning-500)';
-          document.getElementById('kpi-rating-sub').textContent = `Sobre ${kpi.resenas} reseÃ±a${kpi.resenas > 1 ? 's' : ''}`;
+          document.getElementById('kpi-rating-sub').textContent = `Sobre ${kpi.resenas} reseña${kpi.resenas > 1 ? 's' : ''}`;
         } else {
           document.getElementById('kpi-rating-sub').textContent = 'Sin calificaciones';
         }
 
-        // -- Onboarding dinÃ¡mico (punto 1) --
+        // -- Onboarding dinámico (punto 1) --
         const steps = [
-          { done: true,              label: 'Crear tu cuenta', desc: 'Ya estÃ¡s registrado en ProVend.' },
+          { done: true,              label: 'Crear tu cuenta', desc: 'Ya estás registrado en ProVend.' },
           { done: kpi.materiales > 0, label: 'Publicar tu primer material', desc: 'Para que las empresas puedan encontrarte.', action: "openMaterialModal()", actionLabel: 'Publicar ?' },
-          { done: !!(user.ciudad && user.whatsapp && user.categoria), label: 'Completar informaciÃ³n comercial', desc: 'DirecciÃ³n, telÃ©fono, WhatsApp y categorÃ­a.' },
-          { done: !!user.verificado,              label: 'Solicitar verificaciÃ³n', desc: 'Los verificados reciben 3Ã— mÃ¡s contactos.' },
+          { done: false,              label: 'Completar información comercial', desc: 'Dirección, teléfono, WhatsApp y categoría.' },
+          { done: false,              label: 'Solicitar verificación', desc: 'Los verificados reciben 3× más contactos.' },
         ];
 
         const allDone = steps.every(s => s.done);
         const currentIdx = steps.findIndex(s => !s.done);
 
-        // Health pill â€” modo onboarding vs. modo porcentaje (punto 10)
+        // Health pill — modo onboarding vs. modo porcentaje (punto 10)
         const pillContent = document.getElementById('health-pill-content');
         const healthBar = document.getElementById('health-bar-wrap');
 
-        // Calcular score para cuando ya completÃ³ onboarding
+        // Calcular score para cuando ya completó onboarding
         let score = 0;
         if (user.company || user.nombre) score += 30;
         if (user.email) score += 20;
@@ -554,7 +540,7 @@
           healthBar.style.display = 'block';
           setTimeout(() => { document.getElementById('health-fill').style.width = score + '%'; }, 100);
           const pending = 4 - steps.filter(s => s.done).length;
-          document.getElementById('health-hint').textContent = pending > 0 ? `? ${pending} acciÃ³n${pending > 1 ? 'es' : ''} pendiente${pending > 1 ? 's' : ''}` : '? Perfil completo';
+          document.getElementById('health-hint').textContent = pending > 0 ? `? ${pending} acción${pending > 1 ? 'es' : ''} pendiente${pending > 1 ? 's' : ''}` : '? Perfil completo';
         }
 
         // Onboarding card (solo si hay pasos sin completar)
@@ -586,10 +572,10 @@
 
         // Checklist detallado (punto 2)
         const checkData = [
-          { ok: !!(user.company || user.nombre), main: 'Nombre de empresa registrado', sub: user.company || user.nombre || 'â€”' },
+          { ok: !!(user.company || user.nombre), main: 'Nombre de empresa registrado', sub: user.company || user.nombre || '—' },
           { ok: !!user.email, main: 'Correo de contacto', sub: user.email || 'No registrado' },
           { ok: kpi.materiales > 0, main: 'Materiales publicados', sub: kpi.materiales > 0 ? `${kpi.materiales} material${kpi.materiales > 1 ? 'es' : ''} activo${kpi.materiales > 1 ? 's' : ''}` : 'Publica al menos uno' },
-          { ok: kpi.resenas > 0, main: 'ReseÃ±as recibidas', sub: kpi.resenas > 0 ? `${kpi.resenas} reseÃ±a${kpi.resenas > 1 ? 's' : ''} de empresas` : 'AÃºn no tienes reseÃ±as' },
+          { ok: kpi.resenas > 0, main: 'Reseñas recibidas', sub: kpi.resenas > 0 ? `${kpi.resenas} reseña${kpi.resenas > 1 ? 's' : ''} de empresas` : 'Aún no tienes reseñas' },
         ];
 
         document.getElementById('checklist-container').innerHTML = checkData.map(c => `
@@ -610,7 +596,7 @@
           matContainer.innerHTML = `
             <div class="empty-state">
               <div class="empty-state-icon">??</div>
-              <h3>No has publicado materiales todavÃ­a</h3>
+              <h3>No has publicado materiales todavía</h3>
               <p>Publica tu primer material para que las empresas puedan encontrarte en la plataforma.</p>
               <button class="btn btn-primary" onclick="openMaterialModal()">Publicar mi primer material</button>
             </div>`;
@@ -625,12 +611,12 @@
               ${m.imagen_url ? `<img src="${API_BASE}${m.imagen_url}" alt="${m.nombre}" style="width: 100%; height: 150px; object-fit: cover; border-bottom: 1px solid var(--neutral-200);">` : `<div style="width: 100%; height: 150px; background: var(--neutral-100); display: flex; align-items: center; justify-content: center; color: var(--neutral-400); border-bottom: 1px solid var(--neutral-200);">Sin imagen</div>`}
               <div class="inv-card-body">
                 <div class="inv-card-name">${m.nombre}</div>
-                <div class="inv-card-meta">ðŸ“¦ ${m.cantidad} ${m.unidad}</div>
+                <div class="inv-card-meta">📦 ${m.cantidad} ${m.unidad}</div>
                 ${m.descripcion ? `<div class="inv-card-meta">${m.descripcion}</div>` : ''}
                 <span class="inv-card-status">Activo</span>
                 <div class="inv-card-actions">
-                  <button onclick='openMaterialModal(${JSON.stringify(m).replace(/"/g, "&quot;")})'>âœï¸ Editar</button>
-                  <button class="danger" onclick="deleteMaterial(${m.id}, this)">ðŸ—‘ï¸ Eliminar</button>
+                  <button onclick='openMaterialModal(${JSON.stringify(m).replace(/"/g, "&quot;")})'>✏️ Editar</button>
+                  <button class="danger" onclick="deleteMaterial(${m.id}, this)">🗑️ Eliminar</button>
                 </div>
               </div>`;
             grid.appendChild(card);
@@ -647,21 +633,12 @@
         const unread = notifs.filter(n => !n.leida);
         if (unread.length > 0) document.getElementById('notif-dot').style.display = 'block';
 
-        const notifList = document.getElementById('notif-list');
-        if (notifs.length === 0) {
-          notifList.innerHTML = '<div style="text-align:center; padding:1rem 0;">No tienes notificaciones</div>';
-        } else {
-          notifList.innerHTML = notifs.map(n => 
-            `<div style="padding:0.5rem; background:var(--neutral-50); border-radius:4px; ${!n.leida ? 'border-left:2px solid var(--primary-500)' : ''}">${n.mensaje}</div>`
-          ).join('');
-        }
-
         if (notifs.length === 0) {
           actContainer.innerHTML = `
             <div class="notif-empty">
               <div class="notif-empty-icon">?</div>
-              <h4>Todo estÃ¡ al dÃ­a</h4>
-              <p>AquÃ­ aparecerÃ¡n nuevas actividades cuando alguien visite tu perfil o te contacte.</p>
+              <h4>Todo está al día</h4>
+              <p>Aquí aparecerán nuevas actividades cuando alguien visite tu perfil o te contacte.</p>
             </div>`;
         } else {
           const list = document.createElement('div');
@@ -681,14 +658,14 @@
           actContainer.appendChild(list);
         }
 
-        // Actualizar subtÃ­tulo del hero
+        // Actualizar subtítulo del hero
         const acts = [];
         if (kpi.visitas > 0) acts.push(`${kpi.visitas} visitas al perfil`);
-        if (kpi.resenas > 0) acts.push(`${kpi.resenas} reseÃ±as`);
+        if (kpi.resenas > 0) acts.push(`${kpi.resenas} reseñas`);
         if (kpi.favoritos > 0) acts.push(`${kpi.favoritos} en favoritos`);
         document.getElementById('prov-subtitle').textContent = acts.length > 0
-          ? 'Tu actividad: ' + acts.join(' Â· ')
-          : 'Completa tu perfil para ganar mÃ¡s visibilidad.';
+          ? 'Tu actividad: ' + acts.join(' · ')
+          : 'Completa tu perfil para ganar más visibilidad.';
 
         prevKpi = kpi;
       } catch(e) {
@@ -708,7 +685,7 @@
         let imagenUrl = null;
         const fileInput = document.getElementById('mat-imagen');
         
-        // 1. Subir imagen si se seleccionÃ³ una
+        // 1. Subir imagen si se seleccionó una
         if (fileInput.files && fileInput.files[0]) {
           const formData = new FormData();
           formData.append('file', fileInput.files[0]);
@@ -754,10 +731,10 @@
         closeModal('modal-material');
         document.getElementById('form-material').reset();
 
-        // Punto 7 â€” CelebraciÃ³n primer material
+        // Punto 7 — Celebración primer material
         if (isFirst) {
           setTimeout(() => {
-            showCelebration('??', 'Â¡Excelente!', 'Has publicado tu primer material. Ya puedes comenzar a recibir visitas.');
+            showCelebration('??', '¡Excelente!', 'Has publicado tu primer material. Ya puedes comenzar a recibir visitas.');
           }, 400);
         }
 
@@ -770,7 +747,7 @@
     }
 
     async function deleteMaterial(id, btn) {
-      if (!confirm('Â¿Eliminar este material?')) return;
+      if (!confirm('¿Eliminar este material?')) return;
       btn.textContent = '...'; btn.disabled = true;
       try {
         const res = await ProVendAuth.apiFetch(`${API_BASE}/api/materiales/${id}`, {method: 'DELETE'});
@@ -783,7 +760,7 @@
         showToast('Material eliminado', 'info');
         await loadDashboard();
       } catch (err) {
-        showToast('Error de conexiÃ³n al eliminar', 'error');
+        showToast('Error de conexión al eliminar', 'error');
         btn.textContent = 'Eliminar'; btn.disabled = false;
       }
     }
@@ -793,7 +770,7 @@
       if (s < 60) return 'Hace un momento';
       if (s < 3600) return `Hace ${Math.floor(s/60)} minutos`;
       if (s < 86400) return `Hace ${Math.floor(s/3600)} horas`;
-      return `Hace ${Math.floor(s/86400)} dÃ­as`;
+      return `Hace ${Math.floor(s/86400)} días`;
     }
 
     function showToast(msg, type) {
@@ -808,4 +785,3 @@
   </script>
 </body>
 </html>
-

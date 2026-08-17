@@ -1,19 +1,11 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="ProVend es la plataforma B2B de Nicaragua que conecta empresas con proveedores verificados para optimizar la cadena de suministro.">
-    <meta property="og:title" content="ProVend â€” Conectando Empresas y Proveedores">
-    <meta property="og:description" content="Encuentra proveedores verificados y cotiza materiales para tu empresa en Nicaragua.">
-    <meta property="og:image" content="https://provend.com.ni/assets/images/logo.svg">
-    <meta property="og:url" content="https://provend.com.ni/">
-    <meta property="og:type" content="website">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>Panel de AdministraciÃ³n â€” ProVend</title>
+    <title>Panel de Administración — ProVend</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
@@ -68,7 +60,7 @@
             const user = JSON.parse(localStorage.getItem('ProVend_user') || 'null');
             const token = localStorage.getItem('ProVend_token');
             if (!user || !token || user.rol !== 'admin') {
-                document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:Inter,sans-serif;flex-direction:column;gap:1rem"><h2 style="color:#dc2626">ðŸ”’ Acceso Restringido</h2><p style="color:#6b7280">Solo los administradores pueden ver esta pÃ¡gina.</p><a href="login.html" style="background:#2B7DE9;color:white;padding:0.75rem 2rem;border-radius:8px;text-decoration:none;font-weight:600">Ir al Login</a></div>';
+                document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:Inter,sans-serif;flex-direction:column;gap:1rem"><h2 style="color:#dc2626">🔒 Acceso Restringido</h2><p style="color:#6b7280">Solo los administradores pueden ver esta página.</p><a href="login.html" style="background:#2B7DE9;color:white;padding:0.75rem 2rem;border-radius:8px;text-decoration:none;font-weight:600">Ir al Login</a></div>';
                 throw new Error('Unauthorized');
             }
         })();
@@ -108,7 +100,7 @@
                 <span class="sidebar-section-title">Cuenta</span>
                 <a class="sidebar-link" href="index.html" onclick="if(window.ProVendAuth)ProVendAuth.logout()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                    <span>Cerrar SesiÃ³n</span>
+                    <span>Cerrar Sesión</span>
                 </a>
             </nav>
         </aside>
@@ -118,43 +110,43 @@
             <div id="section-overview">
                 <div class="dashboard-header">
                     <div>
-                        <h1 class="dashboard-title">Panel de AdministraciÃ³n</h1>
+                        <h1 class="dashboard-title">Panel de Administración</h1>
                         <p class="dashboard-subtitle" id="admin-welcome">Bienvenido, administrador</p>
                     </div>
-                    <button class="btn btn-outline btn-sm" onclick="loadAll()">â†» Actualizar datos</button>
+                    <button class="btn btn-outline btn-sm" onclick="loadAll()">↻ Actualizar datos</button>
                 </div>
 
                 <!-- Stats reales -->
                 <div class="stats-grid" id="stats-grid">
                     <div class="stats-card">
                         <div class="stats-card-header"><div class="stats-card-icon blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div></div>
-                        <div class="stats-card-value stat-real stat-loading" id="stat-usuarios">â€”</div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-usuarios">—</div>
                         <div class="stats-card-label">Usuarios Totales</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-card-header"><div class="stats-card-icon green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="22" height="16" rx="2"/><path d="M6 6V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg></div></div>
-                        <div class="stats-card-value stat-real stat-loading" id="stat-proveedores">â€”</div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-proveedores">—</div>
                         <div class="stats-card-label">Proveedores</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-card-header"><div class="stats-card-icon yellow"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div></div>
-                        <div class="stats-card-value stat-real stat-loading" id="stat-pendientes">â€”</div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-pendientes">—</div>
                         <div class="stats-card-label">Verificaciones Pendientes</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-card-header"><div class="stats-card-icon blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div></div>
-                        <div class="stats-card-value stat-real stat-loading" id="stat-materiales">â€”</div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-materiales">—</div>
                         <div class="stats-card-label">Materiales Activos</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-card-header"><div class="stats-card-icon green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/></svg></div></div>
-                        <div class="stats-card-value stat-real stat-loading" id="stat-empresas">â€”</div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-empresas">—</div>
                         <div class="stats-card-label">Empresas</div>
                     </div>
                     <div class="stats-card">
                         <div class="stats-card-header"><div class="stats-card-icon red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div>
-                        <div class="stats-card-value stat-real stat-loading" id="stat-resenas">â€”</div>
-                        <div class="stats-card-label">ReseÃ±as</div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-resenas">—</div>
+                        <div class="stats-card-label">Reseñas</div>
                     </div>
                 </div>
 
@@ -171,7 +163,7 @@
             <div id="section-usuarios" style="display:none">
                 <div class="section-header">
                     <div>
-                        <h2 style="font-size:1.5rem;font-weight:800;color:var(--neutral-900)">GestiÃ³n de Usuarios</h2>
+                        <h2 style="font-size:1.5rem;font-weight:800;color:var(--neutral-900)">Gestión de Usuarios</h2>
                         <p style="color:var(--neutral-500);font-size:0.9rem" id="usuarios-count">Cargando...</p>
                     </div>
                     <div id="admin-search">
@@ -203,7 +195,7 @@
             <div id="section-proveedores" style="display:none">
                 <div class="section-header">
                     <div>
-                        <h2 style="font-size:1.5rem;font-weight:800;color:var(--neutral-900)">GestiÃ³n de Proveedores</h2>
+                        <h2 style="font-size:1.5rem;font-weight:800;color:var(--neutral-900)">Gestión de Proveedores</h2>
                         <p style="color:var(--neutral-500);font-size:0.9rem">Aprueba o rechaza verificaciones de proveedores</p>
                     </div>
                 </div>
@@ -213,7 +205,7 @@
                             <thead>
                                 <tr>
                                     <th>Proveedor</th>
-                                    <th>CategorÃ­a</th>
+                                    <th>Categoría</th>
                                     <th>Ciudad</th>
                                     <th>Materiales</th>
                                     <th>Rating</th>
@@ -234,9 +226,9 @@
                 <div class="section-header">
                     <div>
                         <h2 style="font-size:1.5rem;font-weight:800;color:var(--neutral-900)">Actividad de la Plataforma</h2>
-                        <p style="color:var(--neutral-500);font-size:0.9rem">Ãšltimos eventos en tiempo real</p>
+                        <p style="color:var(--neutral-500);font-size:0.9rem">Últimos eventos en tiempo real</p>
                     </div>
-                    <button class="btn btn-outline btn-sm" onclick="loadActividad()">â†» Actualizar</button>
+                    <button class="btn btn-outline btn-sm" onclick="loadActividad()">↻ Actualizar</button>
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -259,7 +251,7 @@
         if (currentUser) {
             document.getElementById('admin-name').textContent = currentUser.nombre || 'Admin';
             document.getElementById('admin-avatar').textContent = (currentUser.nombre || 'A').substring(0, 2).toUpperCase();
-            document.getElementById('admin-welcome').textContent = `Bienvenido, ${currentUser.nombre || 'Admin'} â€” ${new Date().toLocaleDateString('es-NI', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+            document.getElementById('admin-welcome').textContent = `Bienvenido, ${currentUser.nombre || 'Admin'} — ${new Date().toLocaleDateString('es-NI', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
         }
 
         // ===== SECTION NAVIGATION =====
@@ -285,7 +277,7 @@
 
         // ===== TIME AGO =====
         function timeAgo(dateStr) {
-            if (!dateStr) return 'â€”';
+            if (!dateStr) return '—';
             const diff = (new Date() - new Date(dateStr)) / 1000;
             if (diff < 60) return 'Hace un momento';
             if (diff < 3600) return `Hace ${Math.floor(diff/60)}m`;
@@ -304,7 +296,7 @@
                 document.getElementById('stat-pendientes').textContent = d.pendientes;
                 document.getElementById('stat-materiales').textContent = d.totalMateriales;
                 document.getElementById('stat-empresas').textContent = d.totalEmpresas;
-                document.getElementById('stat-resenas').textContent = d.totalReseÃ±as;
+                document.getElementById('stat-resenas').textContent = d.totalReseñas;
                 document.getElementById('badge-pendientes').textContent = d.pendientes;
                 document.querySelectorAll('.stat-real').forEach(el => el.classList.remove('stat-loading'));
             } catch(e) { console.error(e); }
@@ -319,14 +311,14 @@
                 const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/actividad`);
                 if (!res.ok) return;
                 actividadData = await res.json();
-                const icons = { registro: 'ðŸ‘¤', material: 'ðŸ“¦', resena: 'â­' };
+                const icons = { registro: '👤', material: '📦', resena: '⭐' };
                 const html = (items) => items.length === 0
                     ? '<div class="empty-admin">Sin actividad reciente</div>'
                     : items.map(a => `
                         <div class="activity-item">
                             <div class="activity-dot ${a.tipo}"></div>
                             <div style="flex:1">
-                                <div class="activity-title">${icons[a.tipo] || 'ðŸ“Œ'} ${a.titulo}</div>
+                                <div class="activity-title">${icons[a.tipo] || '📌'} ${a.titulo}</div>
                                 <div class="activity-detail">${a.detalle}</div>
                             </div>
                             <div class="activity-time">${timeAgo(a.fecha)}</div>
@@ -364,15 +356,15 @@
             document.getElementById('usuarios-table-body').innerHTML = list.map(u => `
                 <tr>
                     <td>
-                        <div style="font-weight:600">${u.nombre || 'â€”'}</div>
+                        <div style="font-weight:600">${u.nombre || '—'}</div>
                         <div style="color:var(--neutral-500);font-size:0.8rem">${u.email}</div>
                     </td>
                     <td><span class="badge-${rolBadge[u.rol] || 'prov'}">${rolLabel[u.rol] || u.rol}</span></td>
-                    <td style="color:var(--neutral-600)">${u.empresa || 'â€”'}</td>
-                    <td style="color:var(--neutral-500)">${u.created_at ? new Date(u.created_at).toLocaleDateString('es-NI') : 'â€”'}</td>
+                    <td style="color:var(--neutral-600)">${u.empresa || '—'}</td>
+                    <td style="color:var(--neutral-500)">${u.created_at ? new Date(u.created_at).toLocaleDateString('es-NI') : '—'}</td>
                     <td>
                         <span style="display:inline-flex;align-items:center;gap:4px;font-size:0.8rem;font-weight:600;color:${u.activo ? '#059669' : '#dc2626'}">
-                            ${u.activo ? 'â— Activo' : 'â—‹ Inactivo'}
+                            ${u.activo ? '● Activo' : '○ Inactivo'}
                         </span>
                     </td>
                     <td style="display:flex;gap:0.5rem">
@@ -380,7 +372,7 @@
                         <button class="btn-xs ${u.activo ? 'btn-xs-danger' : 'btn-xs-success'}" onclick="toggleActivo(${u.id}, ${u.activo ? 0 : 1}, this)">
                             ${u.activo ? 'Suspender' : 'Activar'}
                         </button>
-                        <button class="btn-xs btn-xs-danger" onclick="eliminarUsuario(${u.id}, '${u.nombre}', this)">ðŸ—‘</button>
+                        <button class="btn-xs btn-xs-danger" onclick="eliminarUsuario(${u.id}, '${u.nombre}', this)">🗑</button>
                         ` : '<span style="color:var(--neutral-400);font-size:0.8rem">Admin</span>'}
                     </td>
                 </tr>`).join('');
@@ -403,20 +395,20 @@
                     body: JSON.stringify({ activo: newActivo })
                 });
                 if (!res.ok) { const d = await res.json(); toast(d.error || 'Error', 'error'); return; }
-                toast(newActivo ? 'Usuario activado âœ…' : 'Usuario suspendido', 'success');
+                toast(newActivo ? 'Usuario activado ✅' : 'Usuario suspendido', 'success');
                 await loadUsuarios();
-            } catch { toast('Error de conexiÃ³n', 'error'); btn.disabled = false; }
+            } catch { toast('Error de conexión', 'error'); btn.disabled = false; }
         }
 
         async function eliminarUsuario(id, nombre, btn) {
-            if (!confirm(`Â¿Eliminar permanentemente al usuario "${nombre}"? Esta acciÃ³n no se puede deshacer.`)) return;
+            if (!confirm(`¿Eliminar permanentemente al usuario "${nombre}"? Esta acción no se puede deshacer.`)) return;
             btn.disabled = true; btn.textContent = '...';
             try {
                 const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/usuarios/${id}`, { method: 'DELETE' });
                 if (!res.ok) { const d = await res.json(); toast(d.error || 'Error', 'error'); return; }
                 toast(`Usuario "${nombre}" eliminado`, 'success');
                 await loadUsuarios();
-            } catch { toast('Error de conexiÃ³n', 'error'); btn.disabled = false; }
+            } catch { toast('Error de conexión', 'error'); btn.disabled = false; }
         }
 
         // ===== LOAD PROVEEDORES =====
@@ -427,7 +419,7 @@
                 if (!res.ok) return;
                 const proveedores = await res.json();
                 if (proveedores.length === 0) {
-                    document.getElementById('proveedores-table-body').innerHTML = '<tr><td colspan="7" class="empty-admin">No hay proveedores registrados aÃºn</td></tr>';
+                    document.getElementById('proveedores-table-body').innerHTML = '<tr><td colspan="7" class="empty-admin">No hay proveedores registrados aún</td></tr>';
                     return;
                 }
                 document.getElementById('proveedores-table-body').innerHTML = proveedores.map(p => `
@@ -436,19 +428,19 @@
                             <div style="font-weight:600">${p.company || p.nombre}</div>
                             <div style="color:var(--neutral-500);font-size:0.8rem">${p.email}</div>
                         </td>
-                        <td style="color:var(--neutral-600)">${p.categoria || 'â€”'}</td>
-                        <td style="color:var(--neutral-600)">${p.ciudad || 'â€”'}</td>
+                        <td style="color:var(--neutral-600)">${p.categoria || '—'}</td>
+                        <td style="color:var(--neutral-600)">${p.ciudad || '—'}</td>
                         <td style="text-align:center">${p.total_materiales || 0}</td>
-                        <td>${p.rating_promedio ? 'â­ ' + parseFloat(p.rating_promedio).toFixed(1) : 'â€”'}</td>
+                        <td>${p.rating_promedio ? '⭐ ' + parseFloat(p.rating_promedio).toFixed(1) : '—'}</td>
                         <td>
                             ${p.verificado
-                                ? '<span class="verified-yes">âœ… Verificado</span>'
-                                : '<span class="verified-no">â³ Pendiente</span>'}
+                                ? '<span class="verified-yes">✅ Verificado</span>'
+                                : '<span class="verified-no">⏳ Pendiente</span>'}
                         </td>
                         <td style="display:flex;gap:0.5rem">
                             ${p.verificado
                                 ? `<button class="btn-xs btn-xs-danger" onclick="toggleVerificacion(${p.id}, false, this)">Revocar</button>`
-                                : `<button class="btn-xs btn-xs-success" onclick="toggleVerificacion(${p.id}, true, this)">âœ… Aprobar</button>`}
+                                : `<button class="btn-xs btn-xs-success" onclick="toggleVerificacion(${p.id}, true, this)">✅ Aprobar</button>`}
                             <a href="perfil-proveedor.html?id=${p.id}" target="_blank" class="btn-xs btn-xs-primary">Ver perfil</a>
                         </td>
                     </tr>`).join('');
@@ -466,10 +458,10 @@
                     body: JSON.stringify({ verificado })
                 });
                 if (!res.ok) { toast('Error al actualizar', 'error'); btn.disabled = false; return; }
-                toast(verificado ? 'âœ… Proveedor verificado' : 'VerificaciÃ³n revocada', 'success');
+                toast(verificado ? '✅ Proveedor verificado' : 'Verificación revocada', 'success');
                 await loadProveedores();
                 await loadStats(); // Update badge counter
-            } catch { toast('Error de conexiÃ³n', 'error'); btn.disabled = false; }
+            } catch { toast('Error de conexión', 'error'); btn.disabled = false; }
         }
 
         // ===== INIT =====
@@ -482,4 +474,3 @@
     </script>
 </body>
 </html>
-
