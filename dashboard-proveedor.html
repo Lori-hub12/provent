@@ -786,7 +786,7 @@
       const modal = document.getElementById('modal-perfil');
       
       try {
-        const res = await ProVendAuth.apiFetch(`${API_BASE}/api/perfiles_proveedor/${ProVendAuth.getUser().id}`);
+        const res = await ProVendAuth.apiFetch(`${API_BASE}/api/perfiles_proveedor/${ProVendAuth.getCurrentUser().id}`);
         if (res.ok) {
             const perfil = await res.json();
             if (perfil) {
@@ -823,7 +823,7 @@
       };
 
       try {
-        const res = await ProVendAuth.apiFetch(`${API_BASE}/api/perfiles_proveedor/${ProVendAuth.getUser().id}`, {
+        const res = await ProVendAuth.apiFetch(`${API_BASE}/api/perfiles_proveedor/${ProVendAuth.getCurrentUser().id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
