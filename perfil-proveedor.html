@@ -343,7 +343,7 @@
 
                 // Registrar visita
                 if (user && user.id !== p.id) {
-                    fetch(`${API_BASE}/api/visitas`), {
+                    fetch(`${API_BASE}/api/visitas`, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ proveedor_id: p.id, visitante_id: user.id })
@@ -489,7 +489,7 @@
                 alert('Debes iniciar sesión como Empresa para guardar favoritos.');
                 return;
             }
-            const res = await ProVendAuth.apiFetch(`${API_BASE}/api/favoritos`), {
+            const res = await ProVendAuth.apiFetch(`${API_BASE}/api/favoritos`, {
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({ empresa_id: user.id, proveedor_id: parseInt(providerId) })

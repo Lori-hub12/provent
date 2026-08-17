@@ -581,7 +581,7 @@
       `).join('');
 
       // Fetch real stats
-      fetch(`${API_BASE}/api/stats`))
+      fetch(`${API_BASE}/api/stats`)
         .then(res => res.json())
         .then(stats => {
           if(stats.proveedores > 0 || stats.empresas > 0) {
