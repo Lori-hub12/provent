@@ -279,7 +279,7 @@
     document.getElementById('navbar-container').innerHTML = buildNavbar('home');
 
     // Cargar estadísticas reales y gestionar estado vacío
-    fetch('${API_BASE}/api/stats').then(r => r.json()).then(s => {
+    fetch(`${API_BASE}/api/stats`)).then(r => r.json()).then(s => {
       const total = (s.proveedores || 0) + (s.empresas || 0) + (s.materiales || 0);
       if (total === 0) {
         // Plataforma nueva — mensaje motivacional
@@ -299,7 +299,7 @@
       }
 
       // Featured Providers — desde la API
-      fetch('${API_BASE}/api/proveedores').then(r => r.json()).then(provs => {
+      fetch(`${API_BASE}/api/proveedores`)).then(r => r.json()).then(provs => {
         const container = document.getElementById('featured-providers');
         const COLORS = ['#2B7DE9','#27ae60','#e67e22','#9b59b6','#e74c3c','#1abc9c'];
         if (!provs || provs.length === 0) {

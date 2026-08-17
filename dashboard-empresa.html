@@ -258,7 +258,7 @@
       </div>
       <div id="favoritos-container">
         <div class="empty-state">
-          <div class="empty-state-icon">??</div>
+          <div class="empty-state-icon">&#128155;</div>
           <h3>Aún no tienes favoritos</h3>
           <p>Guarda los proveedores que más te interesen para encontrarlos rápido.</p>
           <a href="explorar.html" class="btn btn-primary">Explorar proveedores</a>
@@ -319,15 +319,15 @@
       </div>
       <div class="acciones-list">
         <a href="explorar.html?tab=empresas" class="accion-item">
-          <div class="accion-emoji">??</div>
+          <div class="accion-emoji">&#128269;</div>
           <div><div style="font-weight:600">Buscar nuevos proveedores</div><div style="font-size:0.875rem; color:var(--neutral-500); margin-top:0.15rem">Explora el directorio completo y filtra por categoría o ubicación.</div></div>
         </a>
         <a href="explorar.html?tab=materiales" class="accion-item">
-          <div class="accion-emoji">??</div>
+          <div class="accion-emoji">&#128230;</div>
           <div><div style="font-weight:600">Explorar materiales disponibles</div><div style="font-size:0.875rem; color:var(--neutral-500); margin-top:0.15rem">Encuentra materias primas publicadas por proveedores verificados.</div></div>
         </a>
         <a href="categorias.html" class="accion-item">
-          <div class="accion-emoji">???</div>
+          <div class="accion-emoji">&#128202;</div>
           <div><div style="font-weight:600">Ver todas las categorías</div><div style="font-size:0.875rem; color:var(--neutral-500); margin-top:0.15rem">Encuentra industrias específicas y proveedores especializados.</div></div>
         </a>
       </div>
@@ -419,7 +419,7 @@
     const name = user.company || user.nombre || '';
     const hour = new Date().getHours();
     const greet = hour < 12 ? 'Buenos días' : hour < 18 ? 'Buenas tardes' : 'Buenas noches';
-    document.getElementById('greeting-badge').textContent = `?? ${greet}, ${name}`;
+    document.getElementById('greeting-badge').textContent = `\uD83D\uDC4B ${greet}, ${name}`;
 
     // Cargar datos reales de la API
     async function loadDashboard() {
@@ -437,7 +437,7 @@
           const welcomeBanner = document.createElement('div');
           welcomeBanner.style.cssText = 'background:linear-gradient(135deg,var(--primary-50),white);border:1px solid var(--primary-100);border-radius:16px;padding:2rem;text-align:center;margin-bottom:2rem;max-width:600px;margin-left:auto;margin-right:auto;';
           welcomeBanner.innerHTML = `
-            <div style="font-size:2.5rem;margin-bottom:0.75rem">??</div>
+            <div style="font-size:2.5rem;margin-bottom:0.75rem">&#127881;</div>
             <h2 style="font-size:1.5rem;font-weight:700;color:var(--neutral-900);margin-bottom:0.5rem">
               Bienvenido a ProVend, ${name}
             </h2>
@@ -445,14 +445,14 @@
               Todavía no has realizado ninguna búsqueda. Empieza buscando un material o un proveedor para tu negocio.
             </p>
             <a href="explorar.html" class="btn btn-primary" style="font-size:1rem;padding:0.75rem 2rem">
-              ?? Buscar ahora
+              &#128269; Buscar ahora
             </a>`;
           const firstSection = document.querySelector('.dashboard-section');
           if (firstSection) firstSection.prepend(welcomeBanner);
         }
 
         // 2. Estadísticas globales del mercado
-        const statsRes = await fetch('${API_BASE}/api/stats');
+        const statsRes = await fetch(`${API_BASE}/api/stats`);
         const stats = await statsRes.json();
         document.getElementById('mkt-proveedores').textContent = stats.proveedores || 0;
         document.getElementById('mkt-empresas').textContent = stats.empresas || 0;
@@ -486,14 +486,14 @@
                 <div class="prov-card-top">
                   <div class="prov-avatar" style="background:${color}">${initials}</div>
                   <div>
-                    <div style="font-weight:600; color:var(--neutral-900)">${p.company || p.nombre} ${p.verificado ? '?' : ''}</div>
+                    <div style="font-weight:600; color:var(--neutral-900)">${p.company || p.nombre} ${p.verificado ? '<span style="color:#059669;font-size:0.75rem;font-weight:700;background:#d1fae5;padding:1px 6px;border-radius:99px;margin-left:4px">✓ Verificado</span>' : ''}</div>
                     <div style="font-size:0.875rem; color:var(--neutral-500)">${p.categoria || 'Proveedor'}</div>
                   </div>
                 </div>
                 <div style="font-size:0.875rem; color:var(--neutral-500)">
-                  ? ${Number(p.rating).toFixed(1)} (${p.reviews} reseñas)
+                  &#11088; ${Number(p.rating).toFixed(1)} (${p.reviews} rese&ntilde;as)
                 </div>
-                <a href="perfil-proveedor.html?id=${p.id}" class="prov-card-action">Ver Perfil ?</a>
+                <a href="perfil-proveedor.html?id=${p.id}" class="prov-card-action">Ver Perfil &rarr;</a>
               </div>`;
           });
           favContainer.innerHTML = '';
