@@ -236,7 +236,7 @@
 
                 // Registrar visita
                 if (user && user.id !== p.id) {
-                    fetch(`${API_BASE}/api/visitas`), {
+                    fetch(`${API_BASE}/api/visitas`, {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ proveedor_id: p.id, visitante_id: user.id })
