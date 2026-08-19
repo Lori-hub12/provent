@@ -318,6 +318,14 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
 
     async function submitMaterial(e) {
       e.preventDefault();
+
+      const nombre = document.getElementById('mat-nombre').value.trim();
+      const cantidad = document.getElementById('mat-cantidad').value.trim();
+      if (!nombre || !cantidad) {
+          showToast('Nombre y cantidad son obligatorios', 'error');
+          return;
+      }
+
       const btn = document.getElementById('btn-submit-mat');
       btn.textContent = 'Publicando...'; btn.disabled = true;
 
@@ -441,6 +449,13 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
 
     async function submitPerfil(e) {
       e.preventDefault();
+
+      const telefono = document.getElementById('perfil-telefono').value.trim();
+      if (telefono && telefono.length < 8) {
+          showToast('El teléfono debe tener al menos 8 dígitos', 'error');
+          return;
+      }
+
       const btn = document.getElementById('btn-submit-perfil');
       btn.textContent = 'Guardando...';
       btn.disabled = true;
