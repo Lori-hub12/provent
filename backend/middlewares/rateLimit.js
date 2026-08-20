@@ -9,15 +9,9 @@ const globalLimiter = rateLimit({
     legacyHeaders: false,
 });
 
-
-// Límite especial para auth: solo 10 intentos por 15 minutos
-const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 10,
-    message: { error: 'Demasiados intentos de login. Espera 15 minutos.' },
-    standardHeaders: true,
-    legacyHeaders: false,
-});
-
+// Bloqueo de 15 minutos deshabilitado a petición
+const authLimiter = (req, res, next) => {
+    next();
+};
 
 module.exports = { globalLimiter, authLimiter };
