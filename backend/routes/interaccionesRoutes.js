@@ -13,4 +13,7 @@ router.post('/requerimientos', authenticateToken, interaccionesController.post_r
 router.delete('/requerimientos/:id', authenticateToken, interaccionesController.delete_requerimientos__id);
 router.post('/resenas', authenticateToken, interaccionesController.post_resenas);
 
+router.put('/resenas/:id', authenticateToken, interaccionesController.put_resenas__id);
+router.delete('/resenas/:id', authenticateToken, interaccionesController.delete_resenas__id);
+
 module.exports = router;

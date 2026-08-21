@@ -145,3 +145,31 @@ exports.post_resenas = async (req, res) => {
     }
 };
 
+exports.put_resenas__id = async (req, res) => {
+    try {
+        const { dbGet, dbRun } = require('../config/database');
+        const row = await dbGet('SELECT * FROM resenas WHERE id = ?', [req.params.id]);
+        if (!row) return res.status(404).json({ error: 'Reseña no encontrada' });
+        if (row.empresa_id !== req.user.id) return res.status(403).json({ error: 'Acceso denegado' });
+
+        const { rating, comentario } = req.body;
+        await dbRun('UPDATE resenas SET rating = ?, comentario = ? WHERE id = ?', [rating, comentario, req.params.id]);
+        res.json({ message: 'Reseña actualizada' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.delete_resenas__id = async (req, res) => {
+    try {
+        const { dbGet, dbRun } = require('../config/database');
+        const row = await dbGet('SELECT * FROM resenas WHERE id = ?', [req.params.id]);
+        if (!row) return res.status(404).json({ error: 'Reseña no encontrada' });
+        if (row.empresa_id !== req.user.id) return res.status(403).json({ error: 'Acceso denegado' });
+
+        await dbRun('DELETE FROM resenas WHERE id = ?', [req.params.id]);
+        res.json({ message: 'Reseña eliminada' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

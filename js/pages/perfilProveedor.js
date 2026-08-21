@@ -244,6 +244,79 @@ async function submitReview() {
     }
 }
 
+window.deleteReview = async function(id, proveedorId) {
+    if (!confirm('¿Estás seguro de eliminar esta reseña?')) return;
+    const token = localStorage.getItem('ProVend_token') || localStorage.getItem('token');
+    try {
+        const res = await fetch(`${API_BASE}/api/interacciones/resenas/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) throw new Error('Error al eliminar');
+        alert('Reseña eliminada');
+        loadReviews(proveedorId);
+    } catch (e) {
+        alert(e.message);
+    }
+};
+
+window.editReview = function(id, rating, comentario) {
+    document.getElementById('review-form-container').style.display = 'block';
+    document.getElementById('btn-show-review').style.display = 'none';
+    
+    document.getElementById('review-rating').value = rating;
+    document.getElementById('review-comment').value = comentario;
+    
+    const stars = document.querySelectorAll('.star-rating-form span');
+    stars.forEach(s => {
+        s.style.color = parseInt(s.getAttribute('data-val')) <= rating ? '#f59e0b' : '#d1d5db';
+    });
+
+    const btnSubmit = document.getElementById('btn-submit-review');
+    btnSubmit.textContent = 'Actualizar Reseña';
+    btnSubmit.onclick = () => submitEditedReview(id);
+};
+
+async function submitEditedReview(id) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const proveedorId = urlParams.get('id');
+    const token = localStorage.getItem('ProVend_token') || localStorage.getItem('token');
+    const rating = document.getElementById('review-rating').value;
+    const comentario = document.getElementById('review-comment').value;
+
+    if (rating == 0) return alert('Por favor, selecciona una calificación');
+
+    const btn = document.getElementById('btn-submit-review');
+    btn.disabled = true; btn.textContent = 'Actualizando...';
+
+    try {
+        const res = await fetch(`${API_BASE}/api/interacciones/resenas/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ rating, comentario })
+        });
+        if (!res.ok) throw new Error('Error al actualizar');
+        
+        alert('Reseña actualizada con éxito');
+        
+        document.getElementById('review-rating').value = 0;
+        document.getElementById('review-comment').value = '';
+        document.querySelectorAll('.star-rating-form span').forEach(s => s.style.color = '#d1d5db');
+        document.getElementById('review-form-container').style.display = 'none';
+        document.getElementById('btn-show-review').style.display = 'inline-block';
+        
+        const btnSubmit = document.getElementById('btn-submit-review');
+        btnSubmit.textContent = 'Publicar Reseña';
+        btnSubmit.onclick = submitReview;
+        
+        loadReviews(proveedorId);
+    } catch (err) {
+        alert(err.message);
+    } finally {
+        btn.disabled = false; btn.textContent = 'Actualizar Reseña';
+    }
+}
+
 window.openMaterialModal = function(id) {
     if(!window.providerMaterials) return;
     const m = window.providerMaterials.find(x => x.id == id);
