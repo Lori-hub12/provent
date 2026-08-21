@@ -158,7 +158,11 @@ exports.delete_materiales__id = async (req, res) => {
 exports.put_perfiles_proveedor__id = async (req, res) => {
 
     if (req.user.id !== parseInt(req.params.id)) return res.status(403).json({ error: 'Acceso denegado' });
-    const { logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte } = req.body;
+    let { logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte } = req.body;
+
+    // Normalizar ciudad y categoría (Ej: 'managua' -> 'Managua') para que la DB se mantenga limpia
+    if (ciudad) ciudad = ciudad.trim().charAt(0).toUpperCase() + ciudad.trim().slice(1).toLowerCase();
+    if (categoria) categoria = categoria.trim().charAt(0).toUpperCase() + categoria.trim().slice(1).toLowerCase();
     try {
         await dbRun(`
             INSERT INTO perfiles_proveedor (
