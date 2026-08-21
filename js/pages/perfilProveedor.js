@@ -265,5 +265,5 @@ window.openMaterialModal = function(id) {
     }
     
     document.getElementById('material-modal').style.display = 'flex';
-};w i n d o w . c o n t a c t a r W s p   =   f u n c t i o n ( )   {   i f ( ! w i n d o w . p r o v e e d o r D a t a   | |   ! w i n d o w . p r o v e e d o r D a t a . w h a t s a p p )   r e t u r n   a l e r t ( ' E l   p r o v e e d o r   n o   t i e n e   W h a t s A p p   r e g i s t r a d o . ' ) ;   w i n d o w . o p e n ( ' h t t p s : / / w a . m e / '   +   w i n d o w . p r o v e e d o r D a t a . w h a t s a p p . r e p l a c e ( / \ D / g ,   ' ' ) ,   ' _ b l a n k ' ) ;   } ;  
- 
+};
+window.contactarWsp = function() { if(!window.proveedorData || !window.proveedorData.whatsapp) return alert('El proveedor no tiene WhatsApp registrado.'); window.open('https://wa.me/' + window.proveedorData.whatsapp.replace(/\\D/g, ''), '_blank'); };
