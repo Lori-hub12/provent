@@ -43,6 +43,7 @@ document.getElementById('navbar-container').innerHTML = buildNavbar('explorar');
                 const res = await fetch(`${API_BASE}/api/search?${params.toString()}`);
                 if (!res.ok) throw new Error('Error en búsqueda');
                 const data = await res.json();
+                window.searchMaterials = data;
                 
                 resultsCount.textContent = data.length;
                 renderResults(data, query);
@@ -98,7 +99,7 @@ document.getElementById('navbar-container').innerHTML = buildNavbar('explorar');
                                             <div style="color:var(--neutral-500); font-size:0.75rem;">${item.ciudad || 'Nicaragua'}</div>
                                         </div>
                                     </div>
-                                    <a href="perfil-proveedor.html?id=${item.proveedor_id}" class="btn btn-primary" style="width:100%; text-align:center;">Ver Oferta</a>
+                                    <button onclick="openMaterialModal('${item.id}')" class="btn btn-primary" style="width:100%; text-align:center;">Ver Oferta</button>
                                 </div>
                             </div>
                         </div>`;
@@ -157,3 +158,27 @@ document.getElementById('navbar-container').innerHTML = buildNavbar('explorar');
         document.getElementById('searchInput').addEventListener('input', triggerSearch);
         document.getElementById('verifiedOnly').addEventListener('change', triggerSearch);
         document.querySelectorAll('input[type=checkbox][value]').forEach(cb => cb.addEventListener('change', triggerSearch));
+
+window.openMaterialModal = function(id) {
+    if(!window.searchMaterials) return;
+    const m = window.searchMaterials.find(x => x.id == id);
+    if(!m) return;
+    
+    document.getElementById('material-modal-name').textContent = m.nombre;
+    document.getElementById('material-modal-price').textContent = m.precio_estimado ? 'C$ ' + m.precio_estimado : 'Precio a convenir';
+    document.getElementById('material-modal-qty').textContent = m.cantidad ? (m.cantidad + ' ' + (m.unidad || '')) : 'N/A';
+    document.getElementById('material-modal-freq').textContent = m.frecuencia_disponibilidad || 'Única vez';
+    document.getElementById('material-modal-min').textContent = m.volumen_minimo || 'N/A';
+    document.getElementById('material-modal-quality').textContent = m.calidad_pureza || 'No especificada';
+    document.getElementById('material-modal-desc').textContent = m.descripcion || 'Sin descripción detallada.';
+    document.getElementById('material-modal-btn').href = 'perfil-proveedor.html?id=' + m.proveedor_id;
+    
+    const imgDiv = document.getElementById('material-modal-img');
+    if(m.imagen_url) {
+        imgDiv.innerHTML = `<img src="${API_BASE}${m.imagen_url}" style="width:100%; height:100%; object-fit:cover; border-radius: 12px 12px 0 0;" alt="${m.nombre}">`;
+    } else {
+        imgDiv.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>';
+    }
+    
+    document.getElementById('material-modal').style.display = 'flex';
+};
