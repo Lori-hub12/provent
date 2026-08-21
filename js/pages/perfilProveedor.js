@@ -2,8 +2,7 @@ const API_BASE = 'http://localhost:3000';
 
 document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('navbar-container').innerHTML = buildNavbar('');
-    const user = getAuthUser();
-    updateNavbarUI(user);
+    const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
 
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
