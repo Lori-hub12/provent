@@ -182,10 +182,21 @@ async function loadReviews(proveedorId) {
             return;
         }
 
+        const currentUser = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
+
         container.innerHTML = reviews.map(r => {
+            const isOwner = currentUser && currentUser.id == r.empresa_id;
             const displayName = r.empresa_nombre || r.empresa_contacto || 'Empresa Anónima';
             const initials = displayName.substring(0, 2).toUpperCase();
             const date = new Date(r.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+            
+            const actionButtons = isOwner ? `
+                <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                    <button onclick="editReview(${r.id}, ${r.rating}, '${(r.comentario || '').replace(/'/g, "\\'")}')" class="btn btn-outline btn-sm" style="font-size: 0.75rem; padding: 0.2rem 0.5rem;">Editar</button>
+                    <button onclick="deleteReview(${r.id}, ${proveedorId})" class="btn btn-outline btn-sm" style="font-size: 0.75rem; padding: 0.2rem 0.5rem; color: var(--danger-600); border-color: var(--danger-200);">Eliminar</button>
+                </div>
+            ` : '';
+
             return `
             <div class="review-item">
                 <div class="review-header">
@@ -200,6 +211,7 @@ async function loadReviews(proveedorId) {
                 </div>
                 <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
                 <p class="review-body">${r.comentario || '<em>Sin comentario adicional.</em>'}</p>
+                ${actionButtons}
             </div>`;
         }).join('');
     } catch (e) {
@@ -220,7 +232,7 @@ async function submitReview() {
     btn.disabled = true; btn.textContent = 'Publicando...';
 
     try {
-        const res = await fetch(`${API_BASE}/api/interacciones/resenas`, {
+        const res = await fetch(`${API_BASE}/api/resenas`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ proveedor_id: proveedorId, rating, comentario })
@@ -248,7 +260,7 @@ window.deleteReview = async function(id, proveedorId) {
     if (!confirm('¿Estás seguro de eliminar esta reseña?')) return;
     const token = localStorage.getItem('ProVend_token') || localStorage.getItem('token');
     try {
-        const res = await fetch(`${API_BASE}/api/interacciones/resenas/${id}`, {
+        const res = await fetch(`${API_BASE}/api/resenas/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -290,7 +302,7 @@ async function submitEditedReview(id) {
     btn.disabled = true; btn.textContent = 'Actualizando...';
 
     try {
-        const res = await fetch(`${API_BASE}/api/interacciones/resenas/${id}`, {
+        const res = await fetch(`${API_BASE}/api/resenas/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ rating, comentario })
