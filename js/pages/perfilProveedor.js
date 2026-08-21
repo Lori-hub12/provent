@@ -181,7 +181,7 @@ document.getElementById('navbar-container').innerHTML = buildNavbar('');
                 alert('Debes iniciar sesión como Empresa para guardar favoritos.');
                 return;
             }
-            const res = await ProVendAuth.apiFetch(`${API_BASE}/api/favoritos`), {
+            const res = await ProVendAuth.apiFetch(`${API_BASE}/api/favoritos`, {
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({ empresa_id: user.id, proveedor_id: parseInt(providerId) })
