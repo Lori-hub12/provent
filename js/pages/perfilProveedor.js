@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
-        const res = await fetch(`${API_BASE}/api/dashboard/proveedor/${id}`);
+        const res = await fetch(`${API_BASE}/api/proveedores/${id}`);
         if (!res.ok) throw new Error('Error al cargar perfil');
         const p = await res.json();
         
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // 5. Rating
         const ratingVal = p.rating ? parseFloat(p.rating).toFixed(1) : '0.0';
-        document.getElementById('profile-rating-display').textContent = `${ratingVal} (${p.resenas || 0} reseñas)`;
+        document.getElementById('profile-rating-display').textContent = `${ratingVal} (${p.reviews || 0} reseñas)`;
 
         // 6. Descripción
         const descText = p.descripcion || 'Este proveedor aún no ha agregado una descripción.';
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadReviews(proveedorId) {
     try {
-        const res = await fetch(`${API_BASE}/api/interacciones/resenas/${proveedorId}`);
+        const res = await fetch(`${API_BASE}/api/dashboard/proveedor/${proveedorId}/resenas`);
         const reviews = await res.json();
         
         document.getElementById('count-resenas').textContent = reviews.length;
