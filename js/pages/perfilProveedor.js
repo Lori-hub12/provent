@@ -183,7 +183,8 @@ async function loadReviews(proveedorId) {
         }
 
         container.innerHTML = reviews.map(r => {
-            const initials = r.empresa_nombre.substring(0, 2).toUpperCase();
+            const displayName = r.empresa_nombre || r.empresa_contacto || 'Empresa Anónima';
+            const initials = displayName.substring(0, 2).toUpperCase();
             const date = new Date(r.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
             return `
             <div class="review-item">
@@ -191,7 +192,7 @@ async function loadReviews(proveedorId) {
                     <div class="review-author">
                         <div class="review-avatar">${initials}</div>
                         <div class="review-author-info">
-                            <h4>${r.empresa_nombre}</h4>
+                            <h4>${displayName}</h4>
                             <span>Empresa Compradora</span>
                         </div>
                     </div>

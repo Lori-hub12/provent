@@ -80,6 +80,11 @@ exports.get_dashboard_proveedor__id_productos = async (req, res) => {
         const rows = await dbAll(`SELECT * FROM productos WHERE proveedor_id = ? ORDER BY created_at DESC`, [req.params.id]);
         res.json(rows);
     } catch (err) {
+
+    try {
+        const rows = await dbAll(`SELECT * FROM productos WHERE proveedor_id = ? ORDER BY created_at DESC`, [req.params.id]);
+        res.json(rows);
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
@@ -88,7 +93,7 @@ exports.get_dashboard_proveedor__id_resenas = async (req, res) => {
 
     try {
         const rows = await dbAll(`
-            SELECT r.*, u.company as empresa_nombre
+            SELECT r.*, u.company as empresa_nombre, u.nombre as empresa_contacto
             FROM resenas r
             LEFT JOIN usuarios u ON r.empresa_id = u.id
             WHERE r.proveedor_id = ?
