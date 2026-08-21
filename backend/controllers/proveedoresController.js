@@ -152,22 +152,33 @@ exports.delete_materiales__id = async (req, res) => {
         res.json({ message: 'Eliminado' });
     } catch (err) {
         res.status(500).json({ error: err.message });
+
+    try {
+        const material = await dbGet(`SELECT proveedor_id FROM materiales WHERE id = ?`, [req.params.id]);
+        if (!material) return res.status(404).json({ error: 'Material no encontrado' });
+        if (req.user.id !== material.proveedor_id) return res.status(403).json({ error: 'Acceso denegado' });
+
+        await dbRun(`DELETE FROM materiales WHERE id = ?`, [req.params.id]);
+        res.json({ message: 'Eliminado' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 };
 
 exports.put_perfiles_proveedor__id = async (req, res) => {
 
     if (req.user.id !== parseInt(req.params.id)) return res.status(403).json({ error: 'Acceso denegado' });
-    let { logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte } = req.body;
+    let { logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, certificados, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte } = req.body;
 
     // Normalizar ciudad y categoría (Ej: 'managua' -> 'Managua') para que la DB se mantenga limpia
     if (ciudad) ciudad = ciudad.trim().charAt(0).toUpperCase() + ciudad.trim().slice(1).toLowerCase();
     if (categoria) categoria = categoria.trim().charAt(0).toUpperCase() + categoria.trim().slice(1).toLowerCase();
+    
     try {
         await dbRun(`
             INSERT INTO perfiles_proveedor (
-                usuario_id, logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                usuario_id, logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, certificados, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(usuario_id) DO UPDATE SET
                 logo_url = COALESCE(EXCLUDED.logo_url, perfiles_proveedor.logo_url),
                 descripcion = COALESCE(EXCLUDED.descripcion, perfiles_proveedor.descripcion),
@@ -176,14 +187,14 @@ exports.put_perfiles_proveedor__id = async (req, res) => {
                 telefono = COALESCE(EXCLUDED.telefono, perfiles_proveedor.telefono),
                 whatsapp = COALESCE(EXCLUDED.whatsapp, perfiles_proveedor.whatsapp),
                 sitio_web = COALESCE(EXCLUDED.sitio_web, perfiles_proveedor.sitio_web),
+                certificados = COALESCE(EXCLUDED.certificados, perfiles_proveedor.certificados),
                 horario = COALESCE(EXCLUDED.horario, perfiles_proveedor.horario),
                 cobertura = COALESCE(EXCLUDED.cobertura, perfiles_proveedor.cobertura),
                 capacidad_mensual_toneladas = COALESCE(EXCLUDED.capacidad_mensual_toneladas, perfiles_proveedor.capacidad_mensual_toneladas),
                 tiene_transporte = COALESCE(EXCLUDED.tiene_transporte, perfiles_proveedor.tiene_transporte)
-        `, [req.params.id, logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte]);
+        `, [req.params.id, logo_url, descripcion, ciudad, categoria, telefono, whatsapp, sitio_web, certificados, horario, cobertura, capacidad_mensual_toneladas, tiene_transporte]);
         res.json({ message: 'Perfil actualizado' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 };
-

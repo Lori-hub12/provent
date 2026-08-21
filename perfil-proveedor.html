@@ -1,220 +1,293 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Proveedor — ProVend</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel='icon' type='image/jpeg' href='assets/images/logo.jpg'>
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/pages.css">
+    <title>Perfil del Proveedor - ProVend</title>
+    <link rel="stylesheet" href="css/styles.css">
     <style>
-        .trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; padding: 1.25rem 1.5rem; background: #f8fafc; border-radius: 12px; border: 1px solid var(--neutral-200); }
-        @media(max-width:600px) { .trust-grid { grid-template-columns: repeat(2,1fr); } }
-        .trust-item { display: flex; flex-direction: column; gap: 0.25rem; }
-        .trust-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--neutral-500); font-weight: 700; }
-        .trust-value { font-size: 1rem; font-weight: 600; color: var(--neutral-900); display: flex; align-items: center; gap: 0.5rem; }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.15); }
-
-        .commercial-info { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 1rem; }
-        .commercial-info-item strong { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--neutral-400); font-weight: 700; margin-bottom: 0.35rem; }
-        .commercial-info-item p { color: var(--neutral-800); font-weight: 500; margin: 0; font-size: 0.95rem; }
-
-        /* Avatar */
-        .profile-avatar-fallback { width: 80px; height: 80px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 800; color: white; flex-shrink: 0; }
-
-        /* Material Cards Grid */
-        .mat-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
-        .mat-card { background: white; border: 1px solid var(--neutral-200); border-radius: 14px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
-        .mat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
-        .mat-card-img { width: 100%; height: 140px; object-fit: cover; background: var(--neutral-100); display: flex; align-items: center; justify-content: center; color: var(--neutral-400); }
-        .mat-card-img img { width: 100%; height: 140px; object-fit: cover; }
-        .mat-card-body { padding: 1rem; }
-        .mat-card-name { font-weight: 700; font-size: 0.95rem; color: var(--neutral-900); margin-bottom: 0.35rem; }
-        .mat-card-meta { font-size: 0.8rem; color: var(--neutral-500); display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-        .mat-card-badge { background: var(--primary-50); color: var(--primary-700); font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--primary-100); }
-        .mat-card-price { margin-top: 0.75rem; font-weight: 700; font-size: 1rem; color: var(--primary-700); }
+        body { background-color: var(--neutral-50); }
         
-        /* Rating */
-        .rating-display-large { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; margin-bottom: 1.25rem; }
-        .rating-number-lg { font-size: 2.75rem; font-weight: 800; color: var(--neutral-900); line-height: 1; }
-        .rating-stars-lg { font-size: 1.3rem; letter-spacing: 0.1em; }
-        .rating-count-sm { font-size: 0.8rem; color: var(--neutral-500); }
-
-        /* Reviews */
-        .reviews-section { margin-top: 2rem; }
-        .review-card { background: var(--neutral-50); border: 1px solid var(--neutral-200); border-radius: 14px; padding: 1.25rem; margin-bottom: 1rem; transition: box-shadow 0.2s; }
-        .review-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
-        .review-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
-        .review-avatar { width: 38px; height: 38px; background: linear-gradient(135deg, var(--primary-400), var(--primary-600)); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.875rem; flex-shrink: 0; }
-        .review-empresa { font-weight: 700; color: var(--neutral-800); font-size: 0.9rem; }
-        .review-date { font-size: 0.75rem; color: var(--neutral-400); margin-top: 1px; }
-        .review-stars { color: #f59e0b; font-size: 1rem; letter-spacing: 2px; }
-        .review-text { font-size: 0.875rem; color: var(--neutral-700); line-height: 1.6; margin-top: 0.5rem; }
-
-        /* Star form */
-        .star-rating-form { font-size: 2rem; cursor: pointer; color: #d1d5db; display: inline-flex; gap: 0.25rem; user-select: none; }
-        .star-rating-form span { transition: color 0.15s; }
-
-        /* Empty state inline */
-        .empty-inline { text-align: center; padding: 3rem 2rem; color: var(--neutral-500); }
-        .empty-inline-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-        .empty-inline h4 { color: var(--neutral-700); font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
-        .empty-inline p { font-size: 0.875rem; }
+        /* New Profile Header Styles */
+        .profile-header-container { max-width: 1100px; margin: 2rem auto; display: grid; grid-template-columns: 1fr 320px; gap: 2rem; padding: 0 1rem; align-items: start; }
+        
+        .profile-main-card { background: white; border-radius: 16px; padding: 2rem; display: flex; gap: 1.5rem; border: 1px solid var(--neutral-200); }
+        
+        .profile-logo { width: 100px; height: 100px; border-radius: 16px; background: var(--primary-50); color: var(--primary-600); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 700; flex-shrink: 0; }
+        .profile-logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 16px; }
+        
+        .profile-title-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+        .profile-name { font-size: 1.75rem; font-weight: 800; color: var(--neutral-900); margin: 0; }
+        .verified-badge { display: inline-flex; align-items: center; gap: 0.25rem; background: #eff6ff; color: #1d4ed8; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; border: 1px solid #bfdbfe; }
+        
+        .profile-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+        .profile-tag { background: var(--neutral-100); color: var(--neutral-700); padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 500; }
+        
+        .profile-meta { display: flex; align-items: center; gap: 1.5rem; color: var(--neutral-500); font-size: 0.9rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .profile-meta-item { display: flex; align-items: center; gap: 0.35rem; }
+        .profile-meta-item.rating { color: var(--neutral-700); font-weight: 600; }
+        .profile-meta-item.rating svg { color: #f59e0b; }
+        
+        .profile-desc { color: var(--neutral-700); line-height: 1.6; font-size: 0.95rem; margin-bottom: 1.5rem; }
+        
+        .profile-certs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .profile-cert { border: 1px solid var(--primary-200); color: var(--primary-700); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: white; }
+        
+        /* Contact Card Styles */
+        .contact-card { background: white; border-radius: 16px; padding: 1.5rem; border: 1px solid var(--neutral-200); }
+        .btn-whatsapp { background: #25D366; color: white; width: 100%; border: none; font-weight: 600; font-size: 1rem; padding: 0.875rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; transition: 0.2s; margin-bottom: 1rem; }
+        .btn-whatsapp:hover { background: #1ebd5a; }
+        
+        .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
+        .contact-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; border: 1px solid var(--neutral-200); border-radius: 8px; padding: 0.75rem 0.5rem; color: var(--neutral-600); font-size: 0.75rem; text-decoration: none; transition: 0.2s; background: white; }
+        .contact-btn:hover { background: var(--neutral-50); color: var(--primary-600); border-color: var(--primary-200); }
+        .contact-btn svg { width: 20px; height: 20px; }
+        
+        .action-row { display: flex; gap: 0.5rem; justify-content: center; }
+        .action-btn { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--neutral-200); color: var(--neutral-500); background: white; cursor: pointer; transition: 0.2s; }
+        .action-btn:hover { background: var(--neutral-50); color: var(--neutral-900); }
+        
+        /* Tabs Styles */
+        .tabs-container { max-width: 1100px; margin: 0 auto; padding: 0 1rem; }
+        .tabs-nav { display: flex; border-bottom: 1px solid var(--neutral-200); margin-bottom: 2rem; overflow-x: auto; scrollbar-width: none; }
+        .tabs-nav::-webkit-scrollbar { display: none; }
+        .tab-btn { background: none; border: none; padding: 1rem 1.5rem; font-size: 0.95rem; font-weight: 600; color: var(--neutral-500); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: 0.2s; }
+        .tab-btn:hover { color: var(--neutral-800); }
+        .tab-btn.active { color: var(--primary-600); border-bottom-color: var(--primary-600); }
+        
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+        
+        /* Acerca de */
+        .about-section { background: white; border-radius: 16px; padding: 2rem; border: 1px solid var(--neutral-200); margin-bottom: 2rem; }
+        .about-section h3 { margin-bottom: 1rem; font-size: 1.25rem; color: var(--neutral-900); }
+        .about-section p { color: var(--neutral-700); line-height: 1.6; font-size: 0.95rem; margin-bottom: 2rem; }
+        
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+        .info-item { display: flex; flex-direction: column; gap: 0.25rem; }
+        .info-item strong { font-size: 0.8rem; color: var(--neutral-500); text-transform: uppercase; letter-spacing: 0.05em; }
+        .info-item span { font-weight: 500; color: var(--neutral-900); }
+        
+        /* Productos */
+        .mat-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .mat-card { background: white; border: 1px solid var(--neutral-200); border-radius: 12px; overflow: hidden; transition: 0.2s; cursor: pointer; }
+        .mat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-color: var(--primary-200); }
+        .mat-card-img { width: 100%; height: 160px; background: var(--neutral-50); display: flex; align-items: center; justify-content: center; color: var(--neutral-400); border-bottom: 1px solid var(--neutral-100); }
+        .mat-card-img img { width: 100%; height: 100%; object-fit: cover; }
+        .mat-card-body { padding: 1.25rem; }
+        .mat-card-name { font-weight: 700; font-size: 1.1rem; color: var(--neutral-900); margin-bottom: 0.5rem; }
+        .mat-card-meta { color: var(--neutral-500); font-size: 0.85rem; margin-bottom: 0.5rem; display:flex; gap:0.5rem; flex-wrap:wrap;}
+        
+        /* Reseñas */
+        .review-list { background: white; border-radius: 16px; padding: 2rem; border: 1px solid var(--neutral-200); margin-bottom: 2rem; }
+        .review-item { padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--neutral-100); }
+        .review-item:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+        .review-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .review-author { display: flex; gap: 1rem; align-items: center; }
+        .review-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--primary-600); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; }
+        .review-author-info h4 { margin: 0; font-size: 0.95rem; color: var(--neutral-900); }
+        .review-author-info span { font-size: 0.8rem; color: var(--neutral-500); }
+        .review-date { font-size: 0.8rem; color: var(--neutral-400); }
+        .review-stars { color: #f59e0b; font-size: 0.8rem; margin-bottom: 0.5rem; }
+        .review-body { color: var(--neutral-700); font-size: 0.95rem; line-height: 1.5; margin: 0; }
+        
+        @media (max-width: 900px) {
+            .profile-header-container { grid-template-columns: 1fr; }
+            .profile-main-card { flex-direction: column; align-items: center; text-align: center; }
+            .profile-title-row { justify-content: center; }
+            .profile-tags { justify-content: center; }
+            .profile-meta { justify-content: center; }
+            .profile-certs { justify-content: center; }
+        }
     </style>
 </head>
 <body>
     <div id="navbar-container"></div>
-    <div class="profile-page">
-        <div class="profile-header">
-            <div class="container">
-                <a href="explorar.html" class="breadcrumb" style="display:inline-flex;align-items:center;gap:0.5rem;margin-bottom:1.5rem;font-size:0.875rem;color:var(--neutral-500);text-decoration:none">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
-                    Volver a proveedores
-                </a>
-                <div class="profile-header-inner">
-                    <div class="profile-main-info">
-                        <!-- Logo / Avatar dinámico -->
-                        <div id="profile-logo-wrapper"></div>
-
-                        <div class="profile-name">
-                            <h1 id="profile-name">Cargando...</h1>
-                            <span class="badge-verified" id="profile-verified" style="display:none;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
-                                Verificado
-                            </span>
-                        </div>
-
-                        <div class="profile-tags" id="profile-tags"></div>
-
-                        <!-- Trust Grid -->
-                        <div class="trust-grid">
-                            <div class="trust-item">
-                                <span class="trust-label">Estado</span>
-                                <span class="trust-value"><div class="status-dot"></div> <span id="trust-status">Disponible</span></span>
-                            </div>
-                            <div class="trust-item">
-                                <span class="trust-label">Tiempo respuesta</span>
-                                <span class="trust-value" id="trust-time">24 horas</span>
-                            </div>
-                            <div class="trust-item">
-                                <span class="trust-label">Visitas totales</span>
-                                <span class="trust-value" id="trust-visits">0</span>
-                            </div>
-                            <div class="trust-item">
-                                <span class="trust-label">Verificado</span>
-                                <span class="trust-value" id="trust-verified-text">No</span>
-                            </div>
-                        </div>
-
-                        <p class="profile-description" id="profile-desc" style="margin-top:1.5rem"></p>
+    
+    <div style="padding-top:80px; padding-bottom: 2rem;">
+        <div style="max-width:1100px; margin: 0 auto; padding: 0 1rem; margin-bottom: 1rem;">
+            <a href="explorar.html" style="color:var(--neutral-500); text-decoration:none; display:flex; align-items:center; gap:0.5rem; font-size:0.9rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Volver a proveedores
+            </a>
+        </div>
+        
+        <!-- HEADER ROW -->
+        <div class="profile-header-container">
+            <!-- Main Info Card -->
+            <div class="profile-main-card">
+                <div class="profile-logo" id="profile-logo-display">
+                    <!-- Logo / Initials -->
+                </div>
+                <div style="flex: 1;">
+                    <div class="profile-title-row">
+                        <h1 class="profile-name" id="profile-name-display">Cargando...</h1>
+                        <span id="profile-verified-badge" style="display:none;" class="verified-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            Verificado
+                        </span>
                     </div>
-
-                    <div class="profile-contact-panel">
-                        <div class="contact-panel">
-                            <!-- Rating dinámico -->
-                            <div class="rating-display-large" id="rating-display">
-                                <!-- JS fills -->
-                            </div>
-                            <a href="#" class="btn btn-whatsapp btn-block btn-lg" id="whatsapp-btn" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                                Contactar por WhatsApp
-                            </a>
-                            <div class="contact-actions" style="margin-top:1rem;">
-                                <a href="#" class="contact-action-btn" id="email-btn" style="display:none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
-                                    Email
-                                </a>
-                                <button class="contact-social-btn" id="fav-btn" title="Guardar en favoritos" onclick="toggleFavorito()">
-                                    <svg id="fav-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>
-                                </button>
-                            </div>
+                    
+                    <div class="profile-tags" id="profile-tags-display">
+                        <!-- Categorias y etiquetas -->
+                    </div>
+                    
+                    <div class="profile-meta">
+                        <div class="profile-meta-item">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <span id="profile-location-display">Ubicación</span>
+                        </div>
+                        <div class="profile-meta-item rating">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            <span id="profile-rating-display">0.0 (0 reseñas)</span>
                         </div>
                     </div>
+                    
+                    <p class="profile-desc" id="profile-desc-display">Cargando descripción...</p>
+                    
+                    <div class="profile-certs" id="profile-certs-display">
+                        <!-- Certificados -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Card -->
+            <div class="contact-card">
+                <button class="btn-whatsapp" id="contact-btn-wsp">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Contactar por WhatsApp
+                </button>
+                <div class="contact-grid">
+                    <a href="#" id="contact-email" class="contact-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+                        Email
+                    </a>
+                    <a href="#" id="contact-phone" class="contact-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.48-4.18-7.076-7.076l1.293-.97c.362-.271.527-.733.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/></svg>
+                        Llamar
+                    </a>
+                    <a href="#" id="contact-web" target="_blank" class="contact-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"/></svg>
+                        Sitio Web
+                    </a>
+                </div>
+                <div class="action-row">
+                    <button class="action-btn" title="Guardar"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></button>
+                    <button class="action-btn" title="Compartir"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg></button>
                 </div>
             </div>
         </div>
-
-        <!-- Materiales publicados -->
-        <div class="profile-content">
-            <div class="tab-wrapper" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200); margin-bottom:1.5rem;">
-                <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Materiales disponibles</h3>
-                <div id="materiales-perfil">
-                    <div class="empty-inline">
-                        <div class="empty-inline-icon">&#128230;</div>
-                        <h4>No hay materiales publicados</h4>
-                        <p>Este proveedor aún no ha publicado materiales.</p>
+        
+        <!-- TABS -->
+        <div class="tabs-container">
+            <div class="tabs-nav">
+                <button class="tab-btn active" onclick="switchTab('tab-acerca', this)">Acerca de</button>
+                <button class="tab-btn" onclick="switchTab('tab-productos', this)">Productos (<span id="count-mats">0</span>)</button>
+                <button class="tab-btn" onclick="switchTab('tab-resenas', this)">Reseñas (<span id="count-resenas">0</span>)</button>
+            </div>
+            
+            <!-- CONTENIDO: Acerca de -->
+            <div id="tab-acerca" class="tab-pane active">
+                <div class="about-section">
+                    <h3>Descripción de la Empresa</h3>
+                    <p id="about-desc">Cargando...</p>
+                    
+                    <h3>Información de Contacto</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <strong>Teléfono</strong>
+                            <span id="info-phone">-</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Email</strong>
+                            <span id="info-email">-</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Sitio Web</strong>
+                            <span id="info-web">-</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Ubicación</strong>
+                            <span id="info-location">-</span>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Info Comercial -->
-            <div class="tab-wrapper" id="info-comercial-section" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200); margin-bottom:1.5rem;">
-                <h3 style="margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">Información Comercial</h3>
-                <div class="commercial-info">
-                    <div class="commercial-info-item">
-                        <strong>Ubicación Base</strong>
-                        <p id="info-city">—</p>
-                    </div>
-                    <div class="commercial-info-item">
-                        <strong>Categoría</strong>
-                        <p id="info-cat">—</p>
-                    </div>
-                    <div class="commercial-info-item">
-                        <strong>Correo de contacto</strong>
-                        <p id="info-email">—</p>
-                    </div>
-                    <div class="commercial-info-item">
-                        <strong>Estado de verificación</strong>
-                        <p id="info-verif">No verificado</p>
-                    </div>
+            
+            <!-- CONTENIDO: Productos -->
+            <div id="tab-productos" class="tab-pane">
+                <div id="materiales-perfil" class="mat-cards-grid">
+                    <!-- Cards here -->
                 </div>
             </div>
-
-            <!-- Reseñas -->
-            <div class="tab-wrapper" style="background:white; border-radius:12px; padding:2rem; border:1px solid var(--neutral-200);">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:1px solid var(--neutral-100); padding-bottom:1rem;">
-                    <h3 style="margin:0;">Reseñas</h3>
-                    <button id="btn-show-review" class="btn btn-primary btn-sm" style="display:none; font-size:0.875rem;">✏️ Escribir reseña</button>
-                </div>
-
-                <!-- Formulario de reseña (oculto por defecto) -->
-                <div id="review-form-container" style="display:none; background:var(--neutral-50); border:1px solid var(--neutral-200); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
-                    <h4 style="margin-bottom:1rem; color:var(--neutral-900);">Deja tu reseña</h4>
+            
+            <!-- CONTENIDO: Reseñas -->
+            <div id="tab-resenas" class="tab-pane">
+                <!-- Formulario -->
+                <div id="review-form-container" style="display:none; background:white; border:1px solid var(--neutral-200); border-radius:12px; padding:1.5rem; margin-bottom:1.5rem;">
+                    <h4 style="margin-bottom:1rem;">Deja tu reseña</h4>
                     <div style="margin-bottom:1rem;">
-                        <label class="form-label" style="display:block; margin-bottom:0.5rem; font-weight:600;">Calificación</label>
-                        <div class="star-rating-form" id="star-rating-form">
+                        <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Calificación</label>
+                        <div class="star-rating-form" id="star-rating-form" style="font-size: 2rem; cursor: pointer; color: #d1d5db;">
                             <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
                         </div>
                         <input type="hidden" id="review-rating" value="0">
                     </div>
-                    <div class="form-group" style="margin-bottom:1.25rem;">
-                        <label class="form-label" style="display:block; margin-bottom:0.5rem; font-weight:600;">Comentario (opcional)</label>
-                        <textarea id="review-comment" class="form-input" rows="3" placeholder="¿Cómo fue tu experiencia trabajando con este proveedor?" style="width:100%; padding:0.75rem; border:1px solid var(--neutral-300); border-radius:8px;"></textarea>
+                    <div style="margin-bottom:1.25rem;">
+                        <label style="display:block; margin-bottom:0.5rem; font-weight:600;">Comentario</label>
+                        <textarea id="review-comment" rows="3" placeholder="¿Cómo fue tu experiencia trabajando con este proveedor?" style="width:100%; padding:0.75rem; border:1px solid var(--neutral-300); border-radius:8px;"></textarea>
                     </div>
-                    <div style="display:flex; gap:1rem; justify-content:flex-end;">
-                        <button class="btn btn-outline" onclick="document.getElementById('review-form-container').style.display='none'">Cancelar</button>
+                    <div style="display:flex; justify-content:flex-end; gap: 1rem;">
+                        <button class="btn" style="background:var(--neutral-200);" onclick="document.getElementById('review-form-container').style.display='none'">Cancelar</button>
                         <button class="btn btn-primary" id="btn-submit-review" onclick="submitReview()">Publicar Reseña</button>
                     </div>
                 </div>
-                <div id="resenas-container">
-                    <div class="empty-inline">
-                        <div class="empty-inline-icon">⭐</div>
-                        <h4>Aún no tiene reseñas</h4>
-                        <p>Las empresas podrán calificar a este proveedor después de realizar un contacto.</p>
-                    </div>
+                
+                <div style="display:flex; justify-content:flex-end; margin-bottom:1rem;">
+                    <button id="btn-show-review" class="btn btn-primary" style="display:none;">Escribir reseña</button>
+                </div>
+                
+                <div id="resenas-container" class="review-list">
+                    <!-- Reseñas list here -->
                 </div>
             </div>
         </div>
     </div>
-    <div id="footer-container"></div>
-
-    <script src="js/config.js"></script>
+    
+    <!-- Modal Ver Material -->
+    <div id="material-modal" class="modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; align-items:center; justify-content:center;">
+        <div class="modal-card" style="max-width:500px; width:90%; max-height:90vh; overflow-y:auto; position:relative; padding:0; border-radius:12px; background:white;">
+            <button onclick="document.getElementById('material-modal').style.display='none'" style="position:absolute; top:1rem; right:1rem; background:rgba(255,255,255,0.8); border:none; border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1); z-index:10; font-size:1.2rem; font-weight:bold;">&times;</button>
+            <div id="material-modal-img" style="width:100%; height:250px; background:var(--neutral-100); display:flex; align-items:center; justify-content:center; border-radius: 12px 12px 0 0;"></div>
+            <div style="padding:1.5rem;">
+                <h3 id="material-modal-name" style="margin-bottom:0.5rem; font-size:1.5rem;">Nombre</h3>
+                <div id="material-modal-price" style="font-size:1.25rem; color:var(--primary-600); font-weight:700; margin-bottom:1rem;"></div>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem; background:var(--neutral-50); padding:1rem; border-radius:8px;">
+                    <div><strong style="display:block; font-size:0.75rem; color:var(--neutral-500); text-transform:uppercase;">Cantidad Disp.</strong><span id="material-modal-qty"></span></div>
+                    <div><strong style="display:block; font-size:0.75rem; color:var(--neutral-500); text-transform:uppercase;">Frecuencia</strong><span id="material-modal-freq"></span></div>
+                    <div><strong style="display:block; font-size:0.75rem; color:var(--neutral-500); text-transform:uppercase;">Volumen Mínimo</strong><span id="material-modal-min"></span></div>
+                    <div><strong style="display:block; font-size:0.75rem; color:var(--neutral-500); text-transform:uppercase;">Calidad / Pureza</strong><span id="material-modal-quality"></span></div>
+                </div>
+                
+                <h4 style="margin-bottom:0.5rem;">Descripción</h4>
+                <p id="material-modal-desc" style="color:var(--neutral-700); line-height:1.6;"></p>
+                
+                <button class="btn btn-primary" style="width:100%; margin-top:1.5rem;" onclick="document.getElementById('material-modal').style.display='none'; document.getElementById('contact-btn-wsp').click();">Contactar para Oferta</button>
+            </div>
+        </div>
+    </div>
+    
     <script src="js/components.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/pages/perfilProveedor.js"></script>
+    <script>
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            element.classList.add('active');
+        }
+    </script>
 </body>
 </html>

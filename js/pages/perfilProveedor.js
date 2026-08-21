@@ -1,286 +1,269 @@
-document.getElementById('navbar-container').innerHTML = buildNavbar('');
-        document.getElementById('footer-container').innerHTML = buildFooter();
+const API_BASE = 'http://localhost:3000';
 
-        const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
-        const urlParams = new URLSearchParams(window.location.search);
-        const providerId = urlParams.get('id');
-        const COLORS = ['#2B7DE9','#27ae60','#e67e22','#9b59b6','#e74c3c','#1abc9c'];
+document.addEventListener('DOMContentLoaded', async () => {
+    document.getElementById('navbar-container').innerHTML = buildNavbar('');
+    const user = getAuthUser();
+    updateNavbarUI(user);
 
-        if (!providerId) {
-            document.getElementById('profile-name').textContent = 'Proveedor no encontrado';
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    if (!id) {
+        alert('Proveedor no especificado');
+        window.location.href = 'explorar.html';
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_BASE}/api/dashboard/proveedor/${id}`);
+        if (!res.ok) throw new Error('Error al cargar perfil');
+        const p = await res.json();
+        
+        window.proveedorData = p; // Para usar en los clics de contacto
+
+        // 1. Logo
+        const logoDiv = document.getElementById('profile-logo-display');
+        if (p.logo_url) {
+            logoDiv.innerHTML = `<img src="${API_BASE}${p.logo_url}" alt="${p.nombre}">`;
+        } else {
+            const initials = p.nombre.substring(0, 2).toUpperCase();
+            logoDiv.textContent = initials;
         }
 
-        async function loadProfile() {
-            try {
-                const res = await fetch(`${API_BASE}/api/proveedores/${providerId}`);
-                if (!res.ok) throw new Error('No encontrado');
-                const p = await res.json();
+        // 2. Nombre y Verificación
+        document.getElementById('profile-name-display').textContent = p.nombre;
+        if (p.verificado) {
+            document.getElementById('profile-verified-badge').style.display = 'inline-flex';
+        }
 
-                // Registrar visita
-                if (user && user.id !== p.id) {
-                    fetch(`${API_BASE}/api/visitas`, {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({ proveedor_id: p.id, visitante_id: user.id })
-                    });
-                }
+        // 3. Tags (Categoría)
+        const tagsDiv = document.getElementById('profile-tags-display');
+        if (p.categoria) {
+            tagsDiv.innerHTML = `<span class="profile-tag" style="background:#eff6ff; color:#1d4ed8;">${p.categoria}</span>`;
+        }
 
-                // Title
-                document.title = `${p.company || p.nombre} — ProVend`;
+        // 4. Ubicación
+        document.getElementById('profile-location-display').textContent = (p.ciudad || 'Nicaragua') + (p.direccion ? ', ' + p.direccion : '');
+        document.getElementById('info-location').textContent = p.ciudad || 'No especificada';
 
-                // Avatar / Logo
-                const logoWrapper = document.getElementById('profile-logo-wrapper');
-                const initials = (p.company || p.nombre || 'PR').substring(0, 2).toUpperCase();
-                const color = COLORS[p.id % COLORS.length];
-                if (p.logo_url) {
-                    logoWrapper.innerHTML = `<img class="profile-logo" src="${p.logo_url}" alt="${p.company}" onerror="this.outerHTML='<div class=\\'profile-avatar-fallback\\' style=\\'background:${color}\\'>${initials}</div>'">`;
-                } else {
-                    logoWrapper.innerHTML = `<div class="profile-avatar-fallback" style="background:${color}">${initials}</div>`;
-                }
+        // 5. Rating
+        const ratingVal = p.rating ? parseFloat(p.rating).toFixed(1) : '0.0';
+        document.getElementById('profile-rating-display').textContent = `${ratingVal} (${p.resenas || 0} reseñas)`;
 
-                // Name + verified
-                document.getElementById('profile-name').textContent = p.company || p.nombre;
-                if (p.verificado) {
-                    document.getElementById('profile-verified').style.display = 'inline-flex';
-                    document.getElementById('trust-verified-text').textContent = 'Sí ✅';
-                    document.getElementById('info-verif').textContent = 'Verificado ✅';
-                } else {
-                    document.getElementById('trust-verified-text').textContent = 'No';
-                    document.getElementById('info-verif').textContent = 'No verificado';
-                }
+        // 6. Descripción
+        const descText = p.descripcion || 'Este proveedor aún no ha agregado una descripción.';
+        document.getElementById('profile-desc-display').textContent = descText;
+        document.getElementById('about-desc').textContent = descText;
 
-                // Tags
-                const tags = [];
-                if (p.categoria) tags.push(`<span class="badge badge-primary">${p.categoria}</span>`);
-                document.getElementById('profile-tags').innerHTML = tags.join('');
+        // 7. Certificados
+        const certsDiv = document.getElementById('profile-certs-display');
+        if (p.certificados) {
+            const certs = p.certificados.split(',').map(c => c.trim()).filter(c => c);
+            certsDiv.innerHTML = certs.map(c => `<span class="profile-cert">${c}</span>`).join('');
+        }
 
-                // Descripción
-                document.getElementById('profile-desc').textContent = p.descripcion || 'Este proveedor aún no ha agregado una descripción.';
+        // 8. Contact Info en el Tab
+        document.getElementById('info-phone').textContent = p.telefono || p.whatsapp || 'No especificado';
+        // Asumiendo que el email se devuelve con la db. En ProVend suele estar en p.email o p.usuario_email
+        document.getElementById('info-email').textContent = p.email || p.usuario_email || 'No especificado';
+        document.getElementById('info-web').textContent = p.sitio_web || 'No especificado';
 
-                // Trust grid
-                document.getElementById('trust-status').textContent = p.estado || 'Disponible';
-                document.getElementById('trust-time').textContent = p.tiempo_respuesta || '24 horas';
-                document.getElementById('trust-visits').textContent = p.visitas_total || 0;
+        // 9. Botones de Acción (Links)
+        if (p.whatsapp) {
+            document.getElementById('contact-btn-wsp').onclick = () => window.open(`https://wa.me/${p.whatsapp.replace(/\D/g,'')}`, '_blank');
+        } else {
+            document.getElementById('contact-btn-wsp').onclick = () => alert('El proveedor no tiene WhatsApp registrado.');
+        }
 
-                // Rating dinámico
-                const ratingDiv = document.getElementById('rating-display');
-                const rating = Number(p.rating) || 0;
-                const reviews = Number(p.reviews) || 0;
-                if (reviews === 0) {
-                    ratingDiv.innerHTML = `
-                        <div style="text-align:center; color:var(--neutral-400); font-size:0.875rem; padding:0.5rem 0">
-                            <div style="font-size:1.5rem; margin-bottom:0.25rem">⭐</div>
-                            Sin reseñas todavía
-                        </div>`;
-                } else {
-                    const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
-                    ratingDiv.innerHTML = `
-                        <div class="rating-number-lg">${rating.toFixed(1)}</div>
-                        <div class="rating-stars-lg" style="color:var(--warning-500)">${stars}</div>
-                        <div class="rating-count-sm">${reviews} reseña${reviews !== 1 ? 's' : ''}</div>`;
-                }
+        if (p.email || p.usuario_email) {
+            document.getElementById('contact-email').href = `mailto:${p.email || p.usuario_email}`;
+        } else {
+            document.getElementById('contact-email').onclick = (e) => { e.preventDefault(); alert('Email no disponible'); };
+        }
 
-                // Contacto
-                if (p.whatsapp) {
-                    document.getElementById('whatsapp-btn').style.display = 'flex';
-                    document.getElementById('whatsapp-btn').href = `https://wa.me/${p.whatsapp.replace(/\D/g,'')}?text=Hola,%20les%20encontramos%20en%20ProVend.`;
-                } else {
-                    document.getElementById('whatsapp-btn').style.display = 'flex';
-                    document.getElementById('whatsapp-btn').style.opacity = '0.5';
-                    document.getElementById('whatsapp-btn').style.cursor = 'default';
-                    document.getElementById('whatsapp-btn').textContent = 'WhatsApp no disponible';
-                    document.getElementById('whatsapp-btn').onclick = (e) => { e.preventDefault(); };
-                }
-                if (p.email) {
-                    document.getElementById('email-btn').style.display = 'inline-flex';
-                    document.getElementById('email-btn').href = `mailto:${p.email}`;
-                } else {
-                    document.getElementById('email-btn').style.display = 'inline-flex';
-                    document.getElementById('email-btn').style.opacity = '0.5';
-                    document.getElementById('email-btn').style.cursor = 'default';
-                    document.getElementById('email-btn').innerHTML += ' (no disponible)';
-                    document.getElementById('email-btn').onclick = (e) => e.preventDefault();
-                }
+        if (p.telefono) {
+            document.getElementById('contact-phone').href = `tel:${p.telefono.replace(/\D/g,'')}`;
+        } else {
+            document.getElementById('contact-phone').onclick = (e) => { e.preventDefault(); alert('Teléfono no disponible'); };
+        }
 
-                // Info Comercial
-                document.getElementById('info-city').textContent = p.ciudad || 'No disponible';
-                document.getElementById('info-cat').textContent = p.categoria || 'No disponible';
-                document.getElementById('info-email').textContent = p.email || 'No disponible';
-                document.getElementById('info-verif').textContent = p.verificado ? 'Verificado ✅' : 'Pendiente de verificación';
+        if (p.sitio_web) {
+            let url = p.sitio_web.startsWith('http') ? p.sitio_web : 'https://' + p.sitio_web;
+            document.getElementById('contact-web').href = url;
+        } else {
+            document.getElementById('contact-web').onclick = (e) => { e.preventDefault(); alert('Sitio web no disponible'); };
+        }
 
-                // Materiales del proveedor
-                const matRes = await fetch(`${API_BASE}/api/dashboard/proveedor/${p.id}/materiales`);
-                const mats = await matRes.json();
-                const matDiv = document.getElementById('materiales-perfil');
-                if (mats.length === 0) {
-                    matDiv.innerHTML = `
-                        <div class="empty-inline">
-                            <div class="empty-inline-icon">📦</div>
-                            <h4>No hay materiales publicados</h4>
-                            <p>Este proveedor aún no ha publicado materiales disponibles.</p>
-                        </div>`;
-                } else {
-                    matDiv.innerHTML = `<div class="mat-cards-grid">${
-                        mats.map(m => {
-                            const imgHtml = m.imagen_url
-                                ? `<div class="mat-card-img"><img src="${API_BASE}${m.imagen_url}" alt="${m.nombre}" loading="lazy"></div>`
-                                : `<div class="mat-card-img"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>`;
-                            const precio = m.precio ? `<div class="mat-card-price">C$ ${parseFloat(m.precio).toLocaleString('es-NI')}</div>` : '';
-                            return `
-                            <div class="mat-card">
-                                ${imgHtml}
-                                <div class="mat-card-body">
-                                    <div class="mat-card-name">${m.nombre}</div>
-                                    <div class="mat-card-meta">
-                                        <span class="mat-card-badge">&#128230; ${m.cantidad} ${m.unidad}</span>
-                                        ${m.calidad ? `<span class="mat-card-badge" style="background:var(--success-100);color:#059669;border-color:var(--success-200)">${m.calidad}</span>` : ''}
-                                    </div>
-                                    ${precio}
-                                </div>
-                            </div>`;
-                        }).join('')
-                    }</div>`;
-                }
-
-                // Reseñas
-                const revRes = await fetch(`${API_BASE}/api/dashboard/proveedor/${p.id}/resenas`);
-                const revs = await revRes.json();
-                const revDiv = document.getElementById('resenas-container');
-                if (revs.length === 0) {
-                    revDiv.innerHTML = `
-                        <div class="empty-inline">
-                            <div class="empty-inline-icon">⭐</div>
-                            <h4>Aún no tiene reseñas</h4>
-                            <p>Las empresas podrán calificar a este proveedor después de realizar un contacto.</p>
-                        </div>`;
-                } else {
-                    const stars = n => '★'.repeat(n) + '☆'.repeat(5-n);
-                    revDiv.innerHTML = revs.map(r => `
-                        <div class="review-card">
-                            <div class="review-header">
-                                <div class="review-avatar">${(r.empresa_nombre || 'E').substring(0,2).toUpperCase()}</div>
-                                <div>
-                                    <div class="review-empresa">${r.empresa_nombre || 'Empresa verificada'}</div>
-                                    <div class="review-date">${new Date(r.created_at).toLocaleDateString('es-NI', {year:'numeric',month:'long',day:'numeric'})}</div>
-                                </div>
-                                <div class="review-stars" style="margin-left:auto">${stars(r.rating)}</div>
-                            </div>
-                            ${r.comentario ? `<p style="color:var(--neutral-700);font-size:0.9rem;margin:0">"${r.comentario}"</p>` : ''}
+        // 10. Materiales del proveedor
+        const matRes = await fetch(`${API_BASE}/api/dashboard/proveedor/${id}/materiales`);
+        const mats = await matRes.json();
+        window.providerMaterials = mats;
+        
+        document.getElementById('count-mats').textContent = mats.length;
+        
+        const matDiv = document.getElementById('materiales-perfil');
+        if (mats.length === 0) {
+            matDiv.innerHTML = `<div style="grid-column:1/-1; padding:2rem; text-align:center; color:var(--neutral-500); background:white; border-radius:12px; border:1px solid var(--neutral-200);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:1rem; opacity:0.5;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                <p>Este proveedor aún no ha publicado materiales o productos.</p>
+            </div>`;
+        } else {
+            matDiv.innerHTML = mats.map(m => {
+                const imgHtml = m.imagen_url
+                    ? `<div class="mat-card-img"><img src="${API_BASE}${m.imagen_url}" alt="${m.nombre}" loading="lazy"></div>`
+                    : `<div class="mat-card-img"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>`;
+                
+                return `
+                <div class="mat-card" onclick="openMaterialModal('${m.id}')">
+                    ${imgHtml}
+                    <div class="mat-card-body">
+                        <div class="mat-card-name">${m.nombre}</div>
+                        <div class="mat-card-meta">
+                            ${m.precio_estimado ? `<span style="background:var(--success-50); color:var(--success-700); padding:2px 8px; border-radius:12px; font-weight:600">C$ ${m.precio_estimado}</span>` : ''}
+                            ${m.calidad_pureza ? `<span style="background:var(--primary-50); color:var(--primary-700); padding:2px 8px; border-radius:12px; font-weight:600">${m.calidad_pureza}</span>` : ''}
                         </div>
-                    `).join('');
-                }
-
-            } catch(e) {
-                document.getElementById('profile-name').textContent = 'Proveedor no encontrado';
-                document.getElementById('profile-desc').textContent = 'No pudimos encontrar este perfil.';
-            }
+                        <div style="font-size:0.8rem; color:var(--neutral-500);">📦 ${m.cantidad || 'N/A'} ${m.unidad || ''}</div>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
-        async function toggleFavorito() {
-            if (!user || user.rol !== 'empresa') {
-                alert('Debes iniciar sesión como Empresa para guardar favoritos.');
-                return;
-            }
-            const res = await ProVendAuth.apiFetch(`${API_BASE}/api/favoritos`, {
-                method: 'POST',
-                headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({ empresa_id: user.id, proveedor_id: parseInt(providerId) })
-            });
-            const data = await res.json();
-            const icon = document.getElementById('fav-icon');
-            if (data.added) {
-                icon.setAttribute('fill', 'var(--danger-500)');
-                icon.setAttribute('stroke', 'var(--danger-500)');
-                document.getElementById('fav-btn').title = 'Quitar de favoritos';
-                if (data.total === 1) {
-                    showToast('⭐ Guardaste tu primer proveedor. Podrás encontrarlo fácilmente desde Favoritos.', 'success', 5000);
-                } else {
-                    showToast('Guardado en favoritos ❤️', 'success');
-                }
-            } else {
-                showToast('Ya estaba en tus favoritos', 'info');
-            }
-        }
-
-        function showToast(msg, type, duration = 3000) {
-            const t = document.createElement('div');
-            t.style.cssText = `position:fixed;bottom:2rem;right:2rem;background:${type==='success'?'var(--success-600)':'var(--neutral-700)'};color:white;padding:1rem 1.5rem;border-radius:12px;font-weight:500;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2)`;
-            t.textContent = msg;
-            document.body.appendChild(t);
-            setTimeout(() => t.remove(), duration);
-        }
-
-        loadProfile();
-
-        // Lógica del formulario de reseña
+        // Lógica de Reseñas
         if (user && user.rol === 'empresa') {
-            document.getElementById('btn-show-review').style.display = 'block';
+            document.getElementById('btn-show-review').style.display = 'inline-block';
         }
 
-        let selectedRating = 0;
-        document.querySelectorAll('.star-rating-form span').forEach(star => {
-            star.addEventListener('mouseover', function() {
-                let val = this.dataset.val;
-                document.querySelectorAll('.star-rating-form span').forEach(s => {
-                    s.style.color = s.dataset.val <= val ? '#f59e0b' : '#d1d5db';
-                });
-            });
-            star.addEventListener('mouseout', function() {
-                document.querySelectorAll('.star-rating-form span').forEach(s => {
-                    s.style.color = s.dataset.val <= selectedRating ? '#f59e0b' : '#d1d5db';
-                });
-            });
-            star.addEventListener('click', function() {
-                selectedRating = this.dataset.val;
-                document.getElementById('review-rating').value = selectedRating;
-                document.querySelectorAll('.star-rating-form span').forEach(s => {
-                    s.style.color = s.dataset.val <= selectedRating ? '#f59e0b' : '#d1d5db';
-                });
+        loadReviews(id);
+
+    } catch (err) {
+        console.error(err);
+        alert('Hubo un problema cargando el perfil.');
+    }
+    
+    // Configurar estrellas
+    let selectedRating = 0;
+    const stars = document.querySelectorAll('.star-rating-form span');
+    stars.forEach(star => {
+        star.addEventListener('mouseover', () => {
+            const val = parseInt(star.getAttribute('data-val'));
+            stars.forEach(s => {
+                s.style.color = parseInt(s.getAttribute('data-val')) <= val ? '#f59e0b' : '#d1d5db';
             });
         });
-
-        document.getElementById('btn-show-review').addEventListener('click', () => {
-            document.getElementById('review-form-container').style.display = 'block';
+        star.addEventListener('mouseout', () => {
+            stars.forEach(s => {
+                s.style.color = parseInt(s.getAttribute('data-val')) <= selectedRating ? '#f59e0b' : '#d1d5db';
+            });
         });
+        star.addEventListener('click', () => {
+            selectedRating = parseInt(star.getAttribute('data-val'));
+            document.getElementById('review-rating').value = selectedRating;
+        });
+    });
 
-        async function submitReview() {
-            if (selectedRating == 0) {
-                showToast('Por favor selecciona una calificación', 'error');
-                return;
-            }
-            const btn = document.getElementById('btn-submit-review');
-            btn.disabled = true; btn.textContent = 'Publicando...';
-            
-            try {
-                const res = await ProVendAuth.apiFetch(`${API_BASE}/api/resenas`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        proveedor_id: providerId,
-                        rating: selectedRating,
-                        comentario: document.getElementById('review-comment').value
-                    })
-                });
-                
-                if (!res.ok) {
-                    const data = await res.json().catch(()=>({}));
-                    throw new Error(data.error || 'Error al publicar la reseña');
-                }
-                
-                showToast('¡Reseña publicada con éxito!', 'success');
-                
-                // Reset form
-                selectedRating = 0;
-                document.getElementById('review-rating').value = 0;
-                document.getElementById('review-comment').value = '';
-                document.querySelectorAll('.star-rating-form span').forEach(s => s.style.color = '#d1d5db');
-                document.getElementById('review-form-container').style.display = 'none';
-                
-                // Reload profile to show new review
-                loadProfile();
-            } catch (err) {
-                showToast(err.message, 'error');
-            } finally {
-                btn.disabled = false; btn.textContent = 'Publicar Reseña';
-            }
+    document.getElementById('btn-show-review').addEventListener('click', () => {
+        document.getElementById('review-form-container').style.display = 'block';
+        document.getElementById('btn-show-review').style.display = 'none';
+    });
+});
+
+async function loadReviews(proveedorId) {
+    try {
+        const res = await fetch(`${API_BASE}/api/interacciones/resenas/${proveedorId}`);
+        const reviews = await res.json();
+        
+        document.getElementById('count-resenas').textContent = reviews.length;
+        
+        const container = document.getElementById('resenas-container');
+        if (reviews.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--neutral-500);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom:1rem; opacity:0.5;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <p>Aún no hay reseñas. Las empresas podrán calificar a este proveedor después de contactarlo.</p>
+            </div>`;
+            return;
         }
+
+        container.innerHTML = reviews.map(r => {
+            const initials = r.empresa_nombre.substring(0, 2).toUpperCase();
+            const date = new Date(r.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: 'short', day: 'numeric' });
+            return `
+            <div class="review-item">
+                <div class="review-header">
+                    <div class="review-author">
+                        <div class="review-avatar">${initials}</div>
+                        <div class="review-author-info">
+                            <h4>${r.empresa_nombre}</h4>
+                            <span>Empresa Compradora</span>
+                        </div>
+                    </div>
+                    <div class="review-date">${date}</div>
+                </div>
+                <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+                <p class="review-body">${r.comentario || '<em>Sin comentario adicional.</em>'}</p>
+            </div>`;
+        }).join('');
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+async function submitReview() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const proveedorId = urlParams.get('id');
+    const token = localStorage.getItem('token');
+    const rating = document.getElementById('review-rating').value;
+    const comentario = document.getElementById('review-comment').value;
+
+    if (!rating || rating == 0) return alert('Por favor selecciona una calificación de 1 a 5 estrellas.');
+
+    const btn = document.getElementById('btn-submit-review');
+    btn.disabled = true; btn.textContent = 'Publicando...';
+
+    try {
+        const res = await fetch(`${API_BASE}/api/interacciones/resenas`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+            body: JSON.stringify({ proveedor_id: proveedorId, rating, comentario })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Error al publicar reseña');
+        
+        alert('Reseña publicada con éxito');
+        
+        document.getElementById('review-rating').value = 0;
+        document.getElementById('review-comment').value = '';
+        document.querySelectorAll('.star-rating-form span').forEach(s => s.style.color = '#d1d5db');
+        document.getElementById('review-form-container').style.display = 'none';
+        document.getElementById('btn-show-review').style.display = 'inline-block';
+        
+        loadReviews(proveedorId);
+    } catch (err) {
+        alert(err.message);
+    } finally {
+        btn.disabled = false; btn.textContent = 'Publicar Reseña';
+    }
+}
+
+window.openMaterialModal = function(id) {
+    if(!window.providerMaterials) return;
+    const m = window.providerMaterials.find(x => x.id == id);
+    if(!m) return;
+    
+    document.getElementById('material-modal-name').textContent = m.nombre;
+    document.getElementById('material-modal-price').textContent = m.precio_estimado ? 'C$ ' + m.precio_estimado : 'Precio a convenir';
+    document.getElementById('material-modal-qty').textContent = m.cantidad ? (m.cantidad + ' ' + (m.unidad || '')) : 'N/A';
+    document.getElementById('material-modal-freq').textContent = m.frecuencia_disponibilidad || 'Única vez';
+    document.getElementById('material-modal-min').textContent = m.volumen_minimo || 'N/A';
+    document.getElementById('material-modal-quality').textContent = m.calidad_pureza || 'No especificada';
+    document.getElementById('material-modal-desc').textContent = m.descripcion || 'Sin descripción detallada.';
+    
+    const imgDiv = document.getElementById('material-modal-img');
+    if(m.imagen_url) {
+        imgDiv.innerHTML = `<img src="${API_BASE}${m.imagen_url}" style="width:100%; height:100%; object-fit:cover; border-radius: 12px 12px 0 0;" alt="${m.nombre}">`;
+    } else {
+        imgDiv.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>';
+    }
+    
+    document.getElementById('material-modal').style.display = 'flex';
+};w i n d o w . c o n t a c t a r W s p   =   f u n c t i o n ( )   {   i f ( ! w i n d o w . p r o v e e d o r D a t a   | |   ! w i n d o w . p r o v e e d o r D a t a . w h a t s a p p )   r e t u r n   a l e r t ( ' E l   p r o v e e d o r   n o   t i e n e   W h a t s A p p   r e g i s t r a d o . ' ) ;   w i n d o w . o p e n ( ' h t t p s : / / w a . m e / '   +   w i n d o w . p r o v e e d o r D a t a . w h a t s a p p . r e p l a c e ( / \ D / g ,   ' ' ) ,   ' _ b l a n k ' ) ;   } ;  
+ 
