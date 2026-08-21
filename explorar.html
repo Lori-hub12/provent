@@ -259,7 +259,7 @@
         </div>
         <div class="search-input-group">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" id="searchInput" placeholder="Ej. Cartón, PET, Aluminio..." onkeyup="filterResults()">
+            <input type="text" id="searchInput" placeholder="Ej. Cartón, PET, Aluminio..." onkeyup="triggerSearch()">
         </div>
     </header>
 
@@ -268,18 +268,18 @@
         <aside class="filters-sidebar">
             <div class="filter-group">
                 <div class="filter-title">Ubicación</div>
-                <label class="filter-label"><input type="checkbox" value="Managua" > Managua</label>
-                <label class="filter-label"><input type="checkbox" value="León" > León</label>
-                <label class="filter-label"><input type="checkbox" value="Masaya" > Masaya</label>
-                <label class="filter-label"><input type="checkbox" value="Granada" > Granada</label>
-                <label class="filter-label"><input type="checkbox" value="Chinandega" > Chinandega</label>
-                <label class="filter-label"><input type="checkbox" value="Estelí" > Estelí</label>
-                <label class="filter-label"><input type="checkbox" value="Matagalpa" > Matagalpa</label>
-                <label class="filter-label"><input type="checkbox" value="Rivas" > Rivas</label>
+                <label class="filter-label"><input type="checkbox" onchange="triggerSearch()" value="Managua" > Managua</label>
+                <label class="filter-label"><input type="checkbox" onchange="triggerSearch()" value="León" > León</label>
+                <label class="filter-label"><input type="checkbox" onchange="triggerSearch()" value="Masaya" > Masaya</label>
+                <label class="filter-label"><input type="checkbox" onchange="triggerSearch()" value="Granada" > Granada</label>
+                <label class="filter-label"><input type="checkbox" onchange="triggerSearch()" value="Chinandega" > Chinandega</label>
+                <label class="filter-label"><input type="checkbox" onchange="triggerSearch()" value="Estelí" > Estelí</label>
+                <label class="filter-label"><input type="checkbox" onchange="triggerSearch()" value="Matagalpa" > Matagalpa</label>
+                <label class="filter-label"><input type="checkbox" onchange="triggerSearch()" value="Rivas" > Rivas</label>
             </div>
             <div class="filter-group">
                 <div class="filter-title">Calidad</div>
-                <label class="filter-label"><input type="checkbox" id="verifiedOnly" > Solo Verificados ✅</label>
+                <label class="filter-label"><input type="checkbox" onchange="triggerSearch()" id="verifiedOnly" > Solo Verificados ✅</label>
             </div>
         </aside>
 
