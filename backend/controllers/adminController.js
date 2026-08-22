@@ -9,11 +9,11 @@ exports.get_admin_stats = async (req, res) => {
             dbGet('SELECT COUNT(*) as c FROM usuarios WHERE activo = 1'),
             dbGet("SELECT COUNT(*) as c FROM usuarios WHERE rol = 'proveedor' AND activo = 1"),
             dbGet("SELECT COUNT(*) as c FROM usuarios WHERE rol = 'empresa' AND activo = 1"),
-            dbGet('SELECT COUNT(*) as c FROM materiales WHERE estado = "activo"'),
+            dbGet("SELECT COUNT(*) as c FROM materiales WHERE estado = 'Activo'"),
             dbGet("SELECT COUNT(*) as c FROM perfiles_proveedor WHERE verificado = 1"),
             dbGet("SELECT COUNT(*) as c FROM perfiles_proveedor WHERE verificado = 0"),
             dbGet('SELECT COUNT(*) as c FROM resenas'),
-            dbGet("SELECT COUNT(*) as c FROM requerimientos WHERE estado = 'activo'"),
+            dbGet("SELECT COUNT(*) as c FROM requerimientos WHERE estado = 'Activo'"),
         ]);
         res.json({
             totalUsuarios: totalUsuarios.c,
