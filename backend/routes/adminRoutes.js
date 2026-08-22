@@ -11,8 +11,3 @@ router.delete('/admin/usuarios/:id', requireAdmin, adminController.delete_admin_
 router.get('/admin/actividad', requireAdmin, adminController.get_admin_actividad);
 
 module.exports = router;
-
-router.get('/admin/empresas', requireAdmin, adminController.get_admin_empresas);
-router.get('/admin/materiales', requireAdmin, adminController.get_admin_materiales);
-router.get('/admin/resenas', requireAdmin, adminController.get_admin_resenas);
-

@@ -3,245 +3,473 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Centro de Administración - ProVend</title>
+        <meta name="description" content="ProVend es la plataforma B2B de Nicaragua que conecta empresas con proveedores verificados para optimizar la cadena de suministro.">
+    <meta property="og:title" content="ProVend — Conectando Empresas y Proveedores">
+    <meta property="og:description" content="Encuentra proveedores verificados y cotiza materiales para tu empresa en Nicaragua.">
+    <meta property="og:image" content="https://provend.com.ni/assets/images/logo.svg">
+    <meta property="og:url" content="https://provend.com.ni/">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Panel de Administración — ProVend</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="assets/images/logo.jpg">
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages.css">
     <style>
-        body { background-color: var(--neutral-50); }
-        body.dark { background-color: #0B0F19; }
-        
-        .admin-layout {
-            display: grid;
-            grid-template-columns: 260px 1fr;
-            min-height: 100vh;
-        }
-
-        .admin-sidebar {
-            background: var(--white);
-            border-right: 1px solid var(--neutral-200);
-            padding: 1.5rem 1rem;
-            display: flex;
-            flex-direction: column;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .admin-sidebar-logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary-600);
-            margin-bottom: 2rem;
-            padding-left: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .admin-nav-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .admin-nav-group-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--neutral-500);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            padding-left: 0.5rem;
-        }
-
-        .admin-nav-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            color: var(--neutral-600);
-            text-decoration: none;
-            border-radius: var(--radius-md);
-            font-weight: 500;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-
-        .admin-nav-link:hover {
-            background: var(--neutral-100);
-            color: var(--neutral-900);
-        }
-
-        .admin-nav-link.active {
-            background: var(--primary-50);
-            color: var(--primary-600);
-            font-weight: 600;
-        }
-        
-        body.dark .admin-nav-link.active {
-            background: rgba(43, 125, 233, 0.1);
-        }
-
-        .admin-content {
-            padding: 2rem 3rem;
-            max-width: 1200px;
-            width: 100%;
-        }
-
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .admin-header h1 {
-            font-size: 1.875rem;
-            color: var(--neutral-900);
-        }
-
-        .kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-        }
-
-        .kpi-card {
-            background: var(--white);
-            border: 1px solid var(--neutral-200);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .kpi-label {
-            color: var(--neutral-500);
-            font-size: 0.875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .kpi-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--neutral-900);
-            margin-top: 0.5rem;
-        }
-
-        .admin-section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--neutral-900);
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .table-container {
-            background: var(--white);
-            border: 1px solid var(--neutral-200);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 2rem;
-        }
-
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.875rem;
-        }
-
-        .admin-table th {
-            background: var(--neutral-50);
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            color: var(--neutral-500);
-            border-bottom: 1px solid var(--neutral-200);
-            text-transform: uppercase;
-            font-size: 0.75rem;
-        }
-
-        .admin-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--neutral-100);
-            color: var(--neutral-900);
-        }
-
-        .admin-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .empty-state {
-            padding: 4rem 2rem;
-            text-align: center;
-            color: var(--neutral-500);
-        }
-
-        /* Tabs logic */
-        .admin-tab-content {
-            display: none;
-        }
-        .admin-tab-content.active {
-            display: block;
-        }
+        .stat-real { transition: all 0.4s ease; }
+        .stat-loading { color: var(--neutral-300) !important; }
+        .badge-admin { background: #7c3aed; color: white; padding: 2px 8px; border-radius: 99px; font-size: 0.7rem; font-weight: 700; }
+        .badge-prov  { background: var(--primary-100); color: var(--primary-700); padding: 2px 8px; border-radius: 99px; font-size: 0.7rem; font-weight: 700; }
+        .badge-emp   { background: var(--success-100); color: var(--success-600); padding: 2px 8px; border-radius: 99px; font-size: 0.7rem; font-weight: 700; }
+        .verified-yes { color: #059669; font-weight: 700; }
+        .verified-no  { color: var(--neutral-400); }
+        .admin-table { width: 100%; border-collapse: collapse; }
+        .admin-table th { text-align: left; font-size: 0.75rem; font-weight: 700; color: var(--neutral-500); text-transform: uppercase; letter-spacing: 0.05em; padding: 0.75rem 1rem; border-bottom: 2px solid var(--neutral-200); }
+        .admin-table td { padding: 0.875rem 1rem; border-bottom: 1px solid var(--neutral-100); font-size: 0.875rem; color: var(--neutral-800); vertical-align: middle; }
+        .admin-table tr:hover td { background: var(--neutral-50); }
+        .admin-table tr:last-child td { border-bottom: none; }
+        .btn-xs { padding: 0.3rem 0.75rem; font-size: 0.75rem; font-weight: 600; border-radius: 6px; border: none; cursor: pointer; transition: all 150ms; }
+        .btn-xs-success { background: var(--success-100); color: #059669; }
+        .btn-xs-success:hover { background: #d1fae5; }
+        .btn-xs-danger { background: var(--danger-100); color: var(--danger-600); }
+        .btn-xs-danger:hover { background: #fee2e2; }
+        .btn-xs-primary { background: var(--primary-100); color: var(--primary-600); }
+        .btn-xs-primary:hover { background: var(--primary-200); }
+        .activity-item { display: flex; gap: 1rem; align-items: flex-start; padding: 0.875rem 0; border-bottom: 1px solid var(--neutral-100); }
+        .activity-item:last-child { border-bottom: none; }
+        .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+        .activity-dot.registro { background: var(--primary-500); }
+        .activity-dot.material { background: var(--success-500); }
+        .activity-dot.resena { background: var(--warning-500); }
+        .activity-title { font-weight: 600; font-size: 0.875rem; color: var(--neutral-900); }
+        .activity-detail { font-size: 0.8rem; color: var(--neutral-500); margin-top: 2px; }
+        .activity-time { font-size: 0.75rem; color: var(--neutral-400); white-space: nowrap; }
+        .search-input { padding: 0.5rem 1rem; border: 1.5px solid var(--neutral-200); border-radius: 8px; font-size: 0.875rem; outline: none; width: 220px; transition: border-color 200ms; }
+        .search-input:focus { border-color: var(--primary-400); }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        .toast-admin { position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; font-size: 0.9rem; z-index: 9999; box-shadow: 0 4px 20px rgba(0,0,0,0.15); animation: slideUp 0.3s ease; color: white; }
+        .toast-success { background: #059669; }
+        .toast-error { background: #dc2626; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .empty-admin { text-align: center; padding: 3rem; color: var(--neutral-400); font-size: 0.9rem; }
+        .spinner-sm { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(0,0,0,0.2); border-top-color: var(--primary-500); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #admin-search { display: flex; gap: 0.75rem; align-items: center; }
     </style>
 </head>
 <body>
+    <!-- AUTH GUARD -->
+    <script src="js/pages/admin.js"></script>
 
-    <div class="admin-layout">
-        <aside class="admin-sidebar">
-            <div class="admin-sidebar-logo">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                ProVend
+    <div id="navbar-container"></div>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-user">
+                    <div class="avatar" id="admin-avatar">A</div>
+                    <div class="sidebar-user-info">
+                        <div class="sidebar-user-name" id="admin-name">Admin</div>
+                        <div class="sidebar-user-role">Administrador</div>
+                    </div>
+                </div>
             </div>
-
-            <div class="admin-nav-group">
-                <div class="admin-nav-group-title">General</div>
-                <a class="admin-nav-link active" data-target="dashboard">📊 Dashboard</a>
-                <a class="admin-nav-link" data-target="usuarios">👥 Usuarios</a>
-                <a class="admin-nav-link" data-target="empresas">🏢 Empresas</a>
-                <a class="admin-nav-link" data-target="proveedores">🏭 Proveedores</a>
-                <a class="admin-nav-link" data-target="materiales">📦 Materiales</a>
-                <a class="admin-nav-link" data-target="productos">🛍️ Productos</a>
-            </div>
-
-            <div class="admin-nav-group">
-                <div class="admin-nav-group-title">Actividad</div>
-                <a class="admin-nav-link" data-target="actividad">⚡ Actividad</a>
-                <a class="admin-nav-link" data-target="resenas">⭐ Reseñas</a>
-                <a class="admin-nav-link" data-target="reportes">🚩 Reportes</a>
-            </div>
-
-            <div class="admin-nav-group">
-                <div class="admin-nav-group-title">Gestión</div>
-                <a class="admin-nav-link" data-target="verificaciones">✅ Verificaciones</a>
-                <a class="admin-nav-link" data-target="categorias">📑 Categorías</a>
-            </div>
-
-            <div class="admin-nav-group">
-                <div class="admin-nav-group-title">Configuración</div>
-                <a class="admin-nav-link" data-target="configuracion">⚙️ Configuración</a>
-                <a class="admin-nav-link" id="btn-logout" style="color:var(--danger-600)">🚪 Cerrar sesión</a>
-            </div>
+            <nav class="sidebar-nav">
+                <span class="sidebar-section-title">General</span>
+                <a class="sidebar-link active" data-section="overview" onclick="showSection('overview',this)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a class="sidebar-link" data-section="usuarios" onclick="showSection('usuarios',this)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    <span>Usuarios</span>
+                </a>
+                <a class="sidebar-link" data-section="proveedores" onclick="showSection('proveedores',this)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="22" height="16" rx="2"/><path d="M6 6V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
+                    <span>Proveedores</span>
+                    <span class="sidebar-badge" id="badge-pendientes">0</span>
+                </a>
+                <a class="sidebar-link" data-section="actividad" onclick="showSection('actividad',this)">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <span>Actividad</span>
+                </a>
+                <span class="sidebar-section-title">Cuenta</span>
+                <a class="sidebar-link" href="index.html" onclick="if(window.ProVendAuth)ProVendAuth.logout()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </nav>
         </aside>
 
-        <main class="admin-content" id="admin-main-content">
-            <!-- Rendered by js/pages/admin.js -->
+        <main class="dashboard-main">
+            <!-- ===== OVERVIEW ===== -->
+            <div id="section-overview">
+                <div class="dashboard-header">
+                    <div>
+                        <h1 class="dashboard-title">Panel de Administración</h1>
+                        <p class="dashboard-subtitle" id="admin-welcome">Bienvenido, administrador</p>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="loadAll()">↻ Actualizar datos</button>
+                </div>
+
+                <!-- Stats reales -->
+                <div class="stats-grid" id="stats-grid">
+                    <div class="stats-card">
+                        <div class="stats-card-header"><div class="stats-card-icon blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div></div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-usuarios">—</div>
+                        <div class="stats-card-label">Usuarios Totales</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-header"><div class="stats-card-icon green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="22" height="16" rx="2"/><path d="M6 6V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg></div></div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-proveedores">—</div>
+                        <div class="stats-card-label">Proveedores</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-header"><div class="stats-card-icon yellow"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div></div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-pendientes">—</div>
+                        <div class="stats-card-label">Verificaciones Pendientes</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-header"><div class="stats-card-icon blue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div></div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-materiales">—</div>
+                        <div class="stats-card-label">Materiales Activos</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-header"><div class="stats-card-icon green"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4"/></svg></div></div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-empresas">—</div>
+                        <div class="stats-card-label">Empresas</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-card-header"><div class="stats-card-icon red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div>
+                        <div class="stats-card-value stat-real stat-loading" id="stat-resenas">—</div>
+                        <div class="stats-card-label">Reseñas</div>
+                    </div>
+                </div>
+
+                <!-- Actividad reciente (mini) -->
+                <div class="card" style="margin-top:2rem">
+                    <div class="card-body">
+                        <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.25rem">Actividad Reciente</h3>
+                        <div id="actividad-mini"><div class="empty-admin"><span class="spinner-sm"></span> Cargando...</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== USUARIOS ===== -->
+            <div id="section-usuarios" style="display:none">
+                <div class="section-header">
+                    <div>
+                        <h2 style="font-size:1.5rem;font-weight:800;color:var(--neutral-900)">Gestión de Usuarios</h2>
+                        <p style="color:var(--neutral-500);font-size:0.9rem" id="usuarios-count">Cargando...</p>
+                    </div>
+                    <div id="admin-search">
+                        <input type="text" class="search-input" id="user-search" placeholder="Buscar por nombre o email..." oninput="filterUsers(this.value)">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body" style="padding:0;overflow-x:auto">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Rol</th>
+                                    <th>Empresa</th>
+                                    <th>Registrado</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usuarios-table-body">
+                                <tr><td colspan="6" class="empty-admin"><span class="spinner-sm"></span> Cargando usuarios...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== PROVEEDORES ===== -->
+            <div id="section-proveedores" style="display:none">
+                <div class="section-header">
+                    <div>
+                        <h2 style="font-size:1.5rem;font-weight:800;color:var(--neutral-900)">Gestión de Proveedores</h2>
+                        <p style="color:var(--neutral-500);font-size:0.9rem">Aprueba o rechaza verificaciones de proveedores</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body" style="padding:0;overflow-x:auto">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Proveedor</th>
+                                    <th>Categoría</th>
+                                    <th>Ciudad</th>
+                                    <th>Materiales</th>
+                                    <th>Rating</th>
+                                    <th>Verificado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="proveedores-table-body">
+                                <tr><td colspan="7" class="empty-admin"><span class="spinner-sm"></span> Cargando proveedores...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ACTIVIDAD ===== -->
+            <div id="section-actividad" style="display:none">
+                <div class="section-header">
+                    <div>
+                        <h2 style="font-size:1.5rem;font-weight:800;color:var(--neutral-900)">Actividad de la Plataforma</h2>
+                        <p style="color:var(--neutral-500);font-size:0.9rem">Últimos eventos en tiempo real</p>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="loadActividad()">↻ Actualizar</button>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div id="actividad-full"><div class="empty-admin"><span class="spinner-sm"></span> Cargando...</div></div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
     <script src="js/config.js"></script>
     <script src="js/components.js"></script>
     <script src="js/auth.js"></script>
-    <script src="js/pages/admin.js"></script>
+    <script>
+        // Build navbar
+        document.getElementById('navbar-container').innerHTML = buildNavbar('admin');
+
+        // Set admin info in sidebar
+        const currentUser = ProVendAuth.getCurrentUser();
+        if (currentUser) {
+            document.getElementById('admin-name').textContent = currentUser.nombre || 'Admin';
+            document.getElementById('admin-avatar').textContent = (currentUser.nombre || 'A').substring(0, 2).toUpperCase();
+            document.getElementById('admin-welcome').textContent = `Bienvenido, ${currentUser.nombre || 'Admin'} — ${new Date().toLocaleDateString('es-NI', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+        }
+
+        // ===== SECTION NAVIGATION =====
+        function showSection(name, el) {
+            document.querySelectorAll('[id^="section-"]').forEach(s => s.style.display = 'none');
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+            document.getElementById('section-' + name).style.display = 'block';
+            if (el) el.classList.add('active');
+            // Lazy load section data
+            if (name === 'usuarios') loadUsuarios();
+            if (name === 'proveedores') loadProveedores();
+            if (name === 'actividad') loadActividad();
+        }
+
+        // ===== TOAST =====
+        function toast(msg, type = 'success') {
+            const t = document.createElement('div');
+            t.className = `toast-admin toast-${type}`;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3500);
+        }
+
+        // ===== TIME AGO =====
+        function timeAgo(dateStr) {
+            if (!dateStr) return '—';
+            const diff = (new Date() - new Date(dateStr)) / 1000;
+            if (diff < 60) return 'Hace un momento';
+            if (diff < 3600) return `Hace ${Math.floor(diff/60)}m`;
+            if (diff < 86400) return `Hace ${Math.floor(diff/3600)}h`;
+            return `Hace ${Math.floor(diff/86400)}d`;
+        }
+
+        // ===== LOAD STATS =====
+        async function loadStats() {
+            try {
+                const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/stats`);
+                if (!res.ok) return;
+                const d = await res.json();
+                document.getElementById('stat-usuarios').textContent = d.totalUsuarios;
+                document.getElementById('stat-proveedores').textContent = d.totalProveedores;
+                document.getElementById('stat-pendientes').textContent = d.pendientes;
+                document.getElementById('stat-materiales').textContent = d.totalMateriales;
+                document.getElementById('stat-empresas').textContent = d.totalEmpresas;
+                document.getElementById('stat-resenas').textContent = d.totalReseñas;
+                document.getElementById('badge-pendientes').textContent = d.pendientes;
+                document.querySelectorAll('.stat-real').forEach(el => el.classList.remove('stat-loading'));
+            } catch(e) { console.error(e); }
+        }
+
+        // ===== LOAD ACTIVIDAD =====
+        let actividadData = [];
+        async function loadActividad() {
+            const containers = ['actividad-mini', 'actividad-full'].map(id => document.getElementById(id));
+            containers.forEach(c => c && (c.innerHTML = '<div class="empty-admin"><span class="spinner-sm"></span> Cargando...</div>'));
+            try {
+                const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/actividad`);
+                if (!res.ok) return;
+                actividadData = await res.json();
+                const icons = { registro: '👤', material: '📦', resena: '⭐' };
+                const html = (items) => items.length === 0
+                    ? '<div class="empty-admin">Sin actividad reciente</div>'
+                    : items.map(a => `
+                        <div class="activity-item">
+                            <div class="activity-dot ${a.tipo}"></div>
+                            <div style="flex:1">
+                                <div class="activity-title">${icons[a.tipo] || '📌'} ${a.titulo}</div>
+                                <div class="activity-detail">${a.detalle}</div>
+                            </div>
+                            <div class="activity-time">${timeAgo(a.fecha)}</div>
+                        </div>`).join('');
+                document.getElementById('actividad-mini').innerHTML = html(actividadData.slice(0, 5));
+                document.getElementById('actividad-full').innerHTML = html(actividadData);
+            } catch(e) {
+                containers.forEach(c => c && (c.innerHTML = '<div class="empty-admin">Error cargando actividad</div>'));
+            }
+        }
+
+        // ===== LOAD USUARIOS =====
+        let allUsuarios = [];
+        async function loadUsuarios() {
+            document.getElementById('usuarios-table-body').innerHTML = '<tr><td colspan="6" class="empty-admin"><span class="spinner-sm"></span> Cargando...</td></tr>';
+            try {
+                const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/usuarios?limit=100`);
+                if (!res.ok) return;
+                const { usuarios, total } = await res.json();
+                allUsuarios = usuarios;
+                document.getElementById('usuarios-count').textContent = `${total} usuarios registrados en total`;
+                renderUsuarios(usuarios);
+            } catch(e) {
+                document.getElementById('usuarios-table-body').innerHTML = '<tr><td colspan="6" class="empty-admin">Error al cargar usuarios</td></tr>';
+            }
+        }
+
+        function renderUsuarios(list) {
+            const rolBadge = { admin: 'admin', proveedor: 'prov', empresa: 'emp' };
+            const rolLabel = { admin: 'Admin', proveedor: 'Proveedor', empresa: 'Empresa' };
+            if (list.length === 0) {
+                document.getElementById('usuarios-table-body').innerHTML = '<tr><td colspan="6" class="empty-admin">No se encontraron usuarios</td></tr>';
+                return;
+            }
+            document.getElementById('usuarios-table-body').innerHTML = list.map(u => `
+                <tr>
+                    <td>
+                        <div style="font-weight:600">${u.nombre || '—'}</div>
+                        <div style="color:var(--neutral-500);font-size:0.8rem">${u.email}</div>
+                    </td>
+                    <td><span class="badge-${rolBadge[u.rol] || 'prov'}">${rolLabel[u.rol] || u.rol}</span></td>
+                    <td style="color:var(--neutral-600)">${u.empresa || '—'}</td>
+                    <td style="color:var(--neutral-500)">${u.created_at ? new Date(u.created_at).toLocaleDateString('es-NI') : '—'}</td>
+                    <td>
+                        <span style="display:inline-flex;align-items:center;gap:4px;font-size:0.8rem;font-weight:600;color:${u.activo ? '#059669' : '#dc2626'}">
+                            ${u.activo ? '● Activo' : '○ Inactivo'}
+                        </span>
+                    </td>
+                    <td style="display:flex;gap:0.5rem">
+                        ${u.rol !== 'admin' ? `
+                        <button class="btn-xs ${u.activo ? 'btn-xs-danger' : 'btn-xs-success'}" onclick="toggleActivo(${u.id}, ${u.activo ? 0 : 1}, this)">
+                            ${u.activo ? 'Suspender' : 'Activar'}
+                        </button>
+                        <button class="btn-xs btn-xs-danger" onclick="eliminarUsuario(${u.id}, '${u.nombre}', this)">🗑</button>
+                        ` : '<span style="color:var(--neutral-400);font-size:0.8rem">Admin</span>'}
+                    </td>
+                </tr>`).join('');
+        }
+
+        function filterUsers(q) {
+            const filtered = allUsuarios.filter(u =>
+                (u.nombre || '').toLowerCase().includes(q.toLowerCase()) ||
+                (u.email || '').toLowerCase().includes(q.toLowerCase())
+            );
+            renderUsuarios(filtered);
+        }
+
+        async function toggleActivo(id, newActivo, btn) {
+            btn.disabled = true; btn.textContent = '...';
+            try {
+                const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/usuarios/${id}/activo`, {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ activo: newActivo })
+                });
+                if (!res.ok) { const d = await res.json(); toast(d.error || 'Error', 'error'); return; }
+                toast(newActivo ? 'Usuario activado ✅' : 'Usuario suspendido', 'success');
+                await loadUsuarios();
+            } catch { toast('Error de conexión', 'error'); btn.disabled = false; }
+        }
+
+        async function eliminarUsuario(id, nombre, btn) {
+            if (!confirm(`¿Eliminar permanentemente al usuario "${nombre}"? Esta acción no se puede deshacer.`)) return;
+            btn.disabled = true; btn.textContent = '...';
+            try {
+                const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/usuarios/${id}`, { method: 'DELETE' });
+                if (!res.ok) { const d = await res.json(); toast(d.error || 'Error', 'error'); return; }
+                toast(`Usuario "${nombre}" eliminado`, 'success');
+                await loadUsuarios();
+            } catch { toast('Error de conexión', 'error'); btn.disabled = false; }
+        }
+
+        // ===== LOAD PROVEEDORES =====
+        async function loadProveedores() {
+            document.getElementById('proveedores-table-body').innerHTML = '<tr><td colspan="7" class="empty-admin"><span class="spinner-sm"></span> Cargando...</td></tr>';
+            try {
+                const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/proveedores`);
+                if (!res.ok) return;
+                const proveedores = await res.json();
+                if (proveedores.length === 0) {
+                    document.getElementById('proveedores-table-body').innerHTML = '<tr><td colspan="7" class="empty-admin">No hay proveedores registrados aún</td></tr>';
+                    return;
+                }
+                document.getElementById('proveedores-table-body').innerHTML = proveedores.map(p => `
+                    <tr>
+                        <td>
+                            <div style="font-weight:600">${p.company || p.nombre}</div>
+                            <div style="color:var(--neutral-500);font-size:0.8rem">${p.email}</div>
+                        </td>
+                        <td style="color:var(--neutral-600)">${p.categoria || '—'}</td>
+                        <td style="color:var(--neutral-600)">${p.ciudad || '—'}</td>
+                        <td style="text-align:center">${p.total_materiales || 0}</td>
+                        <td>${p.rating_promedio ? '⭐ ' + parseFloat(p.rating_promedio).toFixed(1) : '—'}</td>
+                        <td>
+                            ${p.verificado
+                                ? '<span class="verified-yes">✅ Verificado</span>'
+                                : '<span class="verified-no">⏳ Pendiente</span>'}
+                        </td>
+                        <td style="display:flex;gap:0.5rem">
+                            ${p.verificado
+                                ? `<button class="btn-xs btn-xs-danger" onclick="toggleVerificacion(${p.id}, false, this)">Revocar</button>`
+                                : `<button class="btn-xs btn-xs-success" onclick="toggleVerificacion(${p.id}, true, this)">✅ Aprobar</button>`}
+                            <a href="perfil-proveedor.html?id=${p.id}" target="_blank" class="btn-xs btn-xs-primary">Ver perfil</a>
+                        </td>
+                    </tr>`).join('');
+            } catch(e) {
+                document.getElementById('proveedores-table-body').innerHTML = '<tr><td colspan="7" class="empty-admin">Error al cargar proveedores</td></tr>';
+            }
+        }
+
+        async function toggleVerificacion(id, verificado, btn) {
+            btn.disabled = true; btn.textContent = '...';
+            try {
+                const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/proveedores/${id}/verificar`, {
+                    method: 'PATCH',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ verificado })
+                });
+                if (!res.ok) { toast('Error al actualizar', 'error'); btn.disabled = false; return; }
+                toast(verificado ? '✅ Proveedor verificado' : 'Verificación revocada', 'success');
+                await loadProveedores();
+                await loadStats(); // Update badge counter
+            } catch { toast('Error de conexión', 'error'); btn.disabled = false; }
+        }
+
+        // ===== INIT =====
+        function loadAll() {
+            loadStats();
+            loadActividad();
+        }
+
+        document.addEventListener('DOMContentLoaded', loadAll);
+    </script>
 </body>
 </html>
