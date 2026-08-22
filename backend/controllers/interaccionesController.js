@@ -25,7 +25,7 @@ exports.post_favoritos = async (req, res) => {
     if (req.user.id !== parseInt(req.body.empresa_id)) return res.status(403).json({ error: 'Acceso denegado' });
     const { empresa_id, proveedor_id } = req.body;
     try {
-        const result = await dbRun(`INSERT OR IGNORE INTO favoritos (empresa_id, proveedor_id) VALUES (?,?)`, [empresa_id, proveedor_id]);
+        const result = await dbRun(`INSERT INTO favoritos (empresa_id, proveedor_id) VALUES (?,?) ON CONFLICT(empresa_id, proveedor_id) DO NOTHING`, [empresa_id, proveedor_id]);
         const count = await dbGet(`SELECT COUNT(*) as count FROM favoritos WHERE empresa_id = ?`, [empresa_id]);
         res.json({ added: result.changes > 0, total: count.count });
     } catch (err) {
@@ -136,7 +136,7 @@ exports.post_resenas = async (req, res) => {
 
     try {
         const result = await dbRun(
-            `INSERT OR REPLACE INTO resenas (proveedor_id, empresa_id, rating, comentario) VALUES (?,?,?,?)`,
+            `INSERT INTO resenas (proveedor_id, empresa_id, rating, comentario) VALUES (?,?,?,?) ON CONFLICT(proveedor_id, empresa_id) DO UPDATE SET rating = EXCLUDED.rating, comentario = EXCLUDED.comentario`,
             [proveedor_id, req.user.id, ratingNum, sanitizeString(comentario, 1000)]
         );
         res.status(201).json({ id: result.lastID, message: 'ReseÃ±a publicada' });
@@ -149,12 +149,12 @@ exports.put_resenas__id = async (req, res) => {
     try {
         const { dbGet, dbRun } = require('../config/database');
         const row = await dbGet('SELECT * FROM resenas WHERE id = ?', [req.params.id]);
-        if (!row) return res.status(404).json({ error: 'Reseña no encontrada' });
+        if (!row) return res.status(404).json({ error: 'Reseï¿½a no encontrada' });
         if (row.empresa_id !== req.user.id) return res.status(403).json({ error: 'Acceso denegado' });
 
         const { rating, comentario } = req.body;
         await dbRun('UPDATE resenas SET rating = ?, comentario = ? WHERE id = ?', [rating, comentario, req.params.id]);
-        res.json({ message: 'Reseña actualizada' });
+        res.json({ message: 'Reseï¿½a actualizada' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -164,11 +164,11 @@ exports.delete_resenas__id = async (req, res) => {
     try {
         const { dbGet, dbRun } = require('../config/database');
         const row = await dbGet('SELECT * FROM resenas WHERE id = ?', [req.params.id]);
-        if (!row) return res.status(404).json({ error: 'Reseña no encontrada' });
+        if (!row) return res.status(404).json({ error: 'Reseï¿½a no encontrada' });
         if (row.empresa_id !== req.user.id) return res.status(403).json({ error: 'Acceso denegado' });
 
         await dbRun('DELETE FROM resenas WHERE id = ?', [req.params.id]);
-        res.json({ message: 'Reseña eliminada' });
+        res.json({ message: 'Reseï¿½a eliminada' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
