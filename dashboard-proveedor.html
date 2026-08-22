@@ -621,8 +621,12 @@
                   <input type="text" id="perfil-web" placeholder="Ej. www.empresa.com" style="width:100%; padding:0.75rem; border:1px solid var(--neutral-300); border-radius:8px;">
                 </div>
                 <div class="form-group" style="margin-bottom:0;">
-                  <label>Logo URL (Opcional)</label>
-                  <input type="text" id="perfil-logo" placeholder="https://ejemplo.com/logo.jpg" style="width:100%; padding:0.75rem; border:1px solid var(--neutral-300); border-radius:8px;">
+                  <label>Logo de tu Empresa (Opcional)</label>
+                  <input type="file" id="perfil-logo-file" accept="image/*" style="width:100%; padding:0.5rem; border:2px dashed var(--neutral-300); border-radius:8px;" onchange="uploadLogo(event)">
+                  <input type="hidden" id="perfil-logo">
+                  <div id="logo-preview" style="margin-top:0.5rem; display:none;">
+                    <img id="logo-preview-img" style="height: 40px; border-radius:4px; object-fit:cover;" src="">
+                  </div>
                 </div>
           </div>
 

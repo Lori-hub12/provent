@@ -437,7 +437,15 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
                 document.getElementById('perfil-whatsapp').value = perfil.whatsapp || '';
                 document.getElementById('perfil-web').value = perfil.sitio_web || '';
                 document.getElementById('perfil-certificados').value = perfil.certificados || '';
-                if(document.getElementById('perfil-logo')) document.getElementById('perfil-logo').value = perfil.logo_url || '';
+                if (document.getElementById('perfil-logo')) {
+                    const logoVal = perfil.logo_url || '';
+                    document.getElementById('perfil-logo').value = logoVal;
+                    if (logoVal) {
+                        const imgUrl = logoVal.startsWith('http') ? logoVal : `${API_BASE}${logoVal}`;
+                        document.getElementById('logo-preview-img').src = imgUrl;
+                        document.getElementById('logo-preview').style.display = 'block';
+                    }
+                }
                 if(document.getElementById('perfil-horario')) document.getElementById('perfil-horario').value = perfil.horario || '';
                 document.getElementById('perfil-capacidad').value = perfil.capacidad_mensual_toneladas || '';
                 document.getElementById('perfil-transporte').value = perfil.tiene_transporte || '0';
@@ -509,5 +517,31 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
       document.body.appendChild(t);
       setTimeout(() => t.remove(), 3500);
     }
+
+    async function uploadLogo(event) {
+      const file = event.target.files[0];
+      if(!file) return;
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const token = localStorage.getItem('ProVend_token') || localStorage.getItem('token');
+        const res = await fetch(`${API_BASE}/api/upload`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: formData
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error);
+        
+        document.getElementById('perfil-logo').value = data.url;
+        document.getElementById('logo-preview-img').src = `${API_BASE}${data.url}`;
+        document.getElementById('logo-preview').style.display = 'block';
+      } catch(e) {
+        showToast(e.message, 'error');
+      }
+    }
+
+    // Assign to window so HTML can use it
+    window.uploadLogo = uploadLogo;
 
     loadDashboard();
