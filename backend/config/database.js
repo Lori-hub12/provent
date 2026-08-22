@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Pool } = require('pg');
-const sqlite3 = require('sqlite3').verbose();
+
 
 // Determine if we should use PostgreSQL based on the presence of DATABASE_URL
 const isPg = !!process.env.DATABASE_URL;
@@ -20,6 +20,7 @@ if (isPg) {
         }
     };
 } else {
+    const sqlite3 = require('sqlite3').verbose();
     db = new sqlite3.Database('./database.sqlite', (err) => {
         if (err) {
             console.error('Error al conectar con SQLite:', err.message);
