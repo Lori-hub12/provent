@@ -28,11 +28,42 @@ app.use(express.static(__dirname));
 
 app.use('/api/', globalLimiter);
 
-// UPLOAD endpoint (kept simple here)
-app.post('/api/upload', authenticateToken, upload.single('file'), (req, res) => {
+// UPLOAD endpoint con Supabase
+app.post('/api/upload', authenticateToken, upload.single('file'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No se subió ningún archivo' });
-    const fileUrl = `/uploads/${req.file.filename}`;
-    res.json({ url: fileUrl });
+    
+    const { SUPABASE_URL, SUPABASE_KEY } = process.env;
+    if (!SUPABASE_URL || !SUPABASE_KEY) {
+        return res.status(500).json({ error: 'Faltan credenciales de Supabase en el servidor.' });
+    }
+
+    try {
+        const { createClient } = require('@supabase/supabase-js');
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // Creamos un nombre único
+        const ext = path.extname(req.file.originalname);
+        const fileName = `logos/${Date.now()}-${Math.round(Math.random()*1e9)}${ext}`;
+        
+        // Subimos a Supabase Storage (al bucket 'provend-bucket' que crearemos)
+        const { data, error } = await supabase.storage
+            .from('provend-bucket')
+            .upload(fileName, req.file.buffer, {
+                contentType: req.file.mimetype,
+                upsert: false
+            });
+            
+        if (error) throw error;
+        
+        const { data: { publicUrl } } = supabase.storage
+            .from('provend-bucket')
+            .getPublicUrl(fileName);
+            
+        res.json({ url: publicUrl });
+    } catch (err) {
+        console.error("Error al subir a Supabase:", err);
+        res.status(500).json({ error: 'Error interno al subir la imagen a la nube' });
+    }
 });
 
 // HEALTH

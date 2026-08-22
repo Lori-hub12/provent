@@ -1,3 +1,4 @@
+require('dotenv').config();
 const process = require('process');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'provend_secreto_super_seguro_2026';
