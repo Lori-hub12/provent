@@ -250,7 +250,7 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
             card.className = 'inv-card';
             card.style.animationDelay = `${idx * 0.08}s`;
             card.innerHTML = `
-              ${m.imagen_url ? `<img src="${API_BASE}${m.imagen_url}" alt="${m.nombre}" style="width: 100%; height: 150px; object-fit: cover; border-bottom: 1px solid var(--neutral-200);">` : `<div style="width: 100%; height: 150px; background: var(--neutral-100); display: flex; align-items: center; justify-content: center; color: var(--neutral-400); border-bottom: 1px solid var(--neutral-200);">Sin imagen</div>`}
+              ${m.imagen_url ? `<img src="${m.imagen_url.startsWith('http') ? m.imagen_url : API_BASE + m.imagen_url}" alt="${m.nombre}" style="width: 100%; height: 150px; object-fit: cover; border-bottom: 1px solid var(--neutral-200);">` : `<div style="width: 100%; height: 150px; background: var(--neutral-100); display: flex; align-items: center; justify-content: center; color: var(--neutral-400); border-bottom: 1px solid var(--neutral-200);">Sin imagen</div>`}
               <div class="inv-card-body">
                 <div class="inv-card-name">${m.nombre}</div>
                 <div class="inv-card-meta">📦 ${m.cantidad} ${m.unidad}</div>

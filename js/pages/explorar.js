@@ -79,7 +79,7 @@ document.getElementById('navbar-container').innerHTML = buildNavbar('explorar');
                     // Render Material Card
                     const color = COLORS[(item.proveedor_id || 0) % COLORS.length];
                     const defaultImg = `<div style="width: 100%; height: 180px; background: var(--neutral-100); display: flex; align-items: center; justify-content: center; color: var(--neutral-400); border-bottom: 1px solid var(--neutral-200);"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg></div>`;
-                    const imgHtml = item.imagen_url ? `<img src="${API_BASE}${item.imagen_url}" alt="${item.nombre}" style="width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid var(--neutral-200);">` : defaultImg;
+                    const imgHtml = item.imagen_url ? `<img src="${item.imagen_url.startsWith('http') ? item.imagen_url : API_BASE + item.imagen_url}" alt="${item.nombre}" style="width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid var(--neutral-200);">` : defaultImg;
                     
                     container.innerHTML += `
                         <div class="provider-card" style="background:var(--white);border:1px solid var(--neutral-200);box-shadow:0 2px 4px rgba(0,0,0,0.02); overflow:hidden; display:flex; flex-direction:column;">
@@ -175,7 +175,7 @@ window.openMaterialModal = function(id) {
     
     const imgDiv = document.getElementById('material-modal-img');
     if(m.imagen_url) {
-        imgDiv.innerHTML = `<img src="${API_BASE}${m.imagen_url}" style="width:100%; height:100%; object-fit:cover; border-radius: 12px 12px 0 0;" alt="${m.nombre}">`;
+        imgDiv.innerHTML = `<img src="${m.imagen_url.startsWith('http') ? m.imagen_url : API_BASE + m.imagen_url}" style="width:100%; height:100%; object-fit:cover; border-radius: 12px 12px 0 0;" alt="${m.nombre}">`;
     } else {
         imgDiv.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>';
     }
