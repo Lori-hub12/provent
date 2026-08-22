@@ -229,7 +229,7 @@ async function loadReviews(proveedorId) {
 async function submitReview() {
     const urlParams = new URLSearchParams(window.location.search);
     const proveedorId = urlParams.get('id');
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('ProVend_token') || localStorage.getItem('token');
     const rating = document.getElementById('review-rating').value;
     const comentario = document.getElementById('review-comment').value;
 
