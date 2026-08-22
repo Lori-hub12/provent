@@ -88,7 +88,7 @@ exports.get_dashboard_proveedor__id_resenas = async (req, res) => {
 
     try {
         const rows = await dbAll(`
-            SELECT r.*, u.company as empresa_nombre
+            SELECT r.*, u.company as empresa_nombre, u.nombre as empresa_contacto
             FROM resenas r
             LEFT JOIN usuarios u ON r.empresa_id = u.id
             WHERE r.proveedor_id = ?
@@ -142,17 +142,6 @@ exports.put_materiales__id = async (req, res) => {
 };
 
 exports.delete_materiales__id = async (req, res) => {
-
-    try {
-        const material = await dbGet(`SELECT proveedor_id FROM materiales WHERE id = ?`, [req.params.id]);
-        if (!material) return res.status(404).json({ error: 'Material no encontrado' });
-        if (req.user.id !== material.proveedor_id) return res.status(403).json({ error: 'Acceso denegado' });
-
-        await dbRun(`DELETE FROM materiales WHERE id = ?`, [req.params.id]);
-        res.json({ message: 'Eliminado' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-
     try {
         const material = await dbGet(`SELECT proveedor_id FROM materiales WHERE id = ?`, [req.params.id]);
         if (!material) return res.status(404).json({ error: 'Material no encontrado' });

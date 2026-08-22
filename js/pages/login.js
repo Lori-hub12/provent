@@ -72,7 +72,10 @@
                 pwInput.classList.add('error');
             } else {
                 ProVendAuth.setSession(data.token, data.user);
-                window.location.href = data.user.rol === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html';
+                let nextUrl = 'dashboard-proveedor.html';
+                if (data.user.rol === 'empresa') nextUrl = 'dashboard-empresa.html';
+                if (data.user.rol === 'admin') nextUrl = 'admin.html';
+                window.location.href = nextUrl;
             }
         } catch (err) {
             errMsg.textContent = 'Error de conexión. Verifica que el servidor esté activo.';

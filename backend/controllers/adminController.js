@@ -31,7 +31,6 @@ exports.get_admin_stats = async (req, res) => {
 };
 
 exports.get_admin_usuarios = async (req, res) => {
-
     try {
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 20;
@@ -40,10 +39,8 @@ exports.get_admin_usuarios = async (req, res) => {
 
         const usuarios = await dbAll(
             `SELECT u.id, u.nombre, u.email, u.rol, u.activo, u.created_at,
-                    COALESCE(pp.company, pe.company, '') as empresa
+                    COALESCE(u.company, '') as empresa
              FROM usuarios u
-             LEFT JOIN perfiles_proveedor pp ON pp.usuario_id = u.id
-             LEFT JOIN perfiles_empresa pe ON pe.usuario_id = u.id
              WHERE (u.nombre LIKE ? OR u.email LIKE ?)
              ORDER BY u.created_at DESC LIMIT ? OFFSET ?`,
             [search, search, limit, offset]
@@ -59,11 +56,10 @@ exports.get_admin_usuarios = async (req, res) => {
 };
 
 exports.get_admin_proveedores = async (req, res) => {
-
     try {
         const proveedores = await dbAll(
             `SELECT u.id, u.nombre, u.email, u.activo, u.created_at,
-                    pp.company, pp.ciudad, pp.categoria, pp.verificado,
+                    u.company, pp.ciudad, pp.categoria, pp.verificado,
                     (SELECT COUNT(*) FROM materiales m WHERE m.proveedor_id = u.id) as total_materiales,
                     (SELECT COUNT(*) FROM resenas r WHERE r.proveedor_id = u.id) as total_resenas,
                     (SELECT AVG(r2.rating) FROM resenas r2 WHERE r2.proveedor_id = u.id) as rating_promedio
