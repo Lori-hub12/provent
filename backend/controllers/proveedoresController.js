@@ -13,7 +13,7 @@ exports.get_proveedores = async (req, res) => {
             LEFT JOIN perfiles_proveedor p ON u.id = p.usuario_id
             LEFT JOIN resenas r ON u.id = r.proveedor_id
             WHERE u.rol = 'proveedor' AND u.activo = 1
-            GROUP BY u.id
+            GROUP BY u.id, p.id
             ORDER BY p.verificado DESC, rating DESC
         `);
         res.json(rows);
@@ -36,7 +36,7 @@ exports.get_proveedores__id = async (req, res) => {
             LEFT JOIN resenas r ON u.id = r.proveedor_id
             LEFT JOIN visitas v ON u.id = v.proveedor_id
             WHERE u.id = ? AND u.rol = 'proveedor' AND u.activo = 1
-            GROUP BY u.id
+            GROUP BY u.id, p.id
         `, [req.params.id]);
         if (!row) return res.status(404).json({ error: 'Proveedor no encontrado' });
         res.json(row);
