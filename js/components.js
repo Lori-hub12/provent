@@ -100,7 +100,10 @@ function buildNavbar(activePage = '') {
       <a href="registro.html" class="btn btn-primary btn-block">Registrarse gratis</a>`;
 
   if (user) {
-    const dashboardLink = user.rol === 'empresa' ? 'dashboard-empresa.html' : 'dashboard-proveedor.html';
+    let dashboardLink = 'dashboard-proveedor.html';
+    if (user.rol === 'empresa') dashboardLink = 'dashboard-empresa.html';
+    if (user.rol === 'admin') dashboardLink = 'admin.html';
+    
     const logoutAction = "if(window.ProVendAuth) { ProVendAuth.logout(); } else { localStorage.removeItem('ProVend_user'); window.location.href='index.html'; }";
     
     desktopActions = `
