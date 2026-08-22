@@ -50,7 +50,6 @@ exports.post_forgot_password = async (req, res) => {
 };
 
 exports.post_reset_password = async (req, res) => {
-
     const { token, password } = req.body;
     if (!token || !validatePassword(password)) return res.status(400).json({ error: 'Datos inválidos. La contraseña debe tener al menos 6 caracteres.' });
 
@@ -68,18 +67,7 @@ exports.post_reset_password = async (req, res) => {
 };
 
 exports.post_register = async (req, res) => {
-
     const { nombre, email, password, rol, company } = req.body;
-
-    // Validación robusta
-    if (!nombre || !email || !password || !rol) return res.status(400).json({ error: 'Faltan campos obligatorios' });
-    if (!validateEmail(email)) return res.status(400).json({ error: 'El correo no tiene un formato válido' });
-    if (!validatePassword(password)) return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
-    if (!['proveedor', 'empresa'].includes(rol)) return res.status(400).json({ error: 'Rol inválido' });
-
-    const { nombre, email, password, rol, company } = req.body;
-
-    // Validación robusta
     if (!nombre || !email || !password || !rol) return res.status(400).json({ error: 'Faltan campos obligatorios' });
     if (!validateEmail(email)) return res.status(400).json({ error: 'El correo no tiene un formato válido' });
     if (!validatePassword(password)) return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
