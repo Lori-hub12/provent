@@ -55,7 +55,7 @@ const dbRun = (query, params = []) => {
                 }
                 const res = await pool.query(q, params);
                 resolve({ 
-                    id: res.rows[0]?.id || 0, 
+                    lastID: res.rows[0]?.id || 0, 
                     changes: res.rowCount 
                 });
             } catch (err) {
@@ -65,7 +65,7 @@ const dbRun = (query, params = []) => {
         } else {
             db.run(query, params, function (err) {
                 if (err) reject(err);
-                else resolve({ id: this.lastID, changes: this.changes });
+                else resolve({ lastID: this.lastID, changes: this.changes });
             });
         }
     });

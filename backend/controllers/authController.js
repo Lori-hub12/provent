@@ -76,6 +76,14 @@ exports.post_register = async (req, res) => {
     if (!validateEmail(email)) return res.status(400).json({ error: 'El correo no tiene un formato válido' });
     if (!validatePassword(password)) return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
     if (!['proveedor', 'empresa'].includes(rol)) return res.status(400).json({ error: 'Rol inválido' });
+
+    const { nombre, email, password, rol, company } = req.body;
+
+    // Validación robusta
+    if (!nombre || !email || !password || !rol) return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    if (!validateEmail(email)) return res.status(400).json({ error: 'El correo no tiene un formato válido' });
+    if (!validatePassword(password)) return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+    if (!['proveedor', 'empresa'].includes(rol)) return res.status(400).json({ error: 'Rol inválido' });
     if (nombre.trim().length < 2) return res.status(400).json({ error: 'El nombre es muy corto' });
 
     const cleanNombre = sanitizeString(nombre, 100);
@@ -92,9 +100,9 @@ exports.post_register = async (req, res) => {
         const userId = result.lastID;
 
         if (rol === 'proveedor') {
-            await dbRun(`INSERT OR IGNORE INTO perfiles_proveedor (usuario_id) VALUES (?)`, [userId]);
+            await dbRun(`INSERT INTO perfiles_proveedor (usuario_id) VALUES (?)`, [userId]);
         } else if (rol === 'empresa') {
-            await dbRun(`INSERT OR IGNORE INTO perfiles_empresa (usuario_id) VALUES (?)`, [userId]);
+            await dbRun(`INSERT INTO perfiles_empresa (usuario_id) VALUES (?)`, [userId]);
         }
 
         const token = jwt.sign({ id: userId, rol }, JWT_SECRET, { expiresIn: '7d' });
