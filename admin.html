@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/pages.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .stat-real { transition: all 0.4s ease; }
         .stat-loading { color: var(--neutral-300) !important; }
@@ -146,6 +147,22 @@
                         <div class="stats-card-header"><div class="stats-card-icon red"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div>
                         <div class="stats-card-value stat-real stat-loading" id="stat-resenas">—</div>
                         <div class="stats-card-label">Reseñas</div>
+                    </div>
+                </div>
+
+                <!-- Tableros de Gráficos -->
+                <div class="stats-grid" style="margin-top: 2rem; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
+                    <div class="card p-4">
+                        <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.25rem">Distribución de Usuarios</h3>
+                        <div style="position: relative; height: 250px; width: 100%; display: flex; justify-content: center;">
+                            <canvas id="chartUsuarios"></canvas>
+                        </div>
+                    </div>
+                    <div class="card p-4">
+                        <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:1.25rem">Tipos de Actividad</h3>
+                        <div style="position: relative; height: 250px; width: 100%; display: flex; justify-content: center;">
+                            <canvas id="chartActividad"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -463,10 +480,75 @@
             } catch { toast('Error de conexión', 'error'); btn.disabled = false; }
         }
 
+        // ===== CHARTS LOGIC =====
+        let chartUsuariosInstance = null;
+        let chartActividadInstance = null;
+
+        async function renderCharts() {
+            try {
+                const [statsRes, actRes] = await Promise.all([
+                    ProVendAuth.apiFetch(`${API_BASE}/api/admin/stats`),
+                    ProVendAuth.apiFetch(`${API_BASE}/api/admin/actividad`)
+                ]);
+                
+                if (!statsRes.ok || !actRes.ok) return;
+                
+                const stats = await statsRes.json();
+                const actividad = await actRes.json();
+
+                const ctxUsuarios = document.getElementById('chartUsuarios');
+                if(ctxUsuarios) {
+                    if(chartUsuariosInstance) chartUsuariosInstance.destroy();
+                    chartUsuariosInstance = new Chart(ctxUsuarios, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Empresas', 'Proveedores'],
+                            datasets: [{
+                                data: [stats.totalEmpresas || 0, stats.totalProveedores || 0],
+                                backgroundColor: ['#2B7DE9', '#059669'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                    });
+                }
+                
+                const ctxActividad = document.getElementById('chartActividad');
+                if(ctxActividad) {
+                    let countRegistros = 0, countMateriales = 0, countResenas = 0;
+                    actividad.forEach(a => {
+                        if(a.tipo === 'registro') countRegistros++;
+                        else if(a.tipo === 'material') countMateriales++;
+                        else if(a.tipo === 'resena') countResenas++;
+                    });
+                    
+                    if(chartActividadInstance) chartActividadInstance.destroy();
+                    chartActividadInstance = new Chart(ctxActividad, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Registros', 'Materiales', 'Reseñas'],
+                            datasets: [{
+                                label: 'Actividad (total)',
+                                data: [countRegistros, countMateriales, countResenas],
+                                backgroundColor: ['#6366f1', '#10b981', '#f59e0b'],
+                                borderRadius: 4
+                            }]
+                        },
+                        options: { 
+                            responsive: true, maintainAspectRatio: false,
+                            plugins: { legend: { display: false } },
+                            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                        }
+                    });
+                }
+            } catch(e) { console.error('Error rendering charts:', e); }
+        }
+
         // ===== INIT =====
         function loadAll() {
             loadStats();
             loadActividad();
+            renderCharts();
         }
 
         document.addEventListener('DOMContentLoaded', loadAll);
