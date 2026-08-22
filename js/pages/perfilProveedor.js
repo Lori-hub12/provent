@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000';
+const API_BASE = 'https://provent.onrender.com';
 
 document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('navbar-container').innerHTML = buildNavbar('');
