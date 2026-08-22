@@ -23,7 +23,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 1. Logo
         const logoDiv = document.getElementById('profile-logo-display');
         if (p.logo_url) {
-            logoDiv.innerHTML = `<img src="${API_BASE}${p.logo_url}" alt="${p.nombre}">`;
+            const imgUrl = p.logo_url.startsWith('http') ? p.logo_url : `${API_BASE}${p.logo_url}`;
+            logoDiv.innerHTML = `<img src="${imgUrl}" alt="${p.nombre}">`;
         } else {
             const initials = p.nombre.substring(0, 2).toUpperCase();
             logoDiv.textContent = initials;
@@ -63,9 +64,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // 8. Contact Info en el Tab
         document.getElementById('info-phone').textContent = p.telefono || p.whatsapp || 'No especificado';
-        // Asumiendo que el email se devuelve con la db. En ProVend suele estar en p.email o p.usuario_email
         document.getElementById('info-email').textContent = p.email || p.usuario_email || 'No especificado';
         document.getElementById('info-web').textContent = p.sitio_web || 'No especificado';
+        
+        if (document.getElementById('info-horario')) {
+            document.getElementById('info-horario').textContent = p.horario || 'No especificado';
+        }
+        if (document.getElementById('info-cert')) {
+            document.getElementById('info-cert').textContent = p.certificados || 'Ninguna reportada';
+        }
 
         // 9. Botones de Acción (Links)
         if (p.whatsapp) {

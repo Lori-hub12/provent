@@ -437,6 +437,8 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
                 document.getElementById('perfil-whatsapp').value = perfil.whatsapp || '';
                 document.getElementById('perfil-web').value = perfil.sitio_web || '';
                 document.getElementById('perfil-certificados').value = perfil.certificados || '';
+                if(document.getElementById('perfil-logo')) document.getElementById('perfil-logo').value = perfil.logo_url || '';
+                if(document.getElementById('perfil-horario')) document.getElementById('perfil-horario').value = perfil.horario || '';
                 document.getElementById('perfil-capacidad').value = perfil.capacidad_mensual_toneladas || '';
                 document.getElementById('perfil-transporte').value = perfil.tiene_transporte || '0';
                 document.getElementById('perfil-descripcion').value = perfil.descripcion || '';
@@ -469,6 +471,8 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
         whatsapp: document.getElementById('perfil-whatsapp').value,
         sitio_web: document.getElementById('perfil-web').value,
         certificados: document.getElementById('perfil-certificados').value,
+        logo_url: document.getElementById('perfil-logo') ? document.getElementById('perfil-logo').value : '',
+        horario: document.getElementById('perfil-horario') ? document.getElementById('perfil-horario').value : '',
         capacidad_mensual_toneladas: document.getElementById('perfil-capacidad').value,
         tiene_transporte: parseInt(document.getElementById('perfil-transporte').value),
         descripcion: document.getElementById('perfil-descripcion').value
