@@ -9,7 +9,7 @@
 
 .top-bar {
   background: var(--primary-800);
-  color: var(--white);
+  color: #FFFFFF;
   text-align: center;
   padding: var(--sp-2) var(--sp-4);
   font-size: var(--fs-xs);
@@ -36,7 +36,7 @@
 }
 
 .top-bar-close:hover {
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 /* ============================================
@@ -285,7 +285,7 @@
 .footer-logo-text {
   font-size: 1.35rem;
   font-weight: var(--fw-bold);
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 .footer-logo-text span {
@@ -318,7 +318,7 @@
 
 .footer-social a:hover {
   background: var(--primary-500);
-  color: var(--white);
+  color: #FFFFFF;
   transform: translateY(-2px);
 }
 
@@ -330,7 +330,7 @@
 .footer-column h4 {
   font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
-  color: var(--white);
+  color: #FFFFFF;
   text-transform: uppercase;
   letter-spacing: var(--ls-wide);
   margin-bottom: var(--sp-5);
@@ -350,7 +350,7 @@
 }
 
 .footer-links a:hover {
-  color: var(--white);
+  color: #FFFFFF;
   padding-left: var(--sp-2);
 }
 
@@ -383,7 +383,7 @@
 }
 
 .footer-bottom-links a:hover {
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 @media (max-width: 768px) {
@@ -495,7 +495,7 @@
 .sidebar-link .sidebar-badge {
   margin-left: auto;
   background: var(--danger-500);
-  color: var(--white);
+  color: #FFFFFF;
   font-size: 10px;
   font-weight: var(--fw-bold);
   padding: 2px 6px;

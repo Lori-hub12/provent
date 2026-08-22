@@ -217,7 +217,7 @@
 .team-card-info {
   padding: var(--sp-4);
   background: var(--primary-600);
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 .team-card-info h3 {
@@ -340,7 +340,7 @@ body.dark .team-card-img {
   height: 80px;
   border-radius: var(--radius-full);
   background: linear-gradient(135deg, var(--primary-500), var(--primary-400));
-  color: var(--white);
+  color: #FFFFFF;
   font-size: var(--fs-2xl);
   font-weight: var(--fw-bold);
   display: flex;
@@ -590,7 +590,7 @@ body.dark .team-card-img {
 .cta-content h2 {
   font-size: var(--fs-4xl);
   font-weight: var(--fw-bold);
-  color: var(--white);
+  color: #FFFFFF;
   margin-bottom: var(--sp-4);
 }
 
@@ -1121,17 +1121,17 @@ body.dark .team-card-img {
 
 .verification-status.verified .verification-icon {
   background: var(--success-500);
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 .verification-status.pending .verification-icon {
   background: var(--warning-500);
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 .verification-status.unverified .verification-icon {
   background: var(--neutral-300);
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 .verification-icon svg {
@@ -1180,7 +1180,7 @@ body.dark .team-card-img {
 
 .verification-step-number.completed {
   background: var(--success-500);
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 .verification-step-title {
@@ -1507,7 +1507,7 @@ body.dark .team-card-img {
 .sidebar-badge {
   margin-left: auto;
   background: var(--error-500);
-  color: white;
+  color: #FFFFFF;
   font-size: 0.7rem;
   font-weight: 700;
   padding: 0.15rem 0.45rem;
@@ -1607,7 +1607,7 @@ body.dark .team-card-img {
 
 .verification-step.complete .verification-step-number {
   background: var(--success-500, #10B981);
-  color: white;
+  color: #FFFFFF;
 }
 
 /* Product manage card */

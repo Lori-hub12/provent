@@ -22,7 +22,7 @@ body {
   font-weight: var(--fw-normal);
   line-height: var(--lh-normal);
   color: var(--neutral-800);
-  background-color: var(--white);
+  background-color: #FFFFFF;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -137,7 +137,7 @@ p {
 .text-dark    { color: var(--neutral-900); }
 .text-muted   { color: var(--neutral-500); }
 .text-light   { color: var(--neutral-400); }
-.text-white   { color: var(--white); }
+.text-white   { color: #FFFFFF; }
 .text-success { color: var(--success-500); }
 .text-warning { color: var(--warning-500); }
 .text-danger  { color: var(--danger-500); }

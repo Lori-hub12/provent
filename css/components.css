@@ -47,14 +47,14 @@
 /* Primary */
 .btn-primary {
   background: var(--primary-500);
-  color: var(--white);
+  color: #FFFFFF;
   box-shadow: var(--shadow-blue);
 }
 .btn-primary:hover {
   background: var(--primary-600);
   box-shadow: 0 6px 20px rgba(43, 125, 233, 0.4);
   transform: translateY(-1px);
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 /* Secondary */
@@ -94,24 +94,24 @@
 /* WhatsApp */
 .btn-whatsapp {
   background: var(--success-500);
-  color: var(--white);
+  color: #FFFFFF;
   box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
 }
 .btn-whatsapp:hover {
   background: var(--success-600);
   box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
   transform: translateY(-1px);
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 /* Danger */
 .btn-danger {
   background: var(--danger-500);
-  color: var(--white);
+  color: #FFFFFF;
 }
 .btn-danger:hover {
   background: var(--danger-600);
-  color: var(--white);
+  color: #FFFFFF;
 }
 
 /* White */
@@ -1029,7 +1029,7 @@
 
 .pagination-btn.active {
   background: var(--primary-500);
-  color: var(--white);
+  color: #FFFFFF;
   border-color: var(--primary-500);
 }
 
@@ -1051,7 +1051,7 @@
   justify-content: center;
   font-weight: var(--fw-semibold);
   font-size: var(--fs-sm);
-  color: var(--white);
+  color: #FFFFFF;
   background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
   flex-shrink: 0;
   overflow: hidden;
@@ -1215,7 +1215,7 @@
   padding: var(--sp-2) var(--sp-3);
   font-size: var(--fs-xs);
   font-weight: var(--fw-medium);
-  color: var(--white);
+  color: #FFFFFF;
   background: var(--neutral-900);
   border-radius: var(--radius-md);
   white-space: nowrap;
@@ -1348,7 +1348,7 @@
   height: 56px;
   border-radius: var(--radius-full);
   background: var(--neutral-800);
-  color: var(--white);
+  color: #FFFFFF;
   border: 1px solid var(--neutral-700);
   box-shadow: var(--shadow-lg);
   display: flex;
@@ -1374,3 +1374,10 @@ body.dark .theme-toggle-btn {
   color: var(--primary-500);
   border-color: var(--primary-200);
 }
+
+
+/* ---- Dark Mode Button Fixes ---- */
+body.dark .btn-primary, body.dark .btn-success, body.dark .btn-danger, body.dark .btn-warning {
+  color: #FFFFFF !important;
+}
+
