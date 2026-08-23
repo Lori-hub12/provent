@@ -545,3 +545,39 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
     window.uploadLogo = uploadLogo;
 
     loadDashboard();
+        // -- NOTIFICATIONS DROPDOWN LOGIC --
+        setTimeout(() => {
+            const btn = document.getElementById('notif-btn');
+            const drop = document.getElementById('notif-dropdown');
+            const list = document.getElementById('notif-list');
+            if (btn && drop) {
+                btn.onclick = async () => {
+                    const isShowing = drop.style.display === 'block';
+                    drop.style.display = isShowing ? 'none' : 'block';
+                    if (!isShowing) {
+                        try {
+                            const res = await fetch(API_BASE + '/api/notificaciones/' + user.id);
+                            const notifs = await res.json();
+                            if (notifs.length === 0) {
+                                list.innerHTML = '<div style="padding:1rem; text-align:center; color:var(--neutral-500); font-size:0.875rem;">No tienes notificaciones</div>';
+                            } else {
+                                list.innerHTML = notifs.map(n => `
+                                    <div style="padding:0.75rem; border-bottom:1px solid var(--neutral-100); background:${n.leida ? 'transparent' : '#f0f9ff'}">
+                                        <div style="font-size:0.875rem; color:var(--neutral-900); margin-bottom:0.25rem">${n.mensaje}</div>
+                                        <div style="font-size:0.75rem; color:var(--neutral-500)">Hace un momento</div>
+                                    </div>
+                                `).join('');
+                            }
+                        } catch(e) {
+                            list.innerHTML = '<div style="padding:1rem; text-align:center; color:var(--danger-500); font-size:0.875rem;">Error al cargar</div>';
+                        }
+                    }
+                };
+                document.addEventListener('click', (e) => {
+                    if (!btn.contains(e.target) && !drop.contains(e.target)) {
+                        drop.style.display = 'none';
+                    }
+                });
+            }
+        }, 1000);
+        

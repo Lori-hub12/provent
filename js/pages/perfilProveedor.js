@@ -76,26 +76,39 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // 9. Botones de Acción (Links)
         if (p.whatsapp) {
-            document.getElementById('contact-btn-wsp').onclick = () => window.open(`https://wa.me/${p.whatsapp.replace(/\D/g,'')}`, '_blank');
+            document.getElementById('contact-btn-wsp').onclick = (e) => { 
+        e.preventDefault();
+        if (!user) { alert('Debes iniciar sesión para contactar a este proveedor.'); window.location.href='login.html'; return; }
+        window.open(`https://wa.me/${p.whatsapp.replace(/\D/g,'')}`, '_blank'); 
+    };
         } else {
             document.getElementById('contact-btn-wsp').onclick = () => alert('El proveedor no tiene WhatsApp registrado.');
         }
 
         if (p.email || p.usuario_email) {
-            document.getElementById('contact-email').href = `mailto:${p.email || p.usuario_email}`;
+            document.getElementById('contact-email').onclick = (e) => {
+        if (!user) { e.preventDefault(); alert('Debes iniciar sesión para ver el email.'); window.location.href='login.html'; return; }
+        window.location.href = `mailto:${p.email || p.usuario_email}`;
+    };
         } else {
             document.getElementById('contact-email').onclick = (e) => { e.preventDefault(); alert('Email no disponible'); };
         }
 
         if (p.telefono) {
-            document.getElementById('contact-phone').href = `tel:${p.telefono.replace(/\D/g,'')}`;
+            document.getElementById('contact-phone').onclick = (e) => {
+        if (!user) { e.preventDefault(); alert('Debes iniciar sesión para ver el teléfono.'); window.location.href='login.html'; return; }
+        window.location.href = `tel:${p.telefono.replace(/\D/g,'')}`;
+    };
         } else {
             document.getElementById('contact-phone').onclick = (e) => { e.preventDefault(); alert('Teléfono no disponible'); };
         }
 
         if (p.sitio_web) {
             let url = p.sitio_web.startsWith('http') ? p.sitio_web : 'https://' + p.sitio_web;
-            document.getElementById('contact-web').href = url;
+            document.getElementById('contact-web').onclick = (e) => {
+        if (!user) { e.preventDefault(); alert('Debes iniciar sesión para ver el sitio web.'); window.location.href='login.html'; return; }
+        window.open(url, '_blank');
+    };
         } else {
             document.getElementById('contact-web').onclick = (e) => { e.preventDefault(); alert('Sitio web no disponible'); };
         }

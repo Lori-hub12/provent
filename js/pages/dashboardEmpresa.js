@@ -219,3 +219,133 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
         if (e.key === 'Enter') goSearch();
       });
     }
+
+    // --- REQUERIMIENTOS LOGIC ---
+    window.openReqModal = function() {
+      document.getElementById('reqModal').classList.add('active');
+    };
+    window.closeReqModal = function() {
+      document.getElementById('reqModal').classList.remove('active');
+      document.getElementById('form-req').reset();
+    };
+
+    window.submitReq = async function(e) {
+      e.preventDefault();
+      const btn = document.querySelector('#form-req button[type="submit"]');
+      if (btn) { btn.disabled = true; btn.textContent = 'Guardando...'; }
+      const data = {
+        empresa_id: user.id,
+        titulo: document.getElementById('req-titulo').value,
+        cantidad: document.getElementById('req-cantidad').value,
+        unidad: document.getElementById('req-unidad').value,
+        urgencia: document.getElementById('req-urgencia').value,
+        descripcion: document.getElementById('req-descripcion').value
+      };
+      
+      try {
+        const res = await ProVendAuth.apiFetch(API_BASE + '/api/requerimientos', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error('Error al guardar');
+        closeReqModal();
+        alert('Requerimiento publicado exitosamente.');
+        loadRequerimientos();
+      } catch (err) {
+        alert('Ocurrió un error. Intenta de nuevo.');
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Publicar Requerimiento'; }
+      }
+    };
+
+    window.deleteReq = async function(id) {
+      if(!confirm('¿Seguro que deseas eliminar este requerimiento?')) return;
+      try {
+        const res = await ProVendAuth.apiFetch(API_BASE + '/api/requerimientos/' + id, {
+          method: 'DELETE'
+        });
+        if (!res.ok) throw new Error('Error');
+        alert('Eliminado con éxito.');
+        loadRequerimientos();
+      } catch(err) {
+        alert('No se pudo eliminar.');
+      }
+    };
+
+    async function loadRequerimientos() {
+      const container = document.getElementById('requerimientos-container');
+      if(!container) return;
+      try {
+        const res = await fetch(API_BASE + '/api/requerimientos');
+        const allReqs = await res.json();
+        const myReqs = allReqs.filter(r => r.empresa_id === user.id);
+        
+        if (myReqs.length === 0) {
+          container.innerHTML = '<div class="empty-state" style="grid-column: 1/-1"><h3>No tienes requerimientos activos</h3><p>Publica uno nuevo para empezar.</p></div>';
+          return;
+        }
+        
+        let html = '';
+        myReqs.forEach(r => {
+          html += `
+            <div class="prov-card" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; border: 1px solid var(--neutral-200); border-radius: 12px;">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <h3 style="font-size:1.125rem; font-weight:700; color:var(--neutral-900); margin-bottom:0.25rem">${r.titulo}</h3>
+                  <span style="font-size:0.875rem; color:var(--neutral-500);">${r.cantidad} ${r.unidad} • Urgencia: ${r.urgencia}</span>
+                </div>
+                <span class="inv-card-status" style="font-size:0.75rem">${r.estado || 'Activo'}</span>
+              </div>
+              <p style="font-size:0.875rem; color:var(--neutral-600); margin:0;">${r.descripcion || 'Sin descripción'}</p>
+              <div style="display:flex; justify-content:flex-end; border-top: 1px solid var(--neutral-100); padding-top: 1rem;">
+                <button class="btn-xs btn-xs-danger" onclick="deleteReq(${r.id})">❌ Eliminar</button>
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      } catch(e) {
+        container.innerHTML = '<p>Error cargando requerimientos.</p>';
+      }
+    }
+    
+    // Call loadRequerimientos inside DOMContentLoaded
+    loadRequerimientos();
+
+        // -- NOTIFICATIONS DROPDOWN LOGIC --
+        setTimeout(() => {
+            const btn = document.getElementById('notif-btn');
+            const drop = document.getElementById('notif-dropdown');
+            const list = document.getElementById('notif-list');
+            if (btn && drop) {
+                btn.onclick = async () => {
+                    const isShowing = drop.style.display === 'block';
+                    drop.style.display = isShowing ? 'none' : 'block';
+                    if (!isShowing) {
+                        try {
+                            const res = await fetch(API_BASE + '/api/notificaciones/' + user.id);
+                            const notifs = await res.json();
+                            if (notifs.length === 0) {
+                                list.innerHTML = '<div style="padding:1rem; text-align:center; color:var(--neutral-500); font-size:0.875rem;">No tienes notificaciones</div>';
+                            } else {
+                                list.innerHTML = notifs.map(n => `
+                                    <div style="padding:0.75rem; border-bottom:1px solid var(--neutral-100); background:${n.leida ? 'transparent' : '#f0f9ff'}">
+                                        <div style="font-size:0.875rem; color:var(--neutral-900); margin-bottom:0.25rem">${n.mensaje}</div>
+                                        <div style="font-size:0.75rem; color:var(--neutral-500)">Hace un momento</div>
+                                    </div>
+                                `).join('');
+                            }
+                        } catch(e) {
+                            list.innerHTML = '<div style="padding:1rem; text-align:center; color:var(--danger-500); font-size:0.875rem;">Error al cargar</div>';
+                        }
+                    }
+                };
+                document.addEventListener('click', (e) => {
+                    if (!btn.contains(e.target) && !drop.contains(e.target)) {
+                        drop.style.display = 'none';
+                    }
+                });
+            }
+        }, 1000);
+        

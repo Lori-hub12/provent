@@ -138,10 +138,11 @@ document.getElementById('navbar-container').innerHTML = buildNavbar('explorar');
             const urlParams = new URLSearchParams(window.location.search);
             const tabParam = urlParams.get('tab');
             const qParam = urlParams.get('q');
+     const catParam = urlParams.get('category');
 
-            if (qParam) {
-                document.getElementById('searchInput').value = qParam;
-            }
+            if (qParam || catParam) {
+        document.getElementById('searchInput').value = qParam || catParam;
+    }
 
             if (tabParam && (tabParam === 'materiales' || tabParam === 'empresas')) {
                 currentTab = tabParam;
