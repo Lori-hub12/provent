@@ -565,7 +565,7 @@
       const arrowSVG = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>';
 
       grid.innerHTML = allCategories.map((cat, i) => `
-        <a href="explorar.html?category=${cat.slug}" class="cat-card fade-in" data-cat="${cat.cat}" style="animation-delay:${i * 0.05}s">
+        <a href="explorar.html?category=${cat.slug}" class="cat-card fade-in visible" data-cat="${cat.cat}" style="animation-delay:${i * 0.05}s">
           <div class="cat-icon">${cat.icon}</div>
           <div class="cat-info">
             <div class="cat-name">${cat.name}</div>
@@ -582,7 +582,7 @@
       const topCats = [...allCategories].sort((a, b) => b.count - a.count).slice(0, 5);
 
       featuredGrid.innerHTML = topCats.map(cat => `
-        <a href="explorar.html?category=${cat.slug}" class="featured-cat-item">
+        <a href="explorar.html?category=${cat.slug}" class="featured-cat-item fade-in visible">
           ${cat.icon}
           <span>${cat.name}</span>
         </a>
@@ -603,7 +603,7 @@
             
             // Re-render
             grid.innerHTML = allCategories.map((cat, i) => `
-              <a href="explorar.html?category=${cat.slug}" class="cat-card fade-in" data-cat="${cat.cat}" style="animation-delay:${i * 0.05}s">
+              <a href="explorar.html?category=${cat.slug}" class="cat-card fade-in visible" data-cat="${cat.cat}" style="animation-delay:${i * 0.05}s">
                 <div class="cat-icon">${cat.icon}</div>
                 <div class="cat-info">
                   <div class="cat-name">${cat.name} <span style="font-size:0.8rem; color:var(--neutral-500); font-weight:normal">(${cat.count} proveedores)</span></div>
@@ -617,7 +617,7 @@
             
             const topCats = [...allCategories].sort((a, b) => b.count - a.count).slice(0, 5);
             featuredGrid.innerHTML = topCats.map(cat => `
-              <a href="explorar.html?category=${cat.slug}" class="featured-cat-item">
+              <a href="explorar.html?category=${cat.slug}" class="featured-cat-item fade-in visible">
                 ${cat.icon}
                 <span>${cat.name} (${cat.count})</span>
               </a>
