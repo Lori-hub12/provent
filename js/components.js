@@ -5,7 +5,7 @@
 
 // ---- ProVend Logo (Image) ----
 // Logo path - change this if you move the logo file
-const LOGO_PATH = 'assets/images/logo.jpg';
+const LOGO_PATH = 'img/logo.png';
 
 function getLogoSVG(size = 36) {
   return `<img src="${LOGO_PATH}" alt="ProVend" width="${size}" height="${size}" style="object-fit:contain;border-radius:0;">`;
