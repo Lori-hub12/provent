@@ -1,13 +1,9 @@
-(function() {
-            const user = JSON.parse(localStorage.getItem('ProVend_user') || 'null');
-            const token = localStorage.getItem('ProVend_token');
-            if (!user || !token || user.rol !== 'admin') {
-                document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:Inter,sans-serif;flex-direction:column;gap:1rem"><h2 style="color:#dc2626">🔒 Acceso Restringido</h2><p style="color:#6b7280">Solo los administradores pueden ver esta página.</p><a href="login.html" style="background:#2B7DE9;color:white;padding:0.75rem 2rem;border-radius:8px;text-decoration:none;font-weight:600">Ir al Login</a></div>';
-                throw new Error('Unauthorized');
-            }
-        })();
+const fs = require('fs');
 
+let js = fs.readFileSync('js/pages/admin.js', 'utf8');
 
+// I will overwrite loadEmpresas entirely with a new version that includes the button handlers
+const newEmpresasJs = `
 async function loadEmpresas() {
     const tbody = document.getElementById('empresas-table-body');
     if (!tbody) return;
@@ -24,27 +20,27 @@ async function loadEmpresas() {
             
             window.empresasData = data; // store globally for filtering if needed
             
-            tbody.innerHTML = data.map(e => `
+            tbody.innerHTML = data.map(e => \`
                 <tr>
                     <td>
-                        <div style="font-weight:600">${e.company || e.nombre || 'Sin nombre'}</div>
-                        <div style="color:var(--neutral-500);font-size:0.8rem">${e.email}</div>
+                        <div style="font-weight:600">\${e.company || e.nombre || 'Sin nombre'}</div>
+                        <div style="color:var(--neutral-500);font-size:0.8rem">\${e.email}</div>
                     </td>
                     <td>
-                        ${e.activo 
+                        \${e.activo 
                             ? '<span class="verified-yes">Activo</span>'
                             : '<span class="verified-no">Suspendido</span>'}
                     </td>
-                    <td><div style="font-size:0.8rem;color:var(--neutral-500)">${new Date(e.created_at).toLocaleDateString()}</div></td>
-                    <td>${e.total_requerimientos || 0} publicaciones</td>
+                    <td><div style="font-size:0.8rem;color:var(--neutral-500)">\${new Date(e.created_at).toLocaleDateString()}</div></td>
+                    <td>\${e.total_requerimientos || 0} publicaciones</td>
                     <td style="text-align:right">
-                        ${e.activo
-                            ? `<button class="btn-xs btn-xs-danger" onclick="toggleEmpresaActivo('${e.id}', false, this)">Suspender</button>`
-                            : `<button class="btn-xs btn-xs-success" onclick="toggleEmpresaActivo('${e.id}', true, this)">Reactivar</button>`}
-                        <button class="btn-xs btn-xs-danger" style="margin-left:8px" onclick="eliminarEmpresa('${e.id}', '${(e.company || e.nombre || '').replace(/'/g, "\'")}', this)">Eliminar</button>
+                        \${e.activo
+                            ? \`<button class="btn-xs btn-xs-danger" onclick="toggleEmpresaActivo('\${e.id}', false, this)">Suspender</button>\`
+                            : \`<button class="btn-xs btn-xs-success" onclick="toggleEmpresaActivo('\${e.id}', true, this)">Reactivar</button>\`}
+                        <button class="btn-xs btn-xs-danger" style="margin-left:8px" onclick="eliminarEmpresa('\${e.id}', '\${(e.company || e.nombre || '').replace(/'/g, "\\'")}', this)">Eliminar</button>
                     </td>
                 </tr>
-            `).join('');
+            \`).join('');
         }
     } catch(e) {
         console.error(e);
@@ -55,7 +51,7 @@ async function loadEmpresas() {
 async function toggleEmpresaActivo(id, newActivo, btn) {
     btn.disabled = true; btn.textContent = '...';
     try {
-        const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/usuarios/${id}/activo`, {
+        const res = await ProVendAuth.apiFetch(\`\${API_BASE}/api/admin/usuarios/\${id}/activo\`, {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ activo: newActivo })
@@ -77,19 +73,26 @@ async function toggleEmpresaActivo(id, newActivo, btn) {
 }
 
 async function eliminarEmpresa(id, nombre, btn) {
-    if (!confirm(`¿Eliminar permanentemente a la empresa "${nombre}"? Esta acción no se puede deshacer.`)) return;
+    if (!confirm(\`¿Eliminar permanentemente a la empresa "\${nombre}"? Esta acción no se puede deshacer.\`)) return;
     btn.disabled = true; btn.textContent = '...';
     try {
-        const res = await ProVendAuth.apiFetch(`${API_BASE}/api/admin/usuarios/${id}`, { method: 'DELETE' });
+        const res = await ProVendAuth.apiFetch(\`\${API_BASE}/api/admin/usuarios/\${id}\`, { method: 'DELETE' });
         if (!res.ok) { 
             const d = await res.json(); 
             if (typeof toast === 'function') toast(d.error || 'Error', 'error'); 
             return; 
         }
-        if (typeof toast === 'function') toast(`Empresa "${nombre}" eliminada`, 'success');
+        if (typeof toast === 'function') toast(\`Empresa "\${nombre}" eliminada\`, 'success');
         await loadEmpresas();
     } catch (err) { 
         if (typeof toast === 'function') toast('Error de conexión', 'error'); 
         btn.disabled = false; 
     }
 }
+`;
+
+// Replace the previous loadEmpresas definition
+js = js.replace(/async function loadEmpresas\(\) \{[\s\S]*$/, newEmpresasJs);
+fs.writeFileSync('js/pages/admin.js', js);
+
+console.log('Fixed js logic!');

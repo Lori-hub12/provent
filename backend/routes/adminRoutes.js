@@ -10,4 +10,6 @@ router.patch('/admin/usuarios/:id/activo', requireAdmin, adminController.patch_a
 router.delete('/admin/usuarios/:id', requireAdmin, adminController.delete_admin_usuarios__id);
 router.get('/admin/actividad', requireAdmin, adminController.get_admin_actividad);
 
+router.get('/admin/empresas', requireAdmin, adminController.get_admin_empresas);
+
 module.exports = router;

@@ -140,3 +140,19 @@ exports.get_admin_actividad = async (req, res) => {
     }
 };
 
+
+
+exports.get_admin_empresas = async (req, res) => {
+    try {
+        const empresas = await dbAll(
+            `SELECT u.id, u.nombre, u.email, u.activo, u.created_at, u.company,
+                    (SELECT COUNT(*) FROM requerimientos req WHERE req.empresa_id = u.id) as total_requerimientos
+             FROM usuarios u
+             WHERE u.rol = 'empresa'
+             ORDER BY u.created_at DESC LIMIT 50`
+        );
+        res.json(empresas);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
