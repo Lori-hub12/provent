@@ -80,11 +80,11 @@ exports.createPasaporte = async (req, res) => {
         // Generar un cdigo Ǟnico tipo PV-2026-XXXX
         const codeNum = Math.floor(1000 + Math.random() * 9000);
         const year = new Date().getFullYear();
-        const id = \`PV-\${year}-\${codeNum}\`;
+        const id = `PV-${year}-${codeNum}`;
         
         await dbRun(
-            \`INSERT INTO pasaportes_digitales (id, proveedor_id, empresa_id, material_origen, producto_final, porcentaje_reciclado, co2_evitado, costo_reducido) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?)\`,
+            `INSERT INTO pasaportes_digitales (id, proveedor_id, empresa_id, material_origen, producto_final, porcentaje_reciclado, co2_evitado, costo_reducido) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             [id, proveedor_id, empresa_id, material_origen, producto_final, porcentaje_reciclado, co2_evitado, costo_reducido]
         );
         
@@ -98,13 +98,13 @@ exports.getPasaportePublico = async (req, res) => {
     try {
         const id = req.params.id;
         const pasaporte = await dbGet(
-            \`SELECT p.*, 
+            `SELECT p.*, 
                     prov.company as proveedor_nombre, 
                     emp.company as empresa_nombre 
              FROM pasaportes_digitales p
              JOIN usuarios prov ON p.proveedor_id = prov.id
              JOIN usuarios emp ON p.empresa_id = emp.id
-             WHERE p.id = ?\`,
+             WHERE p.id = ?`,
             [id]
         );
         
