@@ -1,40 +1,56 @@
-# ProVend - Plataforma B2B (Frontend Prototype) 🚀
+# ProVend (ProConnect) - Plataforma B2B de Economía Circular ♻️
 
-ProVend es un prototipo interactivo y moderno (Front-end) de una plataforma B2B diseñada para conectar empresas y proveedores en Nicaragua de manera eficiente, rápida y transparente.
+ProVend es un mercado B2B diseñado para conectar empresas y proveedores en Nicaragua de manera eficiente, rápida y transparente, impulsando la economía circular mediante la comercialización y trazabilidad de materiales reciclados.
 
-Este proyecto fue construido priorizando un alto rendimiento y control total del código, prescindiendo de frameworks pesados y utilizando tecnologías nativas.
+## 🚀 Funcionalidades Principales
 
-## 🛠️ Tecnologías Utilizadas
+1. **Marketplace B2B (Oportunidades Inversas):** Las empresas publican sus requerimientos (demandas) y los proveedores pueden ofertar directamente para satisfacer esa necesidad.
+2. **Pasaportes Digitales QR:** Sistema de trazabilidad que permite a las empresas generar un certificado digital para sus productos finales. El consumidor puede escanear el QR para ver el origen del material, porcentaje reciclado y el impacto ambiental (CO2 evitado).
+3. **Smart Pooling (Compras Conjuntas):** Agrupación inteligente que permite a varias empresas pequeñas y medianas unir fuerzas para alcanzar el volumen mínimo de compra exigido por los grandes proveedores de materiales.
+4. **Diseño Premium (Glassmorphism):** Interfaz fluida y reactiva con un sistema de tarjetas de cristal y animaciones suaves usando Vanilla JS y CSS3.
+5. **Autenticación Segura (JWT):** Inicio de sesión encriptado con roles separados (Empresa, Proveedor y Administrador).
 
-* **HTML5:** Semántica moderna y accesibilidad.
-* **CSS3 Vanilla:** Arquitectura modular basada en variables globales (Design Tokens) y diseño **Glassmorphism** (efecto de cristal y desenfoque).
-* **JavaScript (ES6):** Interacciones del DOM, manipulación asíncrona de estilos e inyección dinámica de componentes.
+## 🛠️ Stack Tecnológico
 
-## ✨ Funcionalidades Principales
+Este proyecto utiliza una arquitectura **MVC (Modelo-Vista-Controlador)** optimizada para alto rendimiento:
 
-1. **Diseño Premium (Glassmorphism):** Toda la interfaz gráfica utiliza un sistema de tarjetas de cristal (`backdrop-filter`) combinadas con un sistema de esferas de luces flotantes en el fondo (Background Mesh).
-2. **Modo Oscuro Inteligente (Dark Mode):** Alternador de temas integrado que guarda la preferencia del usuario utilizando la API de `localStorage` del navegador.
-3. **Motor de Animaciones (Scroll Reveal):** Las tarjetas y elementos entran flotando de forma progresiva a medida que el usuario hace scroll, gracias a la implementación nativa del `IntersectionObserver` de JS (sin librerías externas que ralenticen el sitio).
-4. **Formularios Dinámicos:** La página de autenticación se adapta en tiempo real (ocultando y mostrando campos y validaciones) dependiendo de si el usuario intenta registrarse como "Empresa" o como "Proveedor".
-5. **Micro-Interacciones Avanzadas (Cursor Mágico):** Implementación de una "linterna" o cursor luminoso de luz turquesa que sigue las coordenadas del ratón e interactúa con el cristal de las tarjetas a través de `mix-blend-mode`.
-6. **Sistema de Componentes Globales:** El Navbar y el Footer se construyen de forma dinámica e inteligente a través del script central `components.js` para evitar repetición de código y asegurar la escalabilidad.
+* **Frontend (La Vistas):** HTML5, CSS3 (Custom Properties) y Vanilla JavaScript. Carga ultrarrápida sin la sobrecarga de frameworks externos pesados.
+* **Backend (El Motor):** Node.js utilizando el framework **Express.js**.
+* **Base de Datos:** **PostgreSQL** alojado en la nube vía **Supabase**. *(Incluye un modo fallback local usando SQLite para desarrollo offline).*
+* **Seguridad:** Encriptación de contraseñas con **Bcrypt** y manejo de sesiones con **JSON Web Tokens (JWT)**.
+* **Infraestructura (Cloud Hosting):** Despliegue continuo gestionado a través de **Render** vinculado directamente al repositorio de GitHub.
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura del Proyecto (MVC)
 
-El código está estructurado modularmente dentro de la carpeta `proconnect`:
-* `/css/`: CSS separado por lógica (variables, base, layout, components, pages).
-* `/js/`: Scripts modulares (`app.js` y `components.js`).
-* `/assets/`: Imágenes, iconos (SVG) y audio.
-* Archivos `.html` en la raíz (Index, Explorar, Registro, Nosotros, 404 interactivo).
+El código está estructurado de manera lógica y modular:
+* `/backend/config/`: Conexión dual (PostgreSQL/SQLite) a la base de datos.
+* `/backend/controllers/`: Cerebro de la aplicación (Lógica de autenticación, Pasaportes QR, Smart Pooling, etc).
+* `/backend/middlewares/`: Filtros de seguridad (ej. validación de tokens).
+* `/backend/routes/`: Endpoints de la API.
+* `/css/`: CSS separado por lógica (variables globales, layout, componentes).
+* `/js/`: Scripts modulares para el cliente (animaciones, autenticación en frontend, peticiones AJAX).
+* Archivos `.html` en la raíz (Index, Explorar, Dashboards dedicados por rol).
 
-## 🚀 Cómo ejecutar el proyecto
+## 🔧 Cómo ejecutar el proyecto localmente
 
-Al ser un proyecto Front-end puro y nativo, no requiere la instalación de dependencias, compiladores o servidores complejos como Node.js en esta fase.
-
-1. Clona este repositorio o descarga el ZIP.
-2. Extrae los archivos en tu computadora.
-3. Abre el archivo `proconnect/index.html` en tu navegador moderno favorito (Google Chrome, Firefox, Edge o Safari).
-4. ¡Disfruta de la experiencia!
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/Lori-hub12/provent.git
+   ```
+2. Instala las dependencias del servidor:
+   ```bash
+   npm install
+   ```
+3. Configura las variables de entorno creando un archivo `.env` en la raíz con:
+   ```env
+   JWT_SECRET=tu_secreto_super_seguro
+   DATABASE_URL=postgres://tu_url_de_supabase (Opcional, si no se pone usa SQLite local)
+   ```
+4. Inicia el servidor:
+   ```bash
+   npm start
+   ```
+5. Abre `http://localhost:3000` en tu navegador.
 
 ---
-*Desarrollado con pasión como prototipo de arquitectura frontend y diseño de experiencia de usuario B2B.*
+*Desarrollado para transformar la gestión de residuos y el abastecimiento B2B mediante la tecnología.*
