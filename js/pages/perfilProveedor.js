@@ -349,7 +349,8 @@ async function submitEditedReview(id) {
     }
 }
 
-window.openMaterialModal = function(id) {
+
+window.openMaterialModal = async function(id) {
     if(!window.providerMaterials) return;
     const m = window.providerMaterials.find(x => x.id == id);
     if(!m) return;
@@ -364,11 +365,60 @@ window.openMaterialModal = function(id) {
     
     const imgDiv = document.getElementById('material-modal-img');
     if(m.imagen_url) {
-        imgDiv.innerHTML = `<img src="${API_BASE}${m.imagen_url}" style="width:100%; height:100%; object-fit:cover; border-radius: 12px 12px 0 0;" alt="${m.nombre}">`;
+        imgDiv.innerHTML = `<img src="${m.imagen_url.startsWith('http') ? m.imagen_url : API_BASE + m.imagen_url}" style="width:100%; height:100%; object-fit:cover; border-radius: 12px 12px 0 0;" alt="${m.nombre}">`;
     } else {
         imgDiv.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>';
     }
     
+    // Smart Pooling check
+    const spContainer = document.getElementById('smart-pooling-container');
+    if (spContainer) {
+        spContainer.style.display = 'none';
+        try {
+            const res = await fetch(`${API_BASE}/api/smart-pooling`);
+            if (res.ok) {
+                const pools = await res.json();
+                const pool = pools.find(p => p.material_id == m.id);
+                if (pool) {
+                    spContainer.style.display = 'block';
+                    const prog = parseFloat(pool.progreso || 0);
+                    const obj = parseFloat(pool.cantidad_objetivo || 1);
+                    const percent = Math.min(100, Math.round((prog / obj) * 100));
+                    
+                    document.getElementById('sp-progress-text').textContent = `${prog}${pool.unidad || 'kg'} / ${obj}${pool.unidad || 'kg'}`;
+                    document.getElementById('sp-progress-percent').textContent = `${percent}%`;
+                    document.getElementById('sp-progress-bar').style.width = `${percent}%`;
+                    
+                    document.getElementById('btn-join-pool').onclick = function() {
+                        const amount = prompt(`¿Cuántos ${pool.unidad || 'kg'} deseas aportar a esta compra conjunta?`);
+                        if (amount && !isNaN(amount)) {
+                            fetch(`${API_BASE}/api/smart-pooling/${pool.id}/join`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                                },
+                                body: JSON.stringify({ cantidad_aportada: amount })
+                            })
+                            .then(r => r.json())
+                            .then(d => {
+                                if(d.success) {
+                                    alert('¡Te has unido exitosamente a la compra conjunta!');
+                                    window.openMaterialModal(id); // refresh
+                                } else {
+                                    alert('Debes iniciar sesión como Empresa para unirte.');
+                                }
+                            });
+                        }
+                    };
+                }
+            }
+        } catch (e) {
+            console.error('Error fetching smart pooling:', e);
+        }
+    }
+
     document.getElementById('material-modal').style.display = 'flex';
 };
+
 window.contactarWsp = function() { if(!window.proveedorData || !window.proveedorData.whatsapp) return alert('El proveedor no tiene WhatsApp registrado.'); window.open('https://wa.me/' + window.proveedorData.whatsapp.replace(/\\D/g, ''), '_blank'); };
