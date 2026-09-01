@@ -14,6 +14,7 @@ const proveedoresRoutes = require('./backend/routes/proveedoresRoutes');
 const empresasRoutes = require('./backend/routes/empresasRoutes');
 const interaccionesRoutes = require('./backend/routes/interaccionesRoutes');
 const adminRoutes = require('./backend/routes/adminRoutes');
+const featureRoutes = require('./backend/routes/featureRoutes');
 const searchRoutes = require('./backend/routes/searchRoutes');
 
 const app = express();
@@ -82,7 +83,8 @@ app.use('/api', authRoutes);
 app.use('/api', proveedoresRoutes);
 app.use('/api', empresasRoutes);
 app.use('/api', interaccionesRoutes);
-app.use('/api', adminRoutes); // Using /api here, because routes inside adminRoutes are like /admin/...
+app.use('/api', adminRoutes);
+app.use('/api', featureRoutes); // Using /api here, because routes inside adminRoutes are like /admin/...
 app.use('/api', searchRoutes);
 
 // GLOBAL ERROR HANDLING

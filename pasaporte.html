@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasaporte Digital - ProVend</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background-color: #0B1120;
+            color: #E2E8F0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        .passport-card {
+            background-color: #0F172A;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            padding: 2.5rem 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #1E293B;
+        }
+        
+        .header-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .check-icon {
+            width: 64px;
+            height: 64px;
+            background-color: #22C55E;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+        }
+        
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.25rem;
+        }
+        
+        .subtitle {
+            font-size: 0.75rem;
+            color: #3B82F6;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .code {
+            font-size: 0.85rem;
+            color: #64748B;
+            font-family: monospace;
+        }
+        
+        .section-title {
+            font-size: 0.7rem;
+            color: #64748B;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .info-label {
+            color: #94A3B8;
+        }
+        
+        .info-value {
+            color: white;
+            font-weight: 500;
+            text-align: right;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.4rem;
+            top: 0.5rem;
+            bottom: 0.5rem;
+            width: 2px;
+            background-color: #1E293B;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.25rem;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.25rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #22C55E;
+            box-shadow: 0 0 0 4px #0F172A;
+        }
+        
+        .timeline-item strong {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px solid #1E293B;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #38BDF8;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.65rem;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #94A3B8;
+        }
+        
+        .watermark {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 150px;
+            height: 150px;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="passport-card" id="passport-content" style="display:none;">
+        <svg class="watermark" viewBox="0 0 100 100" fill="white"><path d="M50 0a50 50 0 1 0 0 100A50 50 0 0 0 50 0zm0 88a38 38 0 1 1 0-76 38 38 0 0 1 0 76z"/></svg>
+        
+        <div class="header-section">
+            <div class="check-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h1 class="title">Producto verificado</h1>
+            <div class="subtitle">UPCYCLING VERIFIED • PROVEND</div>
+            <div class="code" id="pass-id">PV-----</div>
+        </div>
+        
+        <div class="section-title">PRODUCTO CERTIFICADO</div>
+        <div class="info-grid">
+            <div class="info-label">Artículo</div>
+            <div class="info-value" id="pass-product">---</div>
+            
+            <div class="info-label">Fabricante</div>
+            <div class="info-value" id="pass-empresa">---</div>
+            
+            <div class="info-label">Material</div>
+            <div class="info-value"><span id="pass-percent"></span> <span id="pass-material">---</span></div>
+        </div>
+        
+        <div class="section-title">CADENA DE TRAZABILIDAD</div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <strong id="time-proveedor">Industria S.A.</strong> genera la merma industrial.
+            </div>
+            <div class="timeline-item">
+                Verificada y clasificada en <strong>PROVEND</strong>.
+            </div>
+            <div class="timeline-item">
+                <strong id="time-empresa">Empresa Local</strong> la adquiere (vía Smart Pooling).
+            </div>
+            <div class="timeline-item">
+                Producto final certificado y sellado.
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="pass-co2">0kg</div>
+                <div class="stat-label">CO₂ EVITADO</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="pass-cost">0%</div>
+                <div class="stat-label">COSTO REDUCIDO</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="loading" id="loading-state">
+        Validando Pasaporte Digital...
+    </div>
+
+    <script src="js/config.js?v=1787448633116"></script>
+    <script>
+        async function loadPassport() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            
+            if(!id) {
+                document.getElementById('loading-state').innerHTML = "Código de pasaporte no válido.";
+                return;
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/pasaportes/${id}`);
+                if(!res.ok) throw new Error('No encontrado');
+                
+                const data = await res.json();
+                
+                document.getElementById('pass-id').textContent = data.id;
+                document.getElementById('pass-product').textContent = data.producto_final;
+                document.getElementById('pass-empresa').textContent = data.empresa_nombre;
+                document.getElementById('pass-percent').textContent = data.porcentaje_reciclado;
+                document.getElementById('pass-material').textContent = data.material_origen;
+                
+                document.getElementById('time-proveedor').textContent = data.proveedor_nombre;
+                document.getElementById('time-empresa').textContent = data.empresa_nombre;
+                
+                document.getElementById('pass-co2').textContent = data.co2_evitado || '0kg';
+                document.getElementById('pass-cost').textContent = data.costo_reducido || '0%';
+                
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('passport-content').style.display = 'block';
+                
+            } catch(e) {
+                document.getElementById('loading-state').innerHTML = "Este pasaporte no existe o ha sido revocado.";
+            }
+        }
+        
+        window.onload = loadPassport;
+    </script>
+</body>
+</html>

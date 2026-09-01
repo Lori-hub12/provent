@@ -275,7 +275,41 @@ const initDB = async () => {
             `CREATE INDEX IF NOT EXISTS idx_visitas_visitante ON visitas(visitante_id)`,
             `CREATE INDEX IF NOT EXISTS idx_requerimientos_estado ON requerimientos(estado)`,
             `CREATE INDEX IF NOT EXISTS idx_requerimientos_empresa ON requerimientos(empresa_id)`,
-            `CREATE INDEX IF NOT EXISTS idx_resenas_proveedor ON resenas(proveedor_id)`
+            `CREATE INDEX IF NOT EXISTS idx_resenas_proveedor ON resenas(proveedor_id)`,
+            `CREATE TABLE IF NOT EXISTS smart_pooling_grupos (
+                id SERIAL PRIMARY KEY,
+                material_id INTEGER NOT NULL,
+                creador_id INTEGER NOT NULL,
+                cantidad_objetivo DECIMAL NOT NULL,
+                unidad VARCHAR(50),
+                fecha_limite TIMESTAMP,
+                estado VARCHAR(50) DEFAULT 'Activo',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(material_id) REFERENCES materiales(id) ON DELETE CASCADE,
+                FOREIGN KEY(creador_id) REFERENCES usuarios(id) ON DELETE CASCADE
+            )`,
+            `CREATE TABLE IF NOT EXISTS smart_pooling_participantes (
+                id SERIAL PRIMARY KEY,
+                grupo_id INTEGER NOT NULL,
+                empresa_id INTEGER NOT NULL,
+                cantidad_aportada DECIMAL NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(grupo_id) REFERENCES smart_pooling_grupos(id) ON DELETE CASCADE,
+                FOREIGN KEY(empresa_id) REFERENCES usuarios(id) ON DELETE CASCADE
+            )`,
+            `CREATE TABLE IF NOT EXISTS pasaportes_digitales (
+                id VARCHAR(100) PRIMARY KEY,
+                proveedor_id INTEGER NOT NULL,
+                empresa_id INTEGER NOT NULL,
+                material_origen TEXT,
+                producto_final TEXT,
+                porcentaje_reciclado VARCHAR(50),
+                co2_evitado VARCHAR(50),
+                costo_reducido VARCHAR(50),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY(proveedor_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+                FOREIGN KEY(empresa_id) REFERENCES usuarios(id) ON DELETE CASCADE
+            )`
         ];
 
         try {
