@@ -204,7 +204,7 @@ function buildFooter() {
         <div class="footer-links">
           <a href="terminos.html">Términos de servicio</a>
           <a href="#">Política de privacidad</a>
-          <a href="#">Uso de cookies</a>
+          <a href="cookies.html">Uso de cookies</a>
           <a href="#">Aviso legal</a>
         </div>
       </div>
@@ -216,7 +216,7 @@ function buildFooter() {
         <div class="footer-bottom-links">
           <a href="#">Privacidad</a>
           <a href="terminos.html">Términos</a>
-          <a href="#">Cookies</a>
+          <a href="cookies.html">Cookies</a>
         </div>
       </div>
     </div>
