@@ -205,7 +205,7 @@ function buildFooter() {
           <a href="terminos.html">Términos de servicio</a>
           <a href="#">Política de privacidad</a>
           <a href="cookies.html">Uso de cookies</a>
-          <a href="#">Aviso legal</a>
+          <a href="aviso-legal.html">Aviso legal</a>
         </div>
       </div>
     </div>
