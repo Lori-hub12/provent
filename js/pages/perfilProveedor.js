@@ -242,7 +242,7 @@ async function loadReviews(proveedorId) {
 async function submitReview() {
     const urlParams = new URLSearchParams(window.location.search);
     const proveedorId = urlParams.get('id');
-    const token = localStorage.getItem('ProVend_token') || localStorage.getItem('token');
+    const token = localStorage.getItem('ProVend_token') || localStorage.getItem('ProVend_token');
     const rating = document.getElementById('review-rating').value;
     const comentario = document.getElementById('review-comment').value;
 
@@ -278,7 +278,7 @@ async function submitReview() {
 
 window.deleteReview = async function(id, proveedorId) {
     if (!confirm('¿Estás seguro de eliminar esta reseña?')) return;
-    const token = localStorage.getItem('ProVend_token') || localStorage.getItem('token');
+    const token = localStorage.getItem('ProVend_token') || localStorage.getItem('ProVend_token');
     try {
         const res = await fetch(`${API_BASE}/api/resenas/${id}`, {
             method: 'DELETE',
@@ -312,7 +312,7 @@ window.editReview = function(id, rating, comentario) {
 async function submitEditedReview(id) {
     const urlParams = new URLSearchParams(window.location.search);
     const proveedorId = urlParams.get('id');
-    const token = localStorage.getItem('ProVend_token') || localStorage.getItem('token');
+    const token = localStorage.getItem('ProVend_token') || localStorage.getItem('ProVend_token');
     const rating = document.getElementById('review-rating').value;
     const comentario = document.getElementById('review-comment').value;
 
@@ -396,7 +396,7 @@ window.openMaterialModal = async function(id) {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
-                                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                                    'Authorization': 'Bearer ' + localStorage.getItem('ProVend_token')
                                 },
                                 body: JSON.stringify({ cantidad_aportada: amount })
                             })

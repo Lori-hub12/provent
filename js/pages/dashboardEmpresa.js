@@ -374,7 +374,7 @@ async function cargarDatosPasaporte() {
 async function cargarListaPasaportes() {
     try {
         const res = await fetch(`${API_BASE}/api/pasaportes`, {
-            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem('ProVend_token') }
         });
         if (res.ok) {
             const data = await res.json();
@@ -439,7 +439,7 @@ window.generarPasaporte = async function(e) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + localStorage.getItem('ProVend_token')
             },
             body: JSON.stringify(data)
         });
