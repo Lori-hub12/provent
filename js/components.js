@@ -203,7 +203,7 @@ function buildFooter() {
         <h4>Legal</h4>
         <div class="footer-links">
           <a href="terminos.html">Términos de servicio</a>
-          <a href="#">Política de privacidad</a>
+          <a href="privacidad.html">Política de privacidad</a>
           <a href="cookies.html">Uso de cookies</a>
           <a href="aviso-legal.html">Aviso legal</a>
         </div>
@@ -214,7 +214,7 @@ function buildFooter() {
       <div class="footer-bottom-inner">
         <span>© 2026 ProVend Nicaragua. Todos los derechos reservados.</span>
         <div class="footer-bottom-links">
-          <a href="#">Privacidad</a>
+          <a href="privacidad.html">Privacidad</a>
           <a href="terminos.html">Términos</a>
           <a href="cookies.html">Cookies</a>
         </div>
