@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { JWT_SECRET, PORT } = require('../config/env');
 const { validateEmail, validatePassword, sanitizeString } = require('../utils/validation');
-const { getTransporter } = require('../config/mailer');
+const { sendMail } = require('../config/mailer');
 
 exports.post_forgot_password = async (req, res) => {
 
@@ -21,7 +21,8 @@ exports.post_forgot_password = async (req, res) => {
 
         await dbRun(`UPDATE usuarios SET reset_token = ?, reset_token_expiry = ? WHERE id = ?`, [resetToken, expiry, user.id]);
 
-        const resetLink = `http://localhost:${PORT}/reset-password.html?token=${resetToken}`;
+        const baseUrl = process.env.APP_URL || ((req.headers['x-forwarded-proto'] || req.protocol) + '://' + req.get('host'));
+        const resetLink = baseUrl + '/reset-password.html?token=' + resetToken;
         const mailOptions = {
             from: '"ProVend Soporte" <soporte@provend.ni>',
             to: email,
@@ -37,9 +38,11 @@ exports.post_forgot_password = async (req, res) => {
             `
         };
 
-        if (transporter) {
-            const info = await transporter.sendMail(mailOptions);
-            console.log('📧 Preview URL:', nodemailer.getTestMessageUrl(info));
+        try {
+            const { previewUrl } = await sendMail(mailOptions);
+            if (previewUrl) console.log('Preview (Ethereal, no llega a bandeja real):', previewUrl);
+        } catch (mailErr) {
+            console.error('No se pudo enviar el correo de recuperación:', mailErr.message);
         }
 
         res.json({ message: 'Si el correo existe, recibirás un enlace de recuperación.' });

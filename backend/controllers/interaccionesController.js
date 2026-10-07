@@ -59,7 +59,7 @@ exports.get_notificaciones__usuario_id = async (req, res) => {
 exports.patch_notificaciones__id_leida = async (req, res) => {
 
     try {
-        await dbRun(`UPDATE notificaciones SET leida = 1 WHERE id = ?`, [req.params.id]);
+        await dbRun(`UPDATE notificaciones SET leida = 1 WHERE id = ? AND usuario_id = ?`, [req.params.id, req.user.id]);
         res.json({ ok: true });
     } catch (err) {
         res.status(500).json({ error: err.message });

@@ -158,7 +158,7 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
         }
 
         // 5. Notificaciones
-        const notifRes = await fetch(`${API_BASE}/api/notificaciones/${user.id}`);
+        const notifRes = await ProVendAuth.apiFetch(`${API_BASE}/api/notificaciones/${user.id}`);
         const notifs = await notifRes.json();
         const unread = notifs.filter(n => !n.leida);
         if (unread.length > 0) {
@@ -324,17 +324,18 @@ const user = window.ProVendAuth ? ProVendAuth.getCurrentUser() : null;
                     drop.style.display = isShowing ? 'none' : 'block';
                     if (!isShowing) {
                         try {
-                            const res = await fetch(API_BASE + '/api/notificaciones/' + user.id);
+                            const res = await ProVendAuth.apiFetch(API_BASE + '/api/notificaciones/' + user.id);
                             const notifs = await res.json();
                             if (notifs.length === 0) {
                                 list.innerHTML = '<div style="padding:1rem; text-align:center; color:var(--neutral-500); font-size:0.875rem;">No tienes notificaciones</div>';
                             } else {
                                 list.innerHTML = notifs.map(n => `
                                     <div style="padding:0.75rem; border-bottom:1px solid var(--neutral-100); background:${n.leida ? 'transparent' : '#f0f9ff'}">
-                                        <div style="font-size:0.875rem; color:var(--neutral-900); margin-bottom:0.25rem">${n.mensaje}</div>
-                                        <div style="font-size:0.75rem; color:var(--neutral-500)">Hace un momento</div>
+                                        <div style="font-size:0.875rem; color:var(--neutral-900); margin-bottom:0.25rem">${ProVendNotif.escape(n.mensaje)}</div>
+                                        <div style="font-size:0.75rem; color:var(--neutral-500)">${ProVendNotif.timeAgo(n.created_at)}</div>
                                     </div>
                                 `).join('');
+                                ProVendNotif.markRead(notifs);
                             }
                         } catch(e) {
                             list.innerHTML = '<div style="padding:1rem; text-align:center; color:var(--danger-500); font-size:0.875rem;">Error al cargar</div>';
