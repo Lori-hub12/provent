@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const helmet = require('helmet');
+const compression = require('compression');
 
 const { PORT } = require('./backend/config/env');
 const { globalLimiter } = require('./backend/middlewares/rateLimit');
@@ -23,9 +24,20 @@ app.use(helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
 }));
+app.use(compression());
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
-app.use(express.static(__dirname));
+app.use(express.static(__dirname, {
+    etag: true,
+    setHeaders: (res, filePath) => {
+        // HTML/JS/CSS siempre revalidan (ETag); imágenes y fuentes se cachean 7 días
+        if (/\.(png|jpe?g|webp|svg|gif|ico|woff2?)$/i.test(filePath)) {
+            res.setHeader('Cache-Control', 'public, max-age=604800');
+        } else {
+            res.setHeader('Cache-Control', 'no-cache');
+        }
+    }
+}));
 
 app.use('/api/', globalLimiter);
 
@@ -70,9 +82,24 @@ app.post('/api/upload', authenticateToken, upload.single('file'), async (req, re
 // HEALTH
 app.get('/api/health', async (req, res) => {
     const { dbGet } = require('./backend/config/database');
+    const t0 = Date.now();
     try {
-        const row = await dbGet('SELECT COUNT(*) as usuarios FROM usuarios');
-        res.json({ status: 'ok', usuarios: row.usuarios, version: '2.0.0 (MVC)' });
+        const [u, m, p, pq] = await Promise.all([
+            dbGet('SELECT COUNT(*) as n FROM usuarios'),
+            dbGet('SELECT COUNT(*) as n FROM materiales'),
+            dbGet('SELECT COUNT(*) as n FROM pasaportes_digitales'),
+            dbGet("SELECT COUNT(*) as n FROM smart_pooling_grupos WHERE estado = 'Activo'")
+        ]);
+        res.json({
+            status: 'ok',
+            version: '2.1.0',
+            uptime_s: Math.round(process.uptime()),
+            db_latency_ms: Date.now() - t0,
+            usuarios: Number(u.n),
+            materiales: Number(m.n),
+            pasaportes: Number(p.n),
+            pools_activos: Number(pq.n)
+        });
     } catch (err) {
         res.status(500).json({ status: 'error', error: err.message });
     }

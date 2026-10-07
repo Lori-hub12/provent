@@ -317,6 +317,7 @@ const initDB = async () => {
                 await pool.query(q);
             }
             console.log('✅ Base de datos PG inicializada correctamente.');
+            await require('./migrations')(pool);
             
             // Recrear usuario admin si no existe
             const adminCheck = await pool.query(`SELECT id FROM usuarios WHERE email = 'admin@provend.com'`);

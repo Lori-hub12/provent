@@ -398,6 +398,7 @@ async function cargarListaPasaportes() {
                     <div>
                         <div style="font-size:1.1rem; font-weight:700;">${p.producto_final}</div>
                         <div style="font-size:0.85rem; color:#64748B;">Origen: ${p.proveedor_nombre}</div>
+                        <div style="font-size:0.8rem; color:#16A34A; font-weight:600; margin-top:0.25rem;">Escaneado ${parseInt(p.escaneos) || 0} ${(parseInt(p.escaneos) || 0) === 1 ? 'vez' : 'veces'}</div>
                     </div>
                     <div id="qr-${p.id}" style="margin:1rem auto; padding:10px; background:white; border-radius:8px;"></div>
                     <a href="${url}" target="_blank" class="btn btn-outline" style="text-align:center;">Ver Pasaporte Público</a>
